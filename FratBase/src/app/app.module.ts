@@ -12,11 +12,17 @@ import {AngularFireDatabaseModule} from "angularfire2/database";
 import {FIREBASE_CONFIG} from "./firebase.credentials";
 import {UsersService} from "../Services/Users/Manage_Users.service";
 import { IonicImageViewerModule } from 'ionic-img-viewer';
+import {LoginPage} from "../pages/login/login";
+import {MembersPage} from "../pages/members/members";
+import {ViewMemberPage} from "../pages/view-member/view-member";
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
+    LoginPage,
+    MembersPage,
+    ViewMemberPage
   ],
   imports: [
     BrowserModule,
@@ -28,7 +34,10 @@ import { IonicImageViewerModule } from 'ionic-img-viewer';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
+    LoginPage,
+    MembersPage,
+    ViewMemberPage
   ],
   providers: [
     StatusBar,

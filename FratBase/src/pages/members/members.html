@@ -1,0 +1,26 @@
+<!--
+  Generated template for the MembersPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header style="background-color: black">
+  <ion-navbar>
+    <ion-title>Members</ion-title>
+    <button></button>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding style="background: black">
+
+  <ion-list id="MemberList">
+    <ion-item *ngFor="let item of userList$ | async" style="background-color: black" (click)="ViewUser(item)">
+      <img class= "ImageDisplay" src="{{item['Image']}}" /> <br/>
+      <div class="ImageName"> {{item['First Name']}} &nbsp; {{item['Last Name']}}</div>
+      <div class ="ImageDetails">{{item['Degree']}}</div>
+      <div class="ImageDetails" *ngIf="item['Position'] != 'Brother'">{{item['Position']}}</div>
+    </ion-item>
+  </ion-list>
+
+
+</ion-content>

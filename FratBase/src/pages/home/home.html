@@ -1,14 +1,53 @@
-<ion-header>
+<ion-header style="background-color: black">
   <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="dismiss()" class="my-style-for-modal" *ngIf="viewProfile">
+        <ion-icon name="arrow-back"></ion-icon><ion-label></ion-label>
+      </button>
+    </ion-buttons>
+    <ion-label style="text-align: center" *ngIf="!viewProfile">Users</ion-label>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+<ion-content padding style="background: black">
+
+  <ion-list id="MemberList" style="display: block">
+    <ion-item *ngFor="let item of userList$ | async" style="background-color: black" (click)="ViewUser(item)">
+     <img class= "ImageDisplay" src="{{item['Image']}}" /> <br/>
+      <div class="ImageName"> {{item['First Name']}} &nbsp; {{item['Last Name']}}</div>
+      <div class ="ImageDetails">{{item['Degree']}}</div>
+      <div class="ImageDetails" *ngIf="item['Position'] != 'Brother'">{{item['Position']}}</div>
+    </ion-item>
+  </ion-list>
+
+  <div id="MemberSelected" style="display: none">
+    <table *ngIf="selectedUser$ != null">
+        <tr>
+          <th> <img id="myImg" class = "tableImage" src="{{selectedUser$['Image']}}" imageViewer></th>
+          <th style="padding: 50px"><div class="ProfileCell">{{selectedUser$['First Name']}} {{selectedUser$['Last Name']}}</div></th>
+        </tr>
+        <tr>
+          <th class="ProfileCell">Brother Name</th><th class="ProfileCellA">{{selectedUser$['BrotherName']}}</th>
+        </tr>
+        <tr>
+          <th class="ProfileCell">Position</th><th class="ProfileCellA">{{selectedUser$['Position']}}</th>
+        </tr>
+        <tr>
+          <th class="ProfileCell">Email</th><th class="ProfileCellA">{{selectedUser$['Email']}}</th>
+        </tr>
+        <tr>
+          <th class="ProfileCell">Degree</th><th class="ProfileCellA">{{selectedUser$['Degree']}}</th>
+        </tr>
+        <tr>
+          <th class="ProfileCell">Graduation</th><th class="ProfileCellA">{{selectedUser$['GraduationDate']}}</th>
+        </tr>
+        <tr>
+          <th class="ProfileCell">School</th><th class="ProfileCellA">{{selectedUser$['School']}}</th>
+        </tr>
+        <tr>
+          <th class="ProfileCell">Birthday</th><th class="ProfileCellA">{{selectedUser$['Birthday']}}</th>
+        </tr>
+    </table>
+  </div>
+
 </ion-content>

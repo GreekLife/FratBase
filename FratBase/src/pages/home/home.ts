@@ -3,6 +3,7 @@ import {Item, NavController} from 'ionic-angular';
 import {UsersService} from "../../Services/Users/Manage_Users.service";
 import {Observable} from "rxjs/Observable";
 import {MembersPage} from "../members/members";
+import {LoginPage} from "../login/login";
 
 @Component({
   selector: 'page-home',
@@ -16,6 +17,10 @@ export class HomePage {
 
   ViewMembers() {
     this.navCtrl.push(MembersPage);
+  }
+
+  Signout() {
+    this.navCtrl.push(LoginPage);
   }
 
 }

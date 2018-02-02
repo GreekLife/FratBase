@@ -17,29 +17,29 @@
   <div id="MemberSelected">
     <table>
       <tr>
-        <th> <img id="myImg" class = "tableImage" src="{{selectedUser$['Image']}}" imageViewer></th>
-        <th style="padding: 50px"><div class="ProfileCell">{{selectedUser$['First Name']}} {{selectedUser$['Last Name']}}</div></th>
+        <th> <img id="myImg" class = "tableImage" src="{{selectedUser.ImageURL}}" imageViewer></th>
+        <th style="padding: 50px"><div class="ProfileCell">{{selectedUser.First_Name}} {{selectedUser.Last_Name}}</div></th>
       </tr>
       <tr>
-        <th class="ProfileCell">Brother Name</th><th class="ProfileCellA">{{selectedUser$['BrotherName']}}</th>
+        <th class="ProfileCell">Brother Name</th><th class="ProfileCellA">{{selectedUser.BrotherName}}</th>
       </tr>
       <tr>
-        <th class="ProfileCell">Position</th><th class="ProfileCellA">{{selectedUser$['Position']}}</th>
+        <th class="ProfileCell">Position</th><th class="ProfileCellA">{{selectedUser.Position}}</th>
       </tr>
       <tr>
-        <th class="ProfileCell">Email</th><th class="ProfileCellA">{{selectedUser$['Email']}}</th>
+        <th class="ProfileCell">Email</th><th class="ProfileCellA">{{selectedUser.Email}}</th>
       </tr>
       <tr>
-        <th class="ProfileCell">Degree</th><th class="ProfileCellA">{{selectedUser$['Degree']}}</th>
+        <th class="ProfileCell">Degree</th><th class="ProfileCellA">{{selectedUser.Degree}}</th>
       </tr>
       <tr>
-        <th class="ProfileCell">Graduation</th><th class="ProfileCellA">{{selectedUser$['GraduationDate']}}</th>
+        <th class="ProfileCell">Graduation</th><th class="ProfileCellA">{{selectedUser.Grad}}</th>
       </tr>
       <tr>
-        <th class="ProfileCell">School</th><th class="ProfileCellA">{{selectedUser$['School']}}</th>
+        <th class="ProfileCell">School</th><th class="ProfileCellA">{{selectedUser.School}}</th>
       </tr>
       <tr>
-        <th class="ProfileCell">Birthday</th><th class="ProfileCellA">{{selectedUser$['Birthday']}}</th>
+        <th class="ProfileCell">Birthday</th><th class="ProfileCellA">{{selectedUser.Birthday}}</th>
       </tr>
     </table>
   </div>

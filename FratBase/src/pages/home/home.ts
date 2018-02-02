@@ -19,8 +19,4 @@ export class HomePage {
     this.navCtrl.push(MembersPage);
   }
 
-  Signout() {
-    this.navCtrl.push(LoginPage);
-  }
-
 }

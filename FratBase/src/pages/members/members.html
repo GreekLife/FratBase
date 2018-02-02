@@ -14,11 +14,11 @@
 <ion-content padding style="background: black">
 
   <ion-list id="MemberList">
-    <ion-item *ngFor="let item of userList$ | async" style="background-color: black" (click)="ViewUser(item)">
-      <img class= "ImageDisplay" src="{{item['Image']}}" /> <br/>
-      <div class="ImageName"> {{item['First Name']}} &nbsp; {{item['Last Name']}}</div>
-      <div class ="ImageDetails">{{item['Degree']}}</div>
-      <div class="ImageDetails" *ngIf="item['Position'] != 'Brother'">{{item['Position']}}</div>
+    <ion-item *ngFor="let item of userList" style="background-color: black" (click)="ViewUser(item)">
+      <img class= "ImageDisplay" src="{{item.ImageURL}}" /> <br/>
+      <div class="ImageName"> {{item.First_Name}} &nbsp; {{item.Last_Name}}</div>
+      <div class ="ImageDetails">{{item.Degree}}</div>
+      <div class="ImageDetails" *ngIf="item.Position != 'Brother'">{{item.Position}}</div>
     </ion-item>
   </ion-list>
 

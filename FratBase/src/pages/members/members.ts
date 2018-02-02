@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import {IonicPage, Item, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {UsersService} from "../../Services/Users/Manage_Users.service";
-import {Observable} from "rxjs/Observable";
 import {ViewMemberPage} from "../view-member/view-member";
+import {LoginPage} from '../login/login';
+
 
 /**
  * Generated class for the MembersPage page.
@@ -17,19 +18,12 @@ import {ViewMemberPage} from "../view-member/view-member";
   templateUrl: 'members.html',
 })
 export class MembersPage {
-  userList$: Observable<Item[]>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private users: UsersService) {
+    userList: object[];
 
-    this.userList$ =
-      this.users
-        .getJonah()
-        .snapshotChanges()
-        .map(actions => {
-          return actions.map(action => ({
-            key: action.payload.key, ...action.payload.val()
-          }))
-        });
+  constructor(public navCtrl: NavController, public navParams: NavParams, private users: UsersService, public node: LoginPage) {
+
+    this.userList = this.users.GetUsersInternal(node.DatabaseNode);
 
   }
 

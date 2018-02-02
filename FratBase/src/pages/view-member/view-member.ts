@@ -15,13 +15,11 @@ import {Observable} from "rxjs/Observable";
   templateUrl: 'view-member.html',
 })
 export class ViewMemberPage {
-  selectedUser$: Observable<Item>;
+  selectedUser: object;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.selectedUser$ = navParams.get("selectedUser")
-  }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ViewMemberPage');
+    this.selectedUser = navParams.get("selectedUser");
+
   }
 
 }

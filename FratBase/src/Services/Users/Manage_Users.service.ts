@@ -10,7 +10,7 @@ export class UsersService {
   }
 
   getNode(node) {
-    if(node == "Generic" || node == null) {
+    if(node == null) {
       this.DatabaseNode = "Development";
     }
     else {

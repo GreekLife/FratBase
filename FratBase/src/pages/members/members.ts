@@ -21,9 +21,9 @@ export class MembersPage {
 
     userList: object[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private users: UsersService, public node: LoginPage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private users: UsersService) {
 
-    this.userList = this.users.GetUsersInternal(node.DatabaseNode);
+    //this.userList = this.users.GetUsersInternal(node.DatabaseNode);
 
   }
 

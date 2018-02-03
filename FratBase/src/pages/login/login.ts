@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {HomePage} from "../home/home";
 
 /**
@@ -16,13 +16,47 @@ import {HomePage} from "../home/home";
 })
 export class LoginPage {
 
-  DatabaseNode = "GammaLambda";
+  DatabaseNode: String;
+  OptionsOpen: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController) {
+    this.DatabaseNode = "Generic";
   }
 
   Login() {
     this.navCtrl.push(HomePage);
+  }
+
+  showNodes() {
+    let alert = this.alertCtrl.create();
+    alert.setTitle('Chapter');
+
+    alert.addInput({
+      type: 'radio',
+      label: 'Generic',
+      value: 'Development',
+      checked: true
+    });
+    alert.addInput({
+      type: 'radio',
+      label: 'Gamma Lambda',
+      value: 'GammaLambda',
+      checked: false
+    });
+
+    alert.addButton('Cancel');
+    alert.addButton({
+      text: 'OK',
+      handler: data => {
+        this.OptionsOpen = false;
+        this.DatabaseNode = data;
+      }
+    });
+    alert.present().then(() => {
+      this.OptionsOpen = true;
+    });
   }
 
 }

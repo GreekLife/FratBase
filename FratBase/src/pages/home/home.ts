@@ -12,11 +12,14 @@ import {LoginPage} from "../login/login";
 export class HomePage {
 
   constructor(public navCtrl: NavController, private users:UsersService) {
-
   }
 
   ViewMembers() {
     this.navCtrl.push(MembersPage);
+  }
+
+  signOut() {
+    this.navCtrl.pop();
   }
 
 }

@@ -1,35 +1,40 @@
 page-login {
-}
+  .toolbar-background {
+    background-color: black;
+  }
 
-.Logo {
-  width: 150px;
-  height: 150px;
-  align-content: center;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 30px;
-}
+  .Logo {
+    width: 150px;
+    height: 150px;
+    align-content: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+  }
 
-.Credentials {
-  width: 300px;
-  border-radius: 25px;
-  outline: none;
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-bottom: 10px;
-  border: none;
-  background-color: slategray;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
+  .Credentials {
+    width: 300px;
+    border-radius: 25px;
+    outline: none;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 10px;
+    border: none;
+    background-color: slategray;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 
-.Login {
-  width: 150px;
-  border-radius: 25px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: #5CB3E1;
+  }
+
+  .Login {
+    width: 150px;
+    border-radius: 25px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #5CB3E1;
+  }
+
 }

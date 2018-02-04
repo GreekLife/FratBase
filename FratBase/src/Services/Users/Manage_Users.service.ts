@@ -3,13 +3,15 @@ import {AngularFireDatabase} from "angularfire2/database";
 @Injectable()
 export class UsersService {
 
-  DatabaseNode = "Development";
+  private DatabaseNode = "Development";
+
+  ListOfUsers: object[];
 
   constructor(private db: AngularFireDatabase) {
 
   }
 
-  getNode(node) {
+  setNode(node) {
     if(node == null) {
       this.DatabaseNode = "Development";
     }
@@ -18,8 +20,11 @@ export class UsersService {
     }
   }
 
-  GetUsersInternal(node) {
-    this.getNode(node);
+  getNode() {
+    return this.DatabaseNode;
+  }
+
+  GetUsersInternal() {
     let users = [];
     let idRef = this.db.database.ref(this.DatabaseNode + "/Users");
     idRef.once('value', snapshot => {
@@ -44,7 +49,7 @@ export class UsersService {
         return false;
       });
     });
-
+    this.ListOfUsers = users;
     return users;
 
   }

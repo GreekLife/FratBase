@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {UsersService} from "../../Services/Users/Manage_Users.service";
 import {ViewMemberPage} from "../view-member/view-member";
-import {LoginPage} from '../login/login';
 
 
 /**
@@ -21,13 +20,18 @@ export class MembersPage {
 
     userList: object[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private users: UsersService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private users: UsersService, public modalCtrl: ModalController) {
 
-    //this.userList = this.users.GetUsersInternal(node.DatabaseNode);
+    this.userList = this.users.ListOfUsers;
 
   }
 
+  // ViewUser(item) {
+  //   this.navCtrl.push(ViewMemberPage, {selectedUser: item})
+  // }
+
   ViewUser(item) {
-    this.navCtrl.push(ViewMemberPage, {selectedUser: item})
+    let modal = this.modalCtrl.create(ViewMemberPage, {selectedUser: item});
+    modal.present();
   }
 }

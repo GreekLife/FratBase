@@ -4,17 +4,17 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header style="background-color: black">
+<ion-header>
   <ion-navbar>
-    <ion-title>Members</ion-title>
+    <ion-title><div style="color: white">Members</div></ion-title>
     <button></button>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding style="background: black">
+<ion-content padding style="background: #39393B">
 
   <ion-list id="MemberList">
-    <ion-item *ngFor="let item of userList" style="background-color: black" (click)="ViewUser(item)">
+    <ion-item *ngFor="let item of userList" style="background-color: #39393B" (click)="ViewUser(item)">
       <img class= "ImageDisplay" src="{{item.ImageURL}}" /> <br/>
       <div class="ImageName"> {{item.First_Name}} &nbsp; {{item.Last_Name}}</div>
       <div class ="ImageDetails">{{item.Degree}}</div>

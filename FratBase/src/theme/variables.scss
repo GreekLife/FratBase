@@ -33,6 +33,10 @@ $app-direction: ltr;
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
 
+// Changes the background color of all alerts to dark themed
+$alert-md-background-color: #39393B;
+$alert-ios-background: #39393B;
+
 $colors: (
   primary:    #488aff,
   secondary:  #32db64,

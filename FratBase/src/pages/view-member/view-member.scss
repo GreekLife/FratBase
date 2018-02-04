@@ -1,7 +1,21 @@
 page-view-member {
 
-}
-.tableImage {
-  width: 200px;
-  height: 200px;
+  .tableImage {
+    width: 200px;
+    height: 200px;
+  }
+  .toolbar-background {
+    background-color: black;
+  }
+
+  .ProfileCell {
+    color: white;
+    padding: 15px;
+  }
+
+  .ProfileCellA {
+    color: white;
+    padding: 15px;
+    font-style: italic;
+  }
 }

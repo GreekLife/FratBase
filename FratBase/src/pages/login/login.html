@@ -7,19 +7,18 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Login</ion-title>
+    <ion-title><div style="color: white">Login</div></ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding style="background-color: black">
-  <button ion-button block light style="height: 30px" (click)="showNodes()" id="SelectedNode">{{DatabaseNode}}</button>
-
+<ion-content padding style="background-color: #39393B">
+  <button ion-button large block light style="height: 30px; background: #5CB3E1; border-radius: 25px;" (click)="showNodes()" id="SelectedNode">{{DatabaseNode}}  > </button>
     <img class="Logo" src="../../assets/imgs/logoblack.png"/>
 
-  <ion-input class="Credentials"></ion-input>
-  <ion-input class="Credentials" type="password"></ion-input>
+  <ion-input class="Credentials" [(ngModel)]="username" placeholder="Username"></ion-input>
+  <ion-input class="Credentials" type="password" [(ngModel)]="password" placeholder="Password"></ion-input>
   <button class="Login" ion-button (click)="Login()">Login</button>
 
 </ion-content>

@@ -18,8 +18,12 @@ export class ViewMemberPage {
   selectedUser: object;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
 
-    this.selectedUser = navParams.get("selectedUser");
+    this.selectedUser = this.navParams.get("selectedUser");
 
+  }
+
+  cancel(){
+    this.navCtrl.pop();
   }
 
 }

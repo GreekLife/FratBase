@@ -3,6 +3,7 @@ import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angula
 import {HomePage} from "../home/home";
 import {UsersService} from "../../Services/Manage_Users.service";
 import {Tools} from "../../Services/Tools";
+import {User} from "../../objects/user";
 
 /**
  * Generated class for the LoginPage page.
@@ -21,7 +22,7 @@ export class LoginPage {
   DatabaseNode: string;
   OptionsOpen: boolean;
 
-  UserList: object[];
+  UserList: User[];
 
   username: string;
   password: string;

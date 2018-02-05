@@ -16,6 +16,7 @@ import {LoginPage} from "../pages/login/login";
 import {MembersPage} from "../pages/members/members";
 import {ViewMemberPage} from "../pages/view-member/view-member";
 import {Tools} from "../Services/Tools";
+import {PollsService} from "../Services/Polls.service";
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import {Tools} from "../Services/Tools";
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UsersService,
-    Tools
+    Tools,
+    PollsService
   ]
 })
 export class AppModule {}

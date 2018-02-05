@@ -1,34 +1,20 @@
 import {Injectable} from "@angular/core";
 import {AngularFireDatabase} from "angularfire2/database";
+import {UsersService} from "./Manage_Users.service";
 import {User} from "../objects/user";
+
 @Injectable()
-export class UsersService {
+export class PollsService {
 
-  private DatabaseNode: string;
+  DatabaseNode: string;
 
-  ListOfUsers: User[];
-
-  constructor(private db: AngularFireDatabase) {
-    this.DatabaseNode = "Development";
+  constructor(private db: AngularFireDatabase, public user: UsersService) {
+    this.DatabaseNode = this.user.getNode();
   }
 
-  setNode(node) {
-    if(node == null || node == "Generic") {
-      this.DatabaseNode = "Development";
-    }
-    else {
-      node = node.replace(/\s/g, '');
-      this.DatabaseNode = node;
-    }
-  }
-
-  getNode() {
-    return this.DatabaseNode;
-  }
-
-  GetUsersInternal() {
+  GetPollsInternal() {
     let users = [];
-    let idRef = this.db.database.ref(this.DatabaseNode + "/Users");
+    let idRef = this.db.database.ref(this.DatabaseNode + "/Polls");
     idRef.on('value', snapshot => {
       snapshot. forEach(user => {
         let userObj = new User(
@@ -55,4 +41,7 @@ export class UsersService {
     return users;
 
   }
+}
+
+
 }

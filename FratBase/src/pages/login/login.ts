@@ -7,6 +7,7 @@ import {User} from "../../models/user";
 import {PollsService} from "../../Services/Polls.service";
 import {Poll} from "../../models/Poll/poll";
 import {ForumService} from "../../Services/Forum.service";
+import {AngularFireAuth} from "angularfire2/auth";
 
 /**
  * Generated class for the LoginPage page.
@@ -26,7 +27,6 @@ export class LoginPage {
   OptionsOpen: boolean;
 
   UserList: User[];
-  polls: Poll[];
 
   username: string;
   password: string;
@@ -34,25 +34,55 @@ export class LoginPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public user: UsersService, public tools: Tools, public poll: PollsService,
-              public forum: ForumService) {
+              public forum: ForumService, public dbAuth: AngularFireAuth) {
       this.DatabaseNode = user.getNode();
+      this.UserList = this.user.GetUsersInternal();
   }
 
   Login() {
-    if(this.username != null || this.password != null) {
+    if(this.username != null && this.password != null) {
       this.username = this.username.trim();
       this.password = this.password.trim();
 
-      this.UserList = this.user.GetUsersInternal();
-      this.navCtrl.push(HomePage);
+      let exists = this.getUserByUsernameOrEmail(this.username);
+      if(exists != null) {
+      let pass = this.password;
+        this.dbAuth.auth.signInWithEmailAndPassword(exists, pass).then( response => {
+            this.poll.GetPollsInternal();
+            this.forum.GetForumInternal();
+            this.navCtrl.push(HomePage);
+          }
+
+        ).catch(error => {
+          let errorCode = error.code;
+          let errorMessage = error.message;
+
+          console.log(errorCode);
+          console.log(errorMessage);
+
+          this.tools.presentToast("Bottom", "Your password is incorrect");
+
+        });
+
+      }
+      else {
+        this.tools.presentToast("Bottom", "No such username exists");
+      }
     }
     else {
       this.tools.presentToast("Bottom", "No field can be left empty");
-      this.UserList = this.user.GetUsersInternal();
-      this.poll.GetPollsInternal();
-      this.forum.GetForumInternal();
-      this.navCtrl.push(HomePage);
     }
+  }
+
+  getUserByUsernameOrEmail(username: string) {
+    let exists = null;
+
+    this.UserList.forEach(user => {
+      if(user.Username == username || user.Email == username) {
+        exists = user.Email;
+      }
+    });
+    return exists;
   }
 
   showNodes() {

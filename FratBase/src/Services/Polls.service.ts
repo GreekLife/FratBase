@@ -23,7 +23,6 @@ export class PollsService {
         let optionIndex = poll.child("Options").val();
         optionIndex.forEach(op => {
           let option = new Option(op["Title"], op["Votes"]);
-          console.log(op.Title);
         });
 
         let polObj = new Poll(

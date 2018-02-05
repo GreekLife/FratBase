@@ -18,6 +18,7 @@ import {ViewMemberPage} from "../pages/view-member/view-member";
 import {Tools} from "../Services/Tools";
 import {PollsService} from "../Services/Polls.service";
 import {ForumService} from "../Services/Forum.service";
+import {AngularFireAuthModule} from "angularfire2/auth";
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import {ForumService} from "../Services/Forum.service";
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireDatabaseModule,
+    AngularFireAuthModule,
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
     IonicImageViewerModule
   ],

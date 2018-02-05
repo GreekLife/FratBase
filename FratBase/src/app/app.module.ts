@@ -19,6 +19,7 @@ import {Tools} from "../Services/Tools";
 import {PollsService} from "../Services/Polls.service";
 import {ForumService} from "../Services/Forum.service";
 import {AngularFireAuthModule} from "angularfire2/auth";
+import {IonicStorageModule} from "@ionic/storage";
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import {AngularFireAuthModule} from "angularfire2/auth";
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
-    IonicImageViewerModule
+    IonicImageViewerModule,
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

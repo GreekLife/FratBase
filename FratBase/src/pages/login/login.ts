@@ -5,9 +5,9 @@ import {UsersService} from "../../Services/Manage_Users.service";
 import {Tools} from "../../Services/Tools";
 import {User} from "../../models/user";
 import {PollsService} from "../../Services/Polls.service";
-import {Poll} from "../../models/Poll/poll";
 import {ForumService} from "../../Services/Forum.service";
 import {AngularFireAuth} from "angularfire2/auth";
+import {Storage} from "@ionic/storage";
 
 /**
  * Generated class for the LoginPage page.
@@ -34,9 +34,17 @@ export class LoginPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public user: UsersService, public tools: Tools, public poll: PollsService,
-              public forum: ForumService, public dbAuth: AngularFireAuth) {
+              public forum: ForumService, public dbAuth: AngularFireAuth, private storage: Storage) {
       this.DatabaseNode = user.getNode();
       this.UserList = this.user.GetUsersInternal();
+
+    storage.get('Username').then((user) => {
+       this.username = user;
+      storage.get('Password').then((pass) => {
+         this.password = pass;
+         this.authenticate(this.username, this.password);
+      });
+    });
   }
 
   Login() {
@@ -47,23 +55,7 @@ export class LoginPage {
       let exists = this.getUserByUsernameOrEmail(this.username);
       if(exists != null) {
       let pass = this.password;
-        this.dbAuth.auth.signInWithEmailAndPassword(exists, pass).then( response => {
-            this.poll.GetPollsInternal();
-            this.forum.GetForumInternal();
-            this.navCtrl.push(HomePage);
-          }
-
-        ).catch(error => {
-          let errorCode = error.code;
-          let errorMessage = error.message;
-
-          console.log(errorCode);
-          console.log(errorMessage);
-
-          this.tools.presentToast("Bottom", "Your password is incorrect");
-
-        });
-
+        this.authenticate(exists, pass);
       }
       else {
         this.tools.presentToast("Bottom", "No such username exists");
@@ -83,6 +75,28 @@ export class LoginPage {
       }
     });
     return exists;
+  }
+
+  authenticate(exists, pass) {
+    this.dbAuth.auth.signInWithEmailAndPassword(exists, pass).then( response => {
+        this.storage.set('Username', exists);
+        this.storage.set('Password', pass);
+        this.poll.GetPollsInternal();
+        this.forum.GetForumInternal();
+        this.navCtrl.push(HomePage);
+      }
+
+    ).catch(error => {
+      let errorCode = error.code;
+      let errorMessage = error.message;
+
+      console.log(errorCode);
+      console.log(errorMessage);
+
+      this.tools.presentToast("Bottom", "Your password is incorrect");
+
+    });
+
   }
 
   showNodes() {

@@ -42,12 +42,14 @@ export class LoginPage {
        this.username = user;
       storage.get('Password').then((pass) => {
          this.password = pass;
+         this.tools.presentLoading();
          this.authenticate(this.username, this.password);
       });
     });
   }
 
   Login() {
+    this.tools.presentLoading();
     if(this.username != null && this.password != null) {
       this.username = this.username.trim();
       this.password = this.password.trim();
@@ -58,10 +60,12 @@ export class LoginPage {
         this.authenticate(exists, pass);
       }
       else {
+        this.tools.dismissLoading();
         this.tools.presentToast("Bottom", "No such username exists");
       }
     }
     else {
+      this.tools.dismissLoading();
       this.tools.presentToast("Bottom", "No field can be left empty");
     }
   }
@@ -83,6 +87,7 @@ export class LoginPage {
         this.storage.set('Password', pass);
         this.poll.GetPollsInternal();
         this.forum.GetForumInternal();
+        this.tools.dismissLoading();
         this.navCtrl.push(HomePage);
       }
 
@@ -92,6 +97,7 @@ export class LoginPage {
 
       console.log(errorCode);
       console.log(errorMessage);
+      this.tools.dismissLoading();
 
       this.tools.presentToast("Bottom", "Your password is incorrect");
 

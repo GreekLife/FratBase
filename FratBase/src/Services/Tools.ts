@@ -1,20 +1,27 @@
 import {Injectable} from "@angular/core";
-import {LoadingController, ToastController} from "ionic-angular";
+import {Loading, LoadingController, ToastController} from "ionic-angular";
 
 
 @Injectable()
 export class Tools {
 
+  loader: Loading;
+
   constructor(public toastCtrl: ToastController,  public loadingCtrl: LoadingController) {
 
   }
 
+
   presentLoading() {
-    let loader = this.loadingCtrl.create({
+     this.loader = this.loadingCtrl.create({
       content: "Please wait...",
       duration: 3000
     });
-    loader.present();
+    this.loader.present();
+  }
+
+  dismissLoading() {
+    this.loader.dismiss();
   }
 
   presentToast(position: string, message) {

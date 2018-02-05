@@ -3,19 +3,20 @@ import {AngularFireDatabase} from "angularfire2/database";
 @Injectable()
 export class UsersService {
 
-  private DatabaseNode = "Development";
+  private DatabaseNode: string;
 
   ListOfUsers: object[];
 
   constructor(private db: AngularFireDatabase) {
-
+    this.DatabaseNode = "Development";
   }
 
   setNode(node) {
-    if(node == null) {
+    if(node == null || node == "Generic") {
       this.DatabaseNode = "Development";
     }
     else {
+      node = node.replace(/\s/g, '');
       this.DatabaseNode = node;
     }
   }

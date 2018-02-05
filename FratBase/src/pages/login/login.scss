@@ -20,7 +20,6 @@ page-login {
     padding-left: 20px;
     padding-right: 20px;
     margin-bottom: 10px;
-    border: none;
     background-color: slategray;
     display: block;
     margin-left: auto;
@@ -35,6 +34,18 @@ page-login {
     margin-left: auto;
     margin-right: auto;
     background-color: #5CB3E1;
+    text-transform: none;
+  }
+
+  .nodeSelector {
+    height: 30px;
+    width: 300px;
+    text-transform: none;
+    background: #5CB3E1;
+    border-radius: 25px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
   }
 
 }

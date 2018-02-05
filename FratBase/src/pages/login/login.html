@@ -14,7 +14,7 @@
 
 
 <ion-content padding style="background-color: #39393B">
-  <button ion-button large block light style="height: 30px; background: #5CB3E1; border-radius: 25px;" (click)="showNodes()" id="SelectedNode">{{DatabaseNode}}  > </button>
+  <button ion-button large block light class="nodeSelector" (click)="showNodes()" id="SelectedNode">{{DatabaseNode}}  &#9660; </button>
     <img class="Logo" src="../../assets/imgs/logoblack.png"/>
 
   <ion-input class="Credentials" [(ngModel)]="username" placeholder="Username"></ion-input>

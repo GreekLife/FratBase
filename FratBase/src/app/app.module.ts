@@ -10,11 +10,12 @@ import { HomePage } from '../pages/home/home';
 import {AngularFireModule } from 'angularfire2'
 import {AngularFireDatabaseModule} from "angularfire2/database";
 import {FIREBASE_CONFIG} from "./firebase.credentials";
-import {UsersService} from "../Services/Users/Manage_Users.service";
+import {UsersService} from "../Services/Manage_Users.service";
 import { IonicImageViewerModule } from 'ionic-img-viewer';
 import {LoginPage} from "../pages/login/login";
 import {MembersPage} from "../pages/members/members";
 import {ViewMemberPage} from "../pages/view-member/view-member";
+import {Tools} from "../Services/Tools";
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import {ViewMemberPage} from "../pages/view-member/view-member";
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UsersService,
+    Tools
   ]
 })
 export class AppModule {}

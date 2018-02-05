@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
-import {UsersService} from "../../Services/Users/Manage_Users.service";
+import {UsersService} from "../../Services/Manage_Users.service";
 import {ViewMemberPage} from "../view-member/view-member";
 
 

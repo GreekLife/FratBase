@@ -13,14 +13,16 @@
 
 <ion-content padding style="background: #39393B">
 
-  <ion-list id="MemberList">
-    <ion-item *ngFor="let item of userList" style="background-color: #39393B" (click)="ViewUser(item)">
-      <img class= "ImageDisplay" src="{{item.ImageURL}}" /> <br/>
-      <div class="ImageName"> {{item.First_Name}} &nbsp; {{item.Last_Name}}</div>
-      <div class ="ImageDetails">{{item.Degree}}</div>
-      <div class="ImageDetails" *ngIf="item.Position != 'Brother'">{{item.Position}}</div>
-    </ion-item>
-  </ion-list>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-auto *ngFor="let item of userList" class="column" (click)="ViewUser(item)">
+        <img class= "ImageDisplay" src="{{item.ImageURL}}" /> <br/>
+        <div class="ImageName"> {{item.First_Name}} &nbsp; {{item.Last_Name}}</div>
+        <div class ="ImageDetails">{{item.Degree}}</div>
+        <div class="ImageDetails" *ngIf="item.Position != 'Brother'">{{item.Position}}</div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 
 </ion-content>

@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Item, NavController} from 'ionic-angular';
-import {UsersService} from "../../Services/Users/Manage_Users.service";
+import {UsersService} from "../../Services/Manage_Users.service";
 import {Observable} from "rxjs/Observable";
 import {MembersPage} from "../members/members";
 import {LoginPage} from "../login/login";

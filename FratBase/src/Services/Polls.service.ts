@@ -1,47 +1,48 @@
 import {Injectable} from "@angular/core";
 import {AngularFireDatabase} from "angularfire2/database";
 import {UsersService} from "./Manage_Users.service";
-import {User} from "../objects/user";
+import {Poll} from "../models/Poll/poll";
 
 @Injectable()
 export class PollsService {
 
   DatabaseNode: string;
 
+  PollList: Poll[];
+
   constructor(private db: AngularFireDatabase, public user: UsersService) {
     this.DatabaseNode = this.user.getNode();
   }
 
   GetPollsInternal() {
-    let users = [];
+   let polls = [];
     let idRef = this.db.database.ref(this.DatabaseNode + "/Polls");
     idRef.on('value', snapshot => {
-      snapshot. forEach(user => {
-        let userObj = new User(
-          user.child("Username").val(),
-          user.child("First Name").val(),
-          user.child("Last Name").val(),
-          user.child("Birthday").val(),
-          user.child("BrotherName").val(),
-          user.child("Contribution").val(),
-          user.child("Degree").val(),
-          user.child("Email").val(),
-          user.child("GraduationDate").val(),
-          user.child("Image").val(),
-          user.child("NotificationId").val(),
-          user.child("Position").val(),
-          user.child("School").val(),
-          user.child("UserID").val()
+      snapshot. forEach(poll => {
+        let options = [];
+        let optionIndex = poll.child("Options").val();
+        optionIndex.forEach(op => {
+          let option = new Option(op["Title"], op["Votes"]);
+          console.log(op.Title);
+        });
+
+        let polObj = new Poll(
+            poll.child("Epoch").val(),
+            options,
+            poll.child("PostId").val(),
+            poll.child("Title").val(),
+            poll.child("UserId").val(),
+            poll.child("Voters").val()
         );
-        users.push(userObj);
+        polls.push(polObj);
+
         return false;
       });
     });
-    this.ListOfUsers = users;
-    return users;
+    this.PollList = polls;
+
+    return polls;
 
   }
-}
-
 
 }

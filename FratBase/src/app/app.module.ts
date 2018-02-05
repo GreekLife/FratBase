@@ -17,6 +17,7 @@ import {MembersPage} from "../pages/members/members";
 import {ViewMemberPage} from "../pages/view-member/view-member";
 import {Tools} from "../Services/Tools";
 import {PollsService} from "../Services/Polls.service";
+import {ForumService} from "../Services/Forum.service";
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import {PollsService} from "../Services/Polls.service";
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UsersService,
     Tools,
-    PollsService
+    PollsService,
+    ForumService
   ]
 })
 export class AppModule {}

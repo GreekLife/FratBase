@@ -3,7 +3,10 @@ import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angula
 import {HomePage} from "../home/home";
 import {UsersService} from "../../Services/Manage_Users.service";
 import {Tools} from "../../Services/Tools";
-import {User} from "../../objects/user";
+import {User} from "../../models/user";
+import {PollsService} from "../../Services/Polls.service";
+import {Poll} from "../../models/Poll/poll";
+import {ForumService} from "../../Services/Forum.service";
 
 /**
  * Generated class for the LoginPage page.
@@ -23,19 +26,16 @@ export class LoginPage {
   OptionsOpen: boolean;
 
   UserList: User[];
+  polls: Poll[];
 
   username: string;
   password: string;
 
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public user: UsersService, public tools: Tools) {
-    if(user.getNode() == "Development") {
-      this.DatabaseNode = "Generic";
-    }
-    else {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public user: UsersService, public tools: Tools, public poll: PollsService,
+              public forum: ForumService) {
       this.DatabaseNode = user.getNode();
-    }
   }
 
   Login() {
@@ -49,6 +49,8 @@ export class LoginPage {
     else {
       this.tools.presentToast("Bottom", "No field can be left empty");
       this.UserList = this.user.GetUsersInternal();
+      this.poll.GetPollsInternal();
+      this.forum.GetForumInternal();
       this.navCtrl.push(HomePage);
     }
   }

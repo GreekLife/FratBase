@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {AngularFireDatabase} from "angularfire2/database";
-import {User} from "../objects/user";
+import {User} from "../models/user";
 @Injectable()
 export class UsersService {
 
@@ -9,12 +9,12 @@ export class UsersService {
   ListOfUsers: User[];
 
   constructor(private db: AngularFireDatabase) {
-    this.DatabaseNode = "Development";
+    this.DatabaseNode = "Generic";
   }
 
   setNode(node) {
-    if(node == null || node == "Generic") {
-      this.DatabaseNode = "Development";
+    if(node == null) {
+      this.DatabaseNode = "Generic";
     }
     else {
       node = node.replace(/\s/g, '');
@@ -47,7 +47,7 @@ export class UsersService {
           user.child("School").val(),
           user.child("UserID").val()
         );
-        users.push(userObj);
+        this.ListOfUsers.push(userObj);
         return false;
       });
     });

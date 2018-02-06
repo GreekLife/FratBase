@@ -27,9 +27,9 @@ export class LoginPage {
   OptionsOpen: boolean;
 
   UserList: User[];
-
   username: string;
   password: string;
+  loggedIn: User;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public user: UsersService, public tools: Tools, public poll: PollsService,
@@ -41,8 +41,16 @@ export class LoginPage {
        this.username = user;
       storage.get('Password').then((pass) => {
          this.password = pass;
-         this.tools.presentLoading();
-         this.authenticate(this.username, this.password);
+         storage.get('User').then( user => {
+           this.loggedIn = user;
+           this.tools.presentLoading();
+           if(this.password != null && this.username != null) {
+             this.authenticate(this.username, this.password);
+           }
+           else {
+             this.tools.dismissLoading();
+           }
+         });
       });
     });
   }
@@ -75,21 +83,42 @@ export class LoginPage {
     this.UserList.forEach(user => {
       if(user.Username == username || user.Email == username) {
         exists = user.Email;
+        this.loggedIn = user;
       }
     });
     return exists;
+  }
+
+  getUserObjectByUsername(username: string) {
+    let userObj = null;
+
+    this.UserList.forEach(user => {
+      if(user.Email == username) {
+        userObj = user;
+      }
+    });
+    return userObj;
   }
 
   authenticate(exists, pass) {
     this.dbAuth.auth.signInWithEmailAndPassword(exists, pass).then( response => {
         this.storage.set('Username', exists);
         this.storage.set('Password', pass);
+        this.storage.set('User', this.getUserObjectByUsername(exists));
         this.poll.GetPollsInternal();
         this.forum.GetForumInternal();
-        this.tools.dismissLoading();
-        this.navCtrl.push(HomePage);
-      }
+        if(this.loggedIn != null && this.loggedIn.Email == exists) {
+          this.user.CurrentUser = this.loggedIn;
+          this.tools.dismissLoading();
+          this.navCtrl.push(HomePage);
+        }
+        else {
+          console.log(this.loggedIn);
+          this.tools.dismissLoading();
+          this.tools.presentToast("Bottom", "An unexpected error occured.");
 
+        }
+      }
     ).catch(error => {
       let errorCode = error.code;
       let errorMessage = error.message;
@@ -97,7 +126,6 @@ export class LoginPage {
       console.log(errorCode);
       console.log(errorMessage);
       this.tools.dismissLoading();
-
       this.tools.presentToast("Bottom", "Your password is incorrect");
 
     });

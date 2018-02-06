@@ -20,6 +20,7 @@ import {PollsService} from "../Services/Polls.service";
 import {ForumService} from "../Services/Forum.service";
 import {AngularFireAuthModule} from "angularfire2/auth";
 import {IonicStorageModule} from "@ionic/storage";
+import {Keyboard} from "@ionic-native/keyboard";
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import {IonicStorageModule} from "@ionic/storage";
     UsersService,
     Tools,
     PollsService,
-    ForumService
+    ForumService,
+    Keyboard
   ]
 })
 export class AppModule {}

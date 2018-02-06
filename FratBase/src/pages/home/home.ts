@@ -1,9 +1,8 @@
 import {Component} from '@angular/core';
-import {Item, NavController} from 'ionic-angular';
+import {NavController} from 'ionic-angular';
 import {UsersService} from "../../Services/Manage_Users.service";
-import {Observable} from "rxjs/Observable";
 import {MembersPage} from "../members/members";
-import {LoginPage} from "../login/login";
+import {Storage} from "@ionic/storage";
 
 @Component({
   selector: 'page-home',
@@ -11,7 +10,7 @@ import {LoginPage} from "../login/login";
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController, private users:UsersService) {
+  constructor(public navCtrl: NavController, private users:UsersService, public storage: Storage) {
   }
 
   ViewMembers() {
@@ -19,6 +18,10 @@ export class HomePage {
   }
 
   signOut() {
+
+    this.storage.remove('Password');
+    this.storage.remove('User');
+
     this.navCtrl.pop();
   }
 

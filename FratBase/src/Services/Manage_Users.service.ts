@@ -1,14 +1,16 @@
 import {Injectable} from "@angular/core";
 import {AngularFireDatabase} from "angularfire2/database";
 import {User} from "../models/user";
+import {LoadingController} from "ionic-angular";
 @Injectable()
 export class UsersService {
 
   private DatabaseNode: string;
 
   ListOfUsers: User[];
+  CurrentUser: User;
 
-  constructor(private db: AngularFireDatabase) {
+  constructor(private db: AngularFireDatabase, public loader: LoadingController) {
     this.DatabaseNode = "Generic";
   }
 

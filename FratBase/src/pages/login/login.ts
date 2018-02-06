@@ -32,7 +32,6 @@ export class LoginPage {
   password: string;
 
 
-
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public user: UsersService, public tools: Tools, public poll: PollsService,
               public forum: ForumService, public dbAuth: AngularFireAuth, private storage: Storage) {
       this.DatabaseNode = user.getNode();

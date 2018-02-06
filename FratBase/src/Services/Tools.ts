@@ -21,7 +21,9 @@ export class Tools {
   }
 
   dismissLoading() {
-    this.loader.dismiss();
+    this.loader.dismiss().catch(error=> {
+      console.log("All good: loader error");
+    });
   }
 
   presentToast(position: string, message) {
@@ -30,7 +32,9 @@ export class Tools {
       duration: 3000,
       position: position
     });
-    toast.present();
+    toast.present().catch(error=> {
+      console.log("All good: loader error");
+    });
   }
 
 }

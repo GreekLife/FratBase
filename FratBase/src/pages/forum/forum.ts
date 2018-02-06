@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {ForumService} from "../../Services/Forum.service";
+import {Forum} from "../../models/Forum/forum";
+import {User} from "../../models/user";
+import {UsersService} from "../../Services/Manage_Users.service";
 
 /**
  * Generated class for the ForumPage page.
@@ -15,7 +19,23 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ForumPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  PostList: Forum[];
+  CurrentPoster: User;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public forum: ForumService, public user: UsersService) {
+
+    this.PostList = forum.ForumList;
+    this.CurrentPoster = null;
+
+  }
+
+  getUserObject(userId: string) {
+    this.user.ListOfUsers.forEach(user => {
+      if(user.UserId == userId) {
+        this.CurrentPoster = user;
+      }
+    });
+    return this.CurrentPoster;
   }
 
   ionViewDidLoad() {

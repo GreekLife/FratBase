@@ -1,17 +1,21 @@
 import {Injectable} from "@angular/core";
 import {AngularFireDatabase} from "angularfire2/database";
 import {User} from "../models/user";
-import {LoadingController} from "ionic-angular";
+import {Tools} from "./Tools";
+import {Storage} from "@ionic/storage";
+
 @Injectable()
 export class UsersService {
 
   private DatabaseNode: string;
 
   ListOfUsers: User[];
-  CurrentUser: User;
+  CurrentLoggedIn: User;
 
-  constructor(private db: AngularFireDatabase, public loader: LoadingController) {
+
+  constructor(private db: AngularFireDatabase, public tools: Tools, public storage: Storage) {
     this.DatabaseNode = "Generic";
+    this.GetUsersInternal();
   }
 
   setNode(node) {
@@ -29,6 +33,7 @@ export class UsersService {
   }
 
   GetUsersInternal() {
+
     let users = [];
     let idRef = this.db.database.ref(this.DatabaseNode + "/Users");
     idRef.on('value', snapshot => {
@@ -54,6 +59,7 @@ export class UsersService {
       });
     });
     this.ListOfUsers = users;
+
     return users;
 
   }
@@ -65,6 +71,7 @@ export class UsersService {
       }
     });
   }
+
 
 
 }

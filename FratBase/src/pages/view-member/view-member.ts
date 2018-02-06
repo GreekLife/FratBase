@@ -33,7 +33,7 @@ export class ViewMemberPage {
     this.OptionsOpen = false;
     this.selectedUser = this.navParams.get("selectedUser");
     this.Position = this.selectedUser.Position;
-    this.CurrentUser = this.user.CurrentUser;
+    this.CurrentUser = this.user.CurrentLoggedIn;
 
   }
 

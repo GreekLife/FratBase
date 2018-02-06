@@ -3,6 +3,7 @@ import {NavController} from 'ionic-angular';
 import {UsersService} from "../../Services/Manage_Users.service";
 import {MembersPage} from "../members/members";
 import {Storage} from "@ionic/storage";
+import {ForumPage} from "../forum/forum";
 
 @Component({
   selector: 'page-home',
@@ -17,10 +18,13 @@ export class HomePage {
     this.navCtrl.push(MembersPage);
   }
 
-  signOut() {
+  ViewForum() {
+    this.navCtrl.push(ForumPage);
+  }
 
+  signOut() {
+    this.storage.remove('Username');
     this.storage.remove('Password');
-    this.storage.remove('User');
 
     this.navCtrl.pop();
   }

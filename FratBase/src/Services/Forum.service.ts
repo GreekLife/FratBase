@@ -41,6 +41,8 @@ export class ForumService {
 
         return false;
       });
+      this.ForumList = posts;
+
     });
     this.ForumList = posts;
 

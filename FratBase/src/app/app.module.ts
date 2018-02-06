@@ -21,6 +21,7 @@ import {ForumService} from "../Services/Forum.service";
 import {AngularFireAuthModule} from "angularfire2/auth";
 import {IonicStorageModule} from "@ionic/storage";
 import {Keyboard} from "@ionic-native/keyboard";
+import {ForumPage} from "../pages/forum/forum";
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import {Keyboard} from "@ionic-native/keyboard";
     HomePage,
     LoginPage,
     MembersPage,
-    ViewMemberPage
+    ViewMemberPage,
+    ForumPage
   ],
   imports: [
     BrowserModule,
@@ -45,7 +47,8 @@ import {Keyboard} from "@ionic-native/keyboard";
     HomePage,
     LoginPage,
     MembersPage,
-    ViewMemberPage
+    ViewMemberPage,
+    ForumPage
   ],
   providers: [
     StatusBar,

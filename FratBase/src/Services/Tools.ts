@@ -6,6 +6,7 @@ import {Loading, LoadingController, ToastController} from "ionic-angular";
 export class Tools {
 
   loader: Loading;
+  EboardArray = ["Master", "LT Master", "Scribe", "Exchequer", "Pledge Master", "Rush Master", "Brother at Large"];
 
   constructor(public toastCtrl: ToastController,  public loadingCtrl: LoadingController) {
 
@@ -35,6 +36,10 @@ export class Tools {
     toast.present().catch(error=> {
       console.log("All good: loader error");
     });
+  }
+
+  isEboard(position: string) {
+    return (this.EboardArray.indexOf(position) > -1);
   }
 
 }

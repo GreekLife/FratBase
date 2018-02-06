@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {UsersService} from "../../Services/Manage_Users.service";
 import {ViewMemberPage} from "../view-member/view-member";
+import {Tools} from "../../Services/Tools";
+import {User} from "../../models/user";
 
 
 /**
@@ -18,17 +20,34 @@ import {ViewMemberPage} from "../view-member/view-member";
 })
 export class MembersPage {
 
-    userList: object[];
+    userList: User[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private users: UsersService, public modalCtrl: ModalController) {
+    isEboard = false;
+
+    EmailList = [];
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private users: UsersService, public modalCtrl: ModalController, public tools: Tools) {
 
     this.userList = this.users.ListOfUsers;
 
+    this.isEboard = tools.isEboard(users.CurrentLoggedIn.Position);
+
   }
 
-  // ViewUser(item) {
-  //   this.navCtrl.push(ViewMemberPage, {selectedUser: item})
-  // }
+  EmailAll() {
+
+    this.userList.forEach(user => {
+      this.EmailList.push(user.Email);
+    });
+
+    let email = this.EmailList.toString();
+    let subject = "Message from your eboard";
+    let body = "Hey Boys, \n\n\n\n Most fraternily, \n The Eboard";
+    location.href = 'mailto:' + email
+      + '?subject=' + encodeURIComponent(subject)
+      + '&body=' + encodeURIComponent(body);
+
+  }
 
   ViewUser(item) {
     let modal = this.modalCtrl.create(ViewMemberPage, {selectedUser: item});

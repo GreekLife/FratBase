@@ -18,6 +18,7 @@ export class PollsService {
    let polls = [];
     let idRef = this.db.database.ref(this.DatabaseNode + "/Polls");
     idRef.on('value', snapshot => {
+      this.PollList = [];
       snapshot. forEach(poll => {
         let options = [];
         let optionIndex = poll.child("Options").val();

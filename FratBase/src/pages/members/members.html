@@ -7,7 +7,11 @@
 <ion-header>
   <ion-navbar>
     <ion-title><div style="color: white">Members</div></ion-title>
-    <button></button>
+    <ion-buttons end>
+      <button ion-button end (click)="EmailAll()" [ngClass]="isEboard ? 'Eboard' : 'Hidden'">
+        Email all
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 

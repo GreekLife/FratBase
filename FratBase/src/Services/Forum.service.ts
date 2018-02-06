@@ -19,6 +19,7 @@ export class ForumService {
     let posts = [];
     let idRef = this.db.database.ref(this.DatabaseNode + "/Forum");
     idRef.on('value', snapshot => {
+      this.ForumList = [];
       snapshot. forEach(poll => {
         let comments = poll.child("Comments");
         let allComments = [];

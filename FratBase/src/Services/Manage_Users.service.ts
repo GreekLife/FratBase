@@ -38,6 +38,7 @@ export class UsersService {
     let idRef = this.db.database.ref(this.DatabaseNode + "/Users");
     idRef.on('value', snapshot => {
       snapshot. forEach(user => {
+        this.ListOfUsers = [];
         let userObj = new User(
           user.child("Username").val(),
           user.child("First Name").val(),

@@ -13,6 +13,11 @@
       </button>
     </ion-buttons>
     <ion-title></ion-title>
+    <ion-buttons end>
+      <button *ngIf="CurrentUser.Position == 'Master'" ion-button="save" end (click)="save()" [ngClass]="hasChanged ? 'Save' : 'Hidden'">
+        Save
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -28,9 +33,16 @@
       <tr>
         <th class="ProfileCell">Brother Name</th><th class="ProfileCellA">{{selectedUser.BrotherName}}</th>
       </tr>
-      <tr>
+
+      <tr *ngIf="CurrentUser.Position == 'Master'">
+        <th class="ProfileCell">Position</th><th class="ProfileCellA">
+        <button ion-button large block light class="PositionSelector" (click)="selectPosition()" id="PositionSelector">{{Position}}  &#9660; </button>
+      </th>
+      </tr>
+      <tr *ngIf="CurrentUser.Position != 'Master'">
         <th class="ProfileCell">Position</th><th class="ProfileCellA">{{selectedUser.Position}}</th>
       </tr>
+
       <tr>
         <th class="ProfileCell">Email</th><th class="ProfileCellA"><a class="mailto" href="mailto:{{selectedUser.Email}}">{{selectedUser.Email}}</a></th>
       </tr>

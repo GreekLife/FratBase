@@ -20,4 +20,22 @@ page-view-member {
     padding: 10px;
     font-style: italic;
   }
+
+  .PositionSelector {
+    font-size: 14px;
+    height: 30px;
+    text-transform: none;
+    border-radius: 25px;
+    display: block;
+    background-color: black;
+  }
+
+  .Save {
+    color: #FFDF00;
+    display: block;
+  }
+
+  .Hidden {
+    display: none;
+  }
 }

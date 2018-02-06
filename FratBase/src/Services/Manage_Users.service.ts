@@ -57,4 +57,14 @@ export class UsersService {
     return users;
 
   }
+
+  changeUserPositionById(userId: string, newPosition: string) {
+    this.ListOfUsers.forEach(user => {
+      if(user.UserId == userId) {
+        user.Position = newPosition;
+      }
+    });
+  }
+
+
 }

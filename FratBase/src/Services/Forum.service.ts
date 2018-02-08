@@ -11,15 +11,20 @@ export class ForumService {
 
   ForumList: Forum[];
 
+  isFetching = false;
+
+
   constructor(private db: AngularFireDatabase, public user: UsersService) {
     this.DatabaseNode = this.user.getNode();
   }
 
   GetForumInternal() {
     let posts = [];
+    this.isFetching = true;
     let idRef = this.db.database.ref(this.DatabaseNode + "/Forum");
     idRef.on('value', snapshot => {
       this.ForumList = [];
+      posts = [];
       snapshot. forEach(poll => {
         let comments = poll.child("Comments");
         let allComments = [];
@@ -45,8 +50,8 @@ export class ForumService {
       this.ForumList = posts;
 
     });
+    this.isFetching = false;
     this.ForumList = posts;
-
     return posts;
 
   }

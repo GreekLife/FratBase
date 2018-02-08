@@ -9,7 +9,11 @@
   <ion-navbar>
     <ion-title><div style="color: white">Forum</div></ion-title>
     <ion-buttons end>
-      <button ion-button end (click)="refresh()"> <ion-icon name="refresh" style="color: #5295ff; margin-right: 10=5px; font-size: 40px"></ion-icon> </button>
+
+      <button ion-button end (click)="refresh()" id="refresh" *ngIf="forum.isFetching == false"> <ion-icon name="refresh" style="color: #5295ff; margin-right: 10px; font-size: 40px"></ion-icon> </button>
+      <ion-spinner name="bubbles" id="spinner" *ngIf="forum.isFetching"></ion-spinner>
+
+      <button ion-button end (click)="openPopover($event)"> <ion-icon name="more"></ion-icon> </button>
     </ion-buttons>
   </ion-navbar>
 
@@ -17,14 +21,6 @@
 
 
 <ion-content padding style="background-color: #0F0F11;">
-  <ion-grid class="gridStyle">
-    <ion-row>
-      <ion-col><button ion-button class="filterButton">Newest</button></ion-col>
-      <ion-col><button ion-button class="filterButton">Oldest</button></ion-col>
-      <ion-col><button ion-button class="filterButton">Week</button></ion-col>
-      <ion-col><button ion-button class="filterButton">Month</button></ion-col>
-    </ion-row>
-  </ion-grid>
   <ion-card *ngFor="let post of PostList" class="card">
     <ion-item style="background-color: #39393B">
       <ion-avatar item-start>
@@ -41,20 +37,20 @@
 
     <ion-row>
       <ion-col>
-        <button ion-button icon-left clear small class="smallButtonColor">
-          <ion-icon name="thumbs-up"></ion-icon>
-          <div>{{post.GotIt.length}} Got It</div>
+        <button ion-button icon-left clear small class="smallButtonColor" (click)="gotIt(post)">
+          <ion-icon name="thumbs-up" [ngClass]="youGotIt ? 'Gold' : 'Blue'"></ion-icon>
+          <div>{{getGotItCount(post)}} Got It</div>
         </button>
       </ion-col>
       <ion-col>
         <button ion-button icon-left clear small class="smallButtonColor">
           <ion-icon name="text"></ion-icon>
-          <div>{{post.Comments.length}} Comments</div>
+          <div>{{getCommentCount(post)}} Comments</div>
         </button>
       </ion-col>
       <ion-col center text-center>
         <ion-note>
-          11h ago
+          {{getTimeSince(post.Epoch)}} ago
         </ion-note>
       </ion-col>
     </ion-row>

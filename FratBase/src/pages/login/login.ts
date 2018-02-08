@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, Loading, NavController, NavParams} from 'ionic-angular';
 import {HomePage} from "../home/home";
 import {UsersService} from "../../Services/Manage_Users.service";
 import {Tools} from "../../Services/Tools";
@@ -31,13 +31,14 @@ export class LoginPage {
   username: string;
   password: string;
 
+  loader: Loading;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public user: UsersService, public tools: Tools, public poll: PollsService,
               public forum: ForumService, public dbAuth: AngularFireAuth, private storage: Storage, public db: AngularFireDatabase) {
       this.DatabaseNode = user.getNode();
       this.UserList = this.user.ListOfUsers;
 
-    this.tools.presentLoading();
+    this.loader = this.tools.presentLoading(this.loader);
 
     let idRef = this.db.database.ref(this.DatabaseNode + "/Users");
     idRef.once('value', snapshot => {
@@ -62,28 +63,33 @@ export class LoginPage {
         this.UserList.push(userObj);
         return false;
       });
-      this.user.ListOfUsers = this.UserList
-      this.tools.dismissLoading();
+      this.user.ListOfUsers = this.UserList;
+      this.loader.dismiss().catch(error=> {
+        console.log("Error dismissing loader: " + error);
+      });
 
       storage.get('Username').then((user) => {
         this.username = user;
         storage.get('Password').then((pass) => {
           this.password = pass;
-          this.tools.presentLoading();
+
           if(this.password != null && this.username != null) {
             this.Login();
           }
-          else {
-            this.tools.dismissLoading();
-          }
+
         });
       });
+    }).catch(error=> {
+      this.loader.dismiss().catch(error=> {
+        console.log("Error dismissing loader: " + error);
+      });
+      console.log("could not fetch users");
     });
 
   }
 
   Login() {
-    this.tools.presentLoading();
+    this.loader = this.tools.presentLoading(this.loader);
     if(this.username != null && this.password != null) {
       this.password = this.password.trim();
 
@@ -93,12 +99,16 @@ export class LoginPage {
         this.authenticate(exists, pass);
       }
       else {
-        this.tools.dismissLoading();
+        this.loader.dismiss().catch(error=> {
+          console.log("Error dismissing loader: " + error);
+        });
         this.tools.presentToast("Bottom", "No such username exists");
       }
     }
     else {
-      this.tools.dismissLoading();
+      this.loader.dismiss().catch(error=> {
+        console.log("Error dismissing loader: " + error);
+      });
       this.tools.presentToast("Bottom", "No field can be left empty");
     }
   }
@@ -122,8 +132,10 @@ export class LoginPage {
 
         this.poll.GetPollsInternal();
         this.forum.GetForumInternal();
-          this.tools.dismissLoading();
-          this.navCtrl.push(HomePage);
+        this.loader.dismiss().catch(error=> {
+          console.log("Error dismissing loader: " + error);
+        });
+        this.navCtrl.push(HomePage);
 
       }
     ).catch(error => {
@@ -132,7 +144,9 @@ export class LoginPage {
 
       console.log(errorCode);
       console.log(errorMessage);
-      this.tools.dismissLoading();
+      this.loader.dismiss().catch(error=> {
+        console.log("Error dismissing loader: " + error);
+      });
       this.tools.presentToast("Bottom", "Your password is incorrect");
 
     });

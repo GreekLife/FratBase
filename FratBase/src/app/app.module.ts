@@ -22,6 +22,7 @@ import {AngularFireAuthModule} from "angularfire2/auth";
 import {IonicStorageModule} from "@ionic/storage";
 import {Keyboard} from "@ionic-native/keyboard";
 import {ForumPage} from "../pages/forum/forum";
+import {FilterPopoverPage} from "../pages/filter-popover/filter-popover";
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import {ForumPage} from "../pages/forum/forum";
     LoginPage,
     MembersPage,
     ViewMemberPage,
-    ForumPage
+    ForumPage,
+    FilterPopoverPage
   ],
   imports: [
     BrowserModule,
@@ -48,7 +50,8 @@ import {ForumPage} from "../pages/forum/forum";
     LoginPage,
     MembersPage,
     ViewMemberPage,
-    ForumPage
+    ForumPage,
+    FilterPopoverPage
   ],
   providers: [
     StatusBar,

@@ -39,6 +39,7 @@ export class UsersService {
     idRef.on('value', snapshot => {
       snapshot. forEach(user => {
         this.ListOfUsers = [];
+        users = [];
         let userObj = new User(
           user.child("Username").val(),
           user.child("First Name").val(),

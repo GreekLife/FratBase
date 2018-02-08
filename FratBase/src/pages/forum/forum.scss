@@ -24,4 +24,11 @@ page-forum {
     background: black;
   }
 
+  ion-spinner * {
+    width: 28px;
+    height: 28px;
+    stroke: #5CB3E1;
+    fill: #5CB3E1;
+  }
+
 }

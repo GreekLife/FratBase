@@ -1,0 +1,22 @@
+page-filter-popover {
+
+  .Button {
+    border: none;
+    text-decoration: none;
+    font-size: 16px;
+    background: none;
+    color: white;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+  }
+
+  .isSelected {
+    background: #488aff;
+  }
+
+  .isNotSelected {
+    background: none;
+  }
+
+}

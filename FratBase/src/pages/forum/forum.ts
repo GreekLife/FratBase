@@ -26,6 +26,7 @@ export class ForumPage {
   CurrentPoster: User;
   filter:string = "Newest";
   deleteState = false;
+  deleteClicked: string[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public forum: ForumService, public user: UsersService, public popoverCtrl: PopoverController, private db: AngularFireDatabase, public tools: Tools) {
     this.PostList = forum.ForumList;
@@ -37,6 +38,9 @@ export class ForumPage {
       this.CurrentPoster = null;
   }
 
+  // -------------------------///
+  //        Tools             ///
+  //-------------------------///
   getUserObject(userId: string) {
     this.user.ListOfUsers.forEach(user => {
       if(user.UserId == userId) {
@@ -62,6 +66,57 @@ export class ForumPage {
     else {
       return 0;
     }
+  }
+
+  removeAllClicked(){
+    if(this.deleteClicked != null) {
+      this.deleteClicked = [];
+    }
+  }
+
+  deleteClickedContains(post: Forum){
+    return (this.deleteClicked.indexOf(post.PostId) > -1);
+  }
+
+  canDelete() {
+    return (this.deleteState && (this.tools.isEboard(this.user.CurrentLoggedIn.Position) || (this.CurrentPoster.UserId != this.user.CurrentLoggedIn.UserId)));
+  }
+
+  getTimeSince(epoch: string) {
+    return this.tools.getTimeSince(epoch);
+  }
+
+  getDaysSince(epoch: string) {
+   return this.tools.getDaysSince(epoch);
+
+  }
+
+  // -------------------------///
+  //      Server Calls       ///
+  //-------------------------///
+
+  deletePost(post: Forum) {
+    this.deleteClicked.push(post.PostId);
+    let confirm = this.alertCtrl.create({
+      title: 'Delete',
+      message: 'Are you sure you would like to delete this post? This cannot be undone.',
+      cssClass:'buttonCss',
+      buttons: [
+        {
+          text: 'Delete',
+          handler: () => {
+
+          }
+        },
+        {
+          text: 'Cancel',
+          handler: () => {
+              this.removeAllClicked();
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
   gotIt(post: Forum) {
@@ -96,7 +151,14 @@ export class ForumPage {
         newGotItArray
       ).then(response => {
 
-        document.getElementById("GotItIcon").style.color = "#FFDF00";
+        //////still need to set color
+        //vote is still not instant!!
+        //master should be able to transfer his position in master controls
+        //remove view errors
+        //delete the actual post
+
+
+       // document.getElementById("GotItIcon").style.color = "#FFDF00";
 
       });
     }
@@ -125,43 +187,9 @@ export class ForumPage {
 
   }
 
-  getTimeSince(epoch: string) {
-    let date = new Date();
-    let currentEpoch = date.getTime()/ 1000;
-    let timeSince = currentEpoch - Number(epoch);
-
-    let minutes = Math.floor(timeSince / 60);
-    let hours = Math.floor(minutes / 60);
-    let days = Math.floor(hours / 24);
-    let time = days + "d";
-    if(days < 1) {
-      time = hours + "h";
-      if(hours < 1) {
-        time = minutes + "m";
-      if(minutes < 1) {
-        time = timeSince + "s";
-      }
-      }
-    }
-    return time;
-  }
-
   refresh() {
     this.forum.isFetching = true;
-    this.forum.GetForumInternal();
-  }
-
-  getDaysSince(epoch: string) {
-    let date = new Date();
-    let currentEpoch = date.getTime()/ 1000;
-    let timeSince = currentEpoch - Number(epoch);
-
-    let minutes = Math.floor(timeSince / 60);
-    let hours = Math.floor(minutes / 60);
-    let days = Math.floor(hours / 24);
-
-    return days;
-
+    this.PostList = this.forum.GetForumInternal();
   }
 
   openPopover(myEvent) {

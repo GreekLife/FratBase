@@ -27,7 +27,7 @@ export class LoginPage {
   DatabaseNode: string;
   OptionsOpen: boolean;
 
-  UserList: User[];
+  UserList: User[] = [];
   username: string;
   password: string;
 
@@ -42,7 +42,7 @@ export class LoginPage {
 
     let idRef = this.db.database.ref(this.DatabaseNode + "/Users");
     idRef.once('value', snapshot => {
-
+      let users = [];
       snapshot. forEach(user => {
         let userObj = new User(
           user.child("Username").val(),
@@ -60,10 +60,11 @@ export class LoginPage {
           user.child("School").val(),
           user.child("UserID").val()
         );
-        this.UserList.push(userObj);
+        users.push(userObj);
         return false;
       });
-      this.user.ListOfUsers = this.UserList;
+      this.user.ListOfUsers = users;
+      this.UserList = users;
       this.loader.dismiss().catch(error=> {
         console.log("Error dismissing loader: " + error);
       });

@@ -34,12 +34,12 @@
         <th class="ProfileCell">Brother Name</th><th class="ProfileCellA">{{selectedUser.BrotherName}}</th>
       </tr>
 
-      <tr *ngIf="CurrentUser.Position == 'Master'">
+      <tr *ngIf="CurrentUser.Position == 'Master' && Position != 'Master'">
         <th class="ProfileCell">Position</th><th class="ProfileCellA">
         <button ion-button large block light class="PositionSelector" (click)="selectPosition()" id="PositionSelector">{{Position}}  &#9660; </button>
       </th>
       </tr>
-      <tr *ngIf="CurrentUser.Position != 'Master'">
+      <tr *ngIf="CurrentUser.Position != 'Master' || Position == 'Master'">
         <th class="ProfileCell">Position</th><th class="ProfileCellA">{{selectedUser.Position}}</th>
       </tr>
 

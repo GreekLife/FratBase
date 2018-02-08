@@ -9,6 +9,7 @@ export class UsersService {
 
   private DatabaseNode: string;
 
+  ObservedListOfUsers: User[];
   ListOfUsers: User[];
   CurrentLoggedIn: User;
 
@@ -34,12 +35,12 @@ export class UsersService {
 
   GetUsersInternal() {
 
-    let users = [];
     let idRef = this.db.database.ref(this.DatabaseNode + "/Users");
     idRef.on('value', snapshot => {
       snapshot. forEach(user => {
-        this.ListOfUsers = [];
-        users = [];
+
+        this.ObservedListOfUsers = [];
+
         let userObj = new User(
           user.child("Username").val(),
           user.child("First Name").val(),
@@ -56,13 +57,12 @@ export class UsersService {
           user.child("School").val(),
           user.child("UserID").val()
         );
-        this.ListOfUsers.push(userObj);
+        this.ObservedListOfUsers.push(userObj);
         return false;
       });
     });
-    this.ListOfUsers = users;
 
-    return users;
+    return this.ObservedListOfUsers;
 
   }
 

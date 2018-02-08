@@ -34,6 +34,40 @@ export class Tools {
     });
   }
 
+  getTimeSince(epoch: string) {
+    let date = new Date();
+    let currentEpoch = date.getTime()/ 1000;
+    let timeSince = currentEpoch - Number(epoch);
+
+    let minutes = Math.floor(timeSince / 60);
+    let hours = Math.floor(minutes / 60);
+    let days = Math.floor(hours / 24);
+    let time = days + "d";
+    if(days < 1) {
+      time = hours + "h";
+      if(hours < 1) {
+        time = minutes + "m";
+        if(minutes < 1) {
+          time = timeSince + "s";
+        }
+      }
+    }
+    return time;
+  }
+
+  getDaysSince(epoch: string) {
+    let date = new Date();
+    let currentEpoch = date.getTime()/ 1000;
+    let timeSince = currentEpoch - Number(epoch);
+
+    let minutes = Math.floor(timeSince / 60);
+    let hours = Math.floor(minutes / 60);
+    let days = Math.floor(hours / 24);
+
+    return days;
+
+  }
+
   isEboard(position: string) {
     return (this.EboardArray.indexOf(position) > -1);
   }

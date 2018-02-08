@@ -21,12 +21,19 @@
 
 
 <ion-content padding style="background-color: #0F0F11;">
+  <div class="endDelete" ><button class="endDeleteBtn" ion-button (click)="deleteState = false; removeAllClicked();" *ngIf="deleteState">End Editing</button></div>
   <ion-card *ngFor="let post of PostList" class="card">
-    <ion-item style="background-color: #39393B">
+    <ion-item style="background-color: #39393B" >
       <ion-avatar item-start>
-        <img src="{{getUserObject(post.UserId).ImageURL}}">
+        <div style="color: #39393B; font-size: 0; width: 0; height: 0;">{{getUserObject(post.UserId)}}</div>
+        <img *ngIf="!canDelete()" src="{{getUserObject(post.UserId).ImageURL}}"/>
+        <button style="background: none" (click)="deletePost(post)">
+        <ion-icon *ngIf="canDelete()" [ngClass]="deleteClickedContains(post) ? 'rotateDelete' : ''" name="remove-circle" style="color:red; font-weight: bold; font-size:40px;"></ion-icon>
+
+        </button>
       </ion-avatar>
       <h2 style="color: white;">{{CurrentPoster.First_Name}} {{CurrentPoster.Last_Name}}</h2>
+
     </ion-item>
 
     <ion-card-content>

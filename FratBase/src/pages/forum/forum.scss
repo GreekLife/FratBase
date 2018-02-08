@@ -31,4 +31,34 @@ page-forum {
     fill: #5CB3E1;
   }
 
+  .endDelete {
+    display: block;
+    text-align: center;
+  }
+
+  .endDeleteBtn {
+    background: none;
+    color: red;
+
+  }
+
+  .rotateDelete {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+  }
+
+  .buttonCss {
+
+    button.alert-button:nth-child(1){
+      color: white;
+      background: red;
+    }
+
+    button.alert-button:nth-child(2){
+    }
+  }
+
 }

@@ -45,7 +45,7 @@
     <ion-row>
       <ion-col>
         <button ion-button icon-left clear small class="smallButtonColor" (click)="gotIt(post)">
-          <ion-icon name="thumbs-up" [ngClass]="youGotIt ? 'Gold' : 'Blue'"></ion-icon>
+          <ion-icon name="thumbs-up" [ngClass]="youGotIt(post) ? 'gold' : ''"></ion-icon>
           <div>{{getGotItCount(post)}} Got It</div>
         </button>
       </ion-col>

@@ -29,7 +29,6 @@ export class ForumPage {
   deleteState = false;
   deleteClicked: string[] = [];
 
-
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public forum: ForumService, public user: UsersService, public popoverCtrl: PopoverController, private db: AngularFireDatabase, public tools: Tools) {
     this.PostList = forum.ForumList;
     this.UserList = user.ListOfUsers;
@@ -94,6 +93,10 @@ export class ForumPage {
 
   }
 
+  youGotIt(post: Forum) {
+    return (post.GotIt.indexOf(this.user.CurrentLoggedIn.UserId) > -1);
+  }
+
   // -------------------------///
   //      Server Calls       ///
   //-------------------------///
@@ -126,7 +129,6 @@ export class ForumPage {
     if(post.GotIt == null || post.GotIt.indexOf(this.user.CurrentLoggedIn.UserId) == -1) {
       let newGotItArray = [];
         if(post.GotIt == null) {
-          console.log(1);
         newGotItArray.push(this.user.CurrentLoggedIn.UserId);
         let index = this.PostList.indexOf(post);
         if(index > -1) {

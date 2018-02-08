@@ -9,7 +9,6 @@ export class UsersService {
 
   private DatabaseNode: string;
 
-  ObservedListOfUsers: User[];
   ListOfUsers: User[];
   CurrentLoggedIn: User;
 
@@ -39,7 +38,7 @@ export class UsersService {
     idRef.on('value', snapshot => {
       snapshot. forEach(user => {
 
-        this.ObservedListOfUsers = [];
+        this.ListOfUsers = [];
 
         let userObj = new User(
           user.child("Username").val(),
@@ -57,12 +56,12 @@ export class UsersService {
           user.child("School").val(),
           user.child("UserID").val()
         );
-        this.ObservedListOfUsers.push(userObj);
+        this.ListOfUsers.push(userObj);
         return false;
       });
     });
 
-    return this.ObservedListOfUsers;
+    return this.ListOfUsers;
 
   }
 

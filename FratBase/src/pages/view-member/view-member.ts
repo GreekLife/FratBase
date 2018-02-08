@@ -29,11 +29,15 @@ export class ViewMemberPage {
 
   OptionsOpen: boolean;
 
+  UserList: User[];
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public user: UsersService, public firebase: AngularFireDatabase, public tools: Tools) {
     this.OptionsOpen = false;
     this.selectedUser = this.navParams.get("selectedUser");
     this.Position = this.selectedUser.Position;
     this.CurrentUser = this.user.CurrentLoggedIn;
+    this.UserList = user.ListOfUsers;
+
 
   }
 

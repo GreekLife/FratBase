@@ -23,13 +23,16 @@ import {Tools} from "../../Services/Tools";
 export class ForumPage {
 
   PostList: Forum[];
+  UserList: User[];
   CurrentPoster: User;
   filter:string = "Newest";
   deleteState = false;
   deleteClicked: string[] = [];
 
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public forum: ForumService, public user: UsersService, public popoverCtrl: PopoverController, private db: AngularFireDatabase, public tools: Tools) {
     this.PostList = forum.ForumList;
+    this.UserList = user.ListOfUsers;
 
       this.PostList.sort(function (a, b) {
         return Number(b.Epoch) - Number(a.Epoch);
@@ -42,7 +45,7 @@ export class ForumPage {
   //        Tools             ///
   //-------------------------///
   getUserObject(userId: string) {
-    this.user.ListOfUsers.forEach(user => {
+    this.UserList.forEach(user => {
       if(user.UserId == userId) {
         this.CurrentPoster = user;
       }
@@ -167,7 +170,7 @@ export class ForumPage {
       alert.setTitle('Got It');
       let username = "";
       post.GotIt.forEach( user => {
-        this.user.ListOfUsers.forEach(userObj =>{
+        this.UserList.forEach(userObj =>{
           if(userObj.UserId == user) {
             username = userObj.First_Name + " " + userObj.Last_Name;
           }

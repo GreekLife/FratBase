@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
+import {IonicPage, ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {ForumPage} from "../forum/forum";
+import {ViewMemberPage} from "../view-member/view-member";
+import {ForumCreatePage} from "../forum-create/forum-create";
 
 /**
  * Generated class for the FilterPopoverPage page.
@@ -18,13 +20,21 @@ export class FilterPopoverPage {
 
   selectedFilter = "Newest";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController,  public viewCtrl: ViewController) {
       this.selectedFilter = this.navParams.get("filterVal");
   }
 
   selectFilter(filter: string) {
     this.selectedFilter = filter;
     this.viewCtrl.dismiss(filter);
+  }
+
+
+  CreatePost() {
+    let modal = this.modalCtrl.create(ForumCreatePage);
+    this.viewCtrl.dismiss();
+    modal.present();
+
   }
 
 }

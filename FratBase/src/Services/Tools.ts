@@ -48,7 +48,7 @@ export class Tools {
       if(hours < 1) {
         time = minutes + "m";
         if(minutes < 1) {
-          time = timeSince + "s";
+          time = 0 + "m";
         }
       }
     }

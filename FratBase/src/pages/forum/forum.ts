@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams, PopoverController} from 'ionic-angular';
 import {ForumService} from "../../Services/Forum.service";
 import {Forum} from "../../models/Forum/forum";
@@ -29,7 +29,7 @@ export class ForumPage {
   deleteState = false;
   deleteClicked: string[] = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public forum: ForumService, public user: UsersService, public popoverCtrl: PopoverController, private db: AngularFireDatabase, public tools: Tools) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private cdr: ChangeDetectorRef, public alertCtrl: AlertController, public forum: ForumService, public user: UsersService, public popoverCtrl: PopoverController, private db: AngularFireDatabase, public tools: Tools) {
     this.PostList = forum.ForumList;
     this.UserList = user.ListOfUsers;
 
@@ -111,7 +111,15 @@ export class ForumPage {
         {
           text: 'Delete',
           handler: () => {
-
+            this.db.database.ref(this.user.getNode() + '/Forum/'+post.PostId).remove().then(response => {
+              let index = this.PostList.indexOf(post);
+              if(index > -1) {
+                this.PostList.splice(index, 1);
+              }
+            }).catch(error => {
+              this.tools.presentToast("Bottom", "An unexpected error occured while trying to handle your request");
+              console.log("Error");
+            });
           }
         },
         {
@@ -155,16 +163,11 @@ export class ForumPage {
       this.db.database.ref(this.user.getNode() + '/Forum/' + post.PostId + "/GotIt").set(
         newGotItArray
       ).then(response => {
+        console.log("Got It: Successful");
 
-        //////still need to set color
-        //vote is still not instant!!
-        //master should be able to transfer his position in master controls
-        //remove view errors
-        //delete the actual post
-
-
-       // document.getElementById("GotItIcon").style.color = "#FFDF00";
-
+      }).catch(error => {
+        console.log("Error with Got It button");
+        this.tools.presentToast("Bottom", "There was an unexplained error handling your request");
       });
     }
     else {
@@ -193,8 +196,11 @@ export class ForumPage {
   }
 
   refresh() {
-    this.forum.isFetching = true;
     this.PostList = this.forum.GetForumInternal();
+
+    this.PostList.sort(function (a, b) {
+      return Number(b.Epoch) - Number(a.Epoch);
+    });
   }
 
   openPopover(myEvent) {
@@ -204,9 +210,7 @@ export class ForumPage {
     });
 
     popover.onDidDismiss(data => {
-      console.log(data);
       if(data!=null){
-        let selectedData = data;
         if(data != null) {
 
           this.PostList = this.forum.ForumList;

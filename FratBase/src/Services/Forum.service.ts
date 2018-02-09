@@ -28,18 +28,23 @@ export class ForumService {
       snapshot. forEach(poll => {
         let comments = poll.child("Comments");
         let allComments = [];
-        comments.forEach(comm => {
-          let comment = new Comment(comm["CommentId"], comm["Epoch"], comm["Post"], comm["UserId"]);
-          allComments.push(comment);
-          return false;
-        });
+        if(comments != null) {
+          comments.forEach(comm => {
+            let comment = new Comment(comm["CommentId"], comm["Epoch"], comm["Post"], comm["UserId"]);
+            allComments.push(comment);
+            return false;
+          });
+        }
+        else {
+          allComments = null;
+        }
 
         let forumObj = new Forum(
           poll.child("Epoch").val(),
           allComments,
           poll.child("GotIt").val(),
           poll.child("Post").val(),
-          poll.child("PostId").val(),
+          poll.key,
           poll.child("PostTitle").val(),
           poll.child("UserId").val()
         );

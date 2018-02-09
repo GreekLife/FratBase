@@ -23,6 +23,7 @@ import {IonicStorageModule} from "@ionic/storage";
 import {Keyboard} from "@ionic-native/keyboard";
 import {ForumPage} from "../pages/forum/forum";
 import {FilterPopoverPage} from "../pages/filter-popover/filter-popover";
+import {ForumCreatePage} from "../pages/forum-create/forum-create";
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import {FilterPopoverPage} from "../pages/filter-popover/filter-popover";
     MembersPage,
     ViewMemberPage,
     ForumPage,
-    FilterPopoverPage
+    FilterPopoverPage,
+    ForumCreatePage
   ],
   imports: [
     BrowserModule,
@@ -51,7 +53,8 @@ import {FilterPopoverPage} from "../pages/filter-popover/filter-popover";
     MembersPage,
     ViewMemberPage,
     ForumPage,
-    FilterPopoverPage
+    FilterPopoverPage,
+    ForumCreatePage
   ],
   providers: [
     StatusBar,

@@ -13,7 +13,7 @@
       <button ion-button end (click)="refresh()" id="refresh" *ngIf="forum.isFetching == false"> <ion-icon name="refresh" style="color: #5295ff; margin-right: 10px; font-size: 40px"></ion-icon> </button>
       <ion-spinner name="bubbles" id="spinner" *ngIf="forum.isFetching"></ion-spinner>
 
-      <button ion-button end (click)="openPopover($event)"> <ion-icon name="more"></ion-icon> </button>
+      <button ion-button end (click)="openPopover($event)"> <ion-icon name="more" style="color:  #5CB3E1"></ion-icon> </button>
     </ion-buttons>
   </ion-navbar>
 
@@ -37,9 +37,9 @@
     </ion-item>
 
     <ion-card-content>
-      <p style="color: white;">{{post.PostTitle}}</p>
+      <p style="color: white;" [innerHTML]="this.tools.urlify(post.PostTitle, this.userList)"></p>
       <br>
-      <p style="color: white;">{{post.Post}}</p>
+      <p style="color: white;" [innerHTML]="this.tools.urlify(post.Post, this.userList)"></p>
     </ion-card-content>
 
     <ion-row>

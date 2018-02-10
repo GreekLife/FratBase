@@ -5,6 +5,7 @@ import {User} from "../../models/user";
 import {Forum} from "../../models/Forum/forum";
 import {ForumService} from "../../Services/Forum.service";
 import {AngularFireDatabase} from "angularfire2/database";
+import {Tools} from "../../Services/Tools";
 
 /**
  * Generated class for the ForumCreatePage page.
@@ -25,7 +26,7 @@ export class ForumCreatePage {
   body: string;
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public user: UsersService, public forum: ForumService, public db: AngularFireDatabase) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public user: UsersService, public tools: Tools, public forum: ForumService, public db: AngularFireDatabase) {
     this.currentUser = this.user.CurrentLoggedIn;
 
     this.title = "";
@@ -33,8 +34,14 @@ export class ForumCreatePage {
 
   }
 
-  postConditions() {
-    return (this.title != "" && this.body != "");
+  urlify(ev: any) {
+    if(ev != '') {
+      let urlRegex = /(https?:\/\/[^\s]+)/g; //Needs a better regex
+      return this.body.replace(urlRegex, url => {
+        console.log("found");
+        return '<a style="color: blue" href="' + url + '">' + url + '</a>';
+      });
+    }
   }
 
   cancel() {

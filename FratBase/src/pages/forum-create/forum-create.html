@@ -7,13 +7,13 @@
 <ion-header>
 <ion-navbar>
   <ion-buttons>
-    <button ion-button="arrow-back" (click)="cancel()">
+    <button ion-button="arrow-back" style="color:  #488AFF" (click)="cancel()">
       Cancel
     </button>
   </ion-buttons>
-  <ion-title><div style="color: white">Create Post</div></ion-title>
+  <ion-title></ion-title>
   <ion-buttons end>
-    <button ion-button="save" end (click)="post()" [disabled]="!postConditions()" [ngClass]="postConditions() ? 'Post' : 'Hidden'">
+    <button ion-button="save" end (click)="post()" [disabled]="(this.title == '' || this.body == '')" [ngClass]="(this.title != '' && this.body != '') ? 'Post' : 'Hidden'">
       Post
     </button>
   </ion-buttons>
@@ -32,9 +32,9 @@
     </ion-item>
 
     <ion-card-content>
-      <textarea class="postTitle" [(ngModel)]="title"></textarea>
+      <textarea class="postTitle" [(ngModel)]="title" ></textarea>
       <br>
-      <textarea class="postBody" [(ngModel)]="body"></textarea>
+      <textarea class="postBody" [(ngModel)]="body" ></textarea>
     </ion-card-content>
 
   </ion-card>

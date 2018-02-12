@@ -3,6 +3,7 @@ import {AngularFireDatabase} from "angularfire2/database";
 import {UsersService} from "./Manage_Users.service";
 import {Forum} from "../models/Forum/forum";
 import {Comment} from "../models/Forum/comment";
+import {Loading} from "ionic-angular";
 
 @Injectable()
 export class ForumService {
@@ -18,14 +19,13 @@ export class ForumService {
     this.DatabaseNode = this.user.getNode();
   }
 
-  GetForumInternal() {
+  GetForumInternal(loader: Loading) {
     let posts = [];
     this.isFetching = true;
     let idRef = this.db.database.ref(this.DatabaseNode + "/Forum");
     idRef.on('value', snapshot => {
       this.ForumList = [];
-      posts = [];
-      snapshot. forEach(poll => {
+      snapshot.forEach(poll => {
         let comments = poll.child("Comments");
         let allComments = [];
         if(comments != null) {
@@ -48,12 +48,13 @@ export class ForumService {
           poll.child("PostTitle").val(),
           poll.child("UserId").val()
         );
-        posts.push(forumObj);
+        this.ForumList.push(forumObj);
 
         return false;
       });
-      this.ForumList = posts;
-
+      loader.dismiss().catch(error => {
+        console.log("No forum loader");
+      });
     });
     this.isFetching = false;
     this.ForumList = posts;

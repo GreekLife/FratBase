@@ -3,6 +3,7 @@ import {AngularFireDatabase} from "angularfire2/database";
 import {User} from "../models/user";
 import {Tools} from "./Tools";
 import {Storage} from "@ionic/storage";
+import {Loading} from "ionic-angular";
 
 @Injectable()
 export class UsersService {
@@ -15,7 +16,6 @@ export class UsersService {
 
   constructor(private db: AngularFireDatabase, public tools: Tools, public storage: Storage) {
     this.DatabaseNode = "Generic";
-    this.GetUsersInternal();
   }
 
   setNode(node) {
@@ -32,14 +32,12 @@ export class UsersService {
     return this.DatabaseNode;
   }
 
-  GetUsersInternal() {
+  GetUsersInternal(loader: Loading) {
 
     let idRef = this.db.database.ref(this.DatabaseNode + "/Users");
     idRef.on('value', snapshot => {
+      this.ListOfUsers = [];
       snapshot. forEach(user => {
-
-        this.ListOfUsers = [];
-
         let userObj = new User(
           user.child("Username").val(),
           user.child("First Name").val(),
@@ -59,8 +57,10 @@ export class UsersService {
         this.ListOfUsers.push(userObj);
         return false;
       });
+      loader.dismiss().catch(error => {
+        console.log("No user loader");
+      });
     });
-
     return this.ListOfUsers;
 
   }

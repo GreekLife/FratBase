@@ -69,17 +69,6 @@ export class LoginPage {
         console.log("Error dismissing loader: " + error);
       });
 
-      storage.get('Username').then((user) => {
-        this.username = user;
-        storage.get('Password').then((pass) => {
-          this.password = pass;
-
-          if(this.password != null && this.username != null) {
-            this.Login();
-          }
-
-        });
-      });
     }).catch(error=> {
       this.loader.dismiss().catch(error=> {
         console.log("Error dismissing loader: " + error);
@@ -128,11 +117,7 @@ export class LoginPage {
 
   authenticate(exists, pass) {
     this.dbAuth.auth.signInWithEmailAndPassword(exists, pass).then( response => {
-        this.storage.set('Username', exists);
-        this.storage.set('Password', pass);
-
-        this.poll.GetPollsInternal();
-        this.forum.GetForumInternal();
+        this.storage.set('User', this.user.CurrentLoggedIn);
         this.loader.dismiss().catch(error=> {
           console.log("Error dismissing loader: " + error);
         });

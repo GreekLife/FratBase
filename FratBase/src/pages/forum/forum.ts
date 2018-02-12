@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component} from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams, PopoverController} from 'ionic-angular';
+import {AlertController, IonicPage, ModalController, NavController, NavParams, PopoverController} from 'ionic-angular';
 import {ForumService} from "../../Services/Forum.service";
 import {Forum} from "../../models/Forum/forum";
 import {User} from "../../models/user";
@@ -7,6 +7,8 @@ import {UsersService} from "../../Services/Manage_Users.service";
 import {FilterPopoverPage} from "../filter-popover/filter-popover";
 import {AngularFireDatabase} from "angularfire2/database";
 import {Tools} from "../../Services/Tools";
+import {ViewMemberPage} from "../view-member/view-member";
+import {ForumCommentsPage} from "../forum-comments/forum-comments";
 
 /**
  * Generated class for the ForumPage page.
@@ -29,7 +31,7 @@ export class ForumPage {
   deleteState = false;
   deleteClicked: string[] = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private cdr: ChangeDetectorRef, public alertCtrl: AlertController, public forum: ForumService, public user: UsersService, public popoverCtrl: PopoverController, private db: AngularFireDatabase, public tools: Tools) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, private cdr: ChangeDetectorRef, public alertCtrl: AlertController, public forum: ForumService, public user: UsersService, public popoverCtrl: PopoverController, private db: AngularFireDatabase, public tools: Tools) {
     this.PostList = forum.ForumList;
     this.UserList = user.ListOfUsers;
 
@@ -201,6 +203,16 @@ export class ForumPage {
     this.PostList.sort(function (a, b) {
       return Number(b.Epoch) - Number(a.Epoch);
     });
+  }
+
+
+  // -------------------------///
+  //         Segues          ///
+  //-------------------------///
+
+  viewComments(post: Forum) {
+    let modal = this.modalCtrl.create(ForumCommentsPage, {selectedPost: post, poster: this.CurrentPoster});
+    modal.present();
   }
 
   openPopover(myEvent) {

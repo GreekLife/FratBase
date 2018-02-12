@@ -50,7 +50,7 @@
         </button>
       </ion-col>
       <ion-col>
-        <button ion-button icon-left clear small class="smallButtonColor">
+        <button ion-button icon-left clear small class="smallButtonColor" (click)="viewComments(post)">
           <ion-icon name="text"></ion-icon>
           <div>{{getCommentCount(post)}} Comments</div>
         </button>

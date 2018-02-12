@@ -1,3 +1,5 @@
+import {Comment} from "/Users/jonahelbaz/Desktop/Fratbase/FratBase/src/models/Forum/comment";
+
 export class Forum {
 
   Comments: Comment[];

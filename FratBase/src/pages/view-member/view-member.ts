@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, Item, NavController, NavParams} from 'ionic-angular';
-import {Observable} from "rxjs/Observable";
+import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {User} from "../../models/user";
 import {UsersService} from "../../Services/Manage_Users.service";
 import {AngularFireDatabase} from "angularfire2/database";

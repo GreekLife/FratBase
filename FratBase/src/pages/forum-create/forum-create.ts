@@ -34,15 +34,6 @@ export class ForumCreatePage {
 
   }
 
-  urlify(ev: any) {
-    if(ev != '') {
-      let urlRegex = /(https?:\/\/[^\s]+)/g; //Needs a better regex
-      return this.body.replace(urlRegex, url => {
-        console.log("found");
-        return '<a style="color: blue" href="' + url + '">' + url + '</a>';
-      });
-    }
-  }
 
   cancel() {
     this.navCtrl.pop();

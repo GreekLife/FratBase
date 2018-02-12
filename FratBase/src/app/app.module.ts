@@ -24,6 +24,7 @@ import {Keyboard} from "@ionic-native/keyboard";
 import {ForumPage} from "../pages/forum/forum";
 import {FilterPopoverPage} from "../pages/filter-popover/filter-popover";
 import {ForumCreatePage} from "../pages/forum-create/forum-create";
+import {ForumCommentsPage} from "../pages/forum-comments/forum-comments";
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import {ForumCreatePage} from "../pages/forum-create/forum-create";
     ViewMemberPage,
     ForumPage,
     FilterPopoverPage,
-    ForumCreatePage
+    ForumCreatePage,
+    ForumCommentsPage
   ],
   imports: [
     BrowserModule,
@@ -54,7 +56,8 @@ import {ForumCreatePage} from "../pages/forum-create/forum-create";
     ViewMemberPage,
     ForumPage,
     FilterPopoverPage,
-    ForumCreatePage
+    ForumCreatePage,
+    ForumCommentsPage
   ],
   providers: [
     StatusBar,

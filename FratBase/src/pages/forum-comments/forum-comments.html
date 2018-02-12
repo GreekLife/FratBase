@@ -1,0 +1,75 @@
+<!--
+  Generated template for the ViewMemberPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons>
+      <button ion-button="arrow-back" style="color:  #488AFF" (click)="cancel()">
+        Cancel
+      </button>
+    </ion-buttons>
+    <ion-title></ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding style="background-color: #0F0F11;">
+
+  <ion-card class="card">
+    <ion-item style="background-color: #39393B" >
+      <ion-avatar item-start>
+        <img src="{{CurrentPoster.ImageURL}}"/>
+      </ion-avatar>
+      <h2 style="color: white;">{{CurrentPoster.First_Name}} {{CurrentPoster.Last_Name}}</h2>
+
+    </ion-item>
+
+    <ion-card-content>
+      <p style="color: white;" [innerHTML]="this.tools.urlify(Post.PostTitle, userList)"></p>
+      <br>
+      <p style="color: white;" [innerHTML]="this.tools.urlify(Post.Post, userList)"></p>
+    </ion-card-content>
+
+  </ion-card>
+
+  <div class="commentBody">
+    <div *ngFor="let comment of Post.Comments">
+    <ion-item no-lines class="identifier" >
+      <div style="color: #39393B; font-size: 0; width: 0; height: 0;">{{getUserObject(comment.UserId)}}</div>
+      <ion-avatar item-start class="commentAvatar">
+        <img src="{{Commenter.ImageURL}}"/>
+      </ion-avatar>
+      <h2 class="commentName">{{Commenter.First_Name}} {{Commenter.Last_Name}}</h2>
+    </ion-item>
+    <ion-card class="commentCard">
+      <ion-card-content>
+        <p class="comment">
+          {{comment.Post}}
+        </p>
+      </ion-card-content>
+
+    </ion-card>
+    </div>
+</div>
+
+  <ion-footer class="footer" keyboard-attach>
+      <ion-grid class="grid">
+        <ion-row>
+          <ion-col col-9>
+            <ion-input class="inpuBody" [(ngModel)]="commentBody"></ion-input>
+          </ion-col>
+          <ion-col>
+                <ion-buttons style="margin: 0;" class="ionButtons">
+                  <button ion-button end (click)="sendMessage()" [disabled]="(this.commentBody == '')" class="sendBtn"> Send </button>
+                </ion-buttons>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+  </ion-footer>
+
+</ion-content>

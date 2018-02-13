@@ -29,7 +29,7 @@ export class ForumService {
             let allComments = [];
             if (comments != null) {
               comments.forEach(comm => {
-                let comment = new Comment(comm.child("CommentId").val(), comm.child("Epoch").val(), comm.child("Post").val(), comm.child("UserId").val());
+                let comment = new Comment(comm.key, comm.child("Epoch").val(), comm.child("Post").val(), comm.child("UserId").val());
                 allComments.push(comment);
                 return false;
               });

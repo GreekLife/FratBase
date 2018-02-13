@@ -75,4 +75,28 @@ page-forum-comments {
     padding: 0;
   }
 
+  .commentDate {
+    color: white;
+    float: right;
+  }
+
+  .endDelete {
+    display: block;
+    text-align: center;
+  }
+
+  .endDeleteBtn {
+    background: none;
+    color: red;
+
+  }
+
+  .rotateDelete {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+  }
+
 }

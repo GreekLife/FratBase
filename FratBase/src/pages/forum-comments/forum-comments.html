@@ -25,7 +25,7 @@
       <ion-avatar item-start>
         <img src="{{CurrentPoster.ImageURL}}"/>
       </ion-avatar>
-      <h2 style="color: white;">{{CurrentPoster.First_Name}} {{CurrentPoster.Last_Name}}</h2>
+      <h2 style="color: white;">{{CurrentPoster.First_Name}} {{CurrentPoster.Last_Name}}</h2><h3 class="commentDate">{{this.tools.getTimeSince(Post.Epoch)}}</h3>
 
     </ion-item>
 
@@ -40,11 +40,13 @@
   <div class="commentBody">
     <div *ngFor="let comment of Post.Comments">
     <ion-item no-lines class="identifier" >
-      <div style="color: #39393B; font-size: 0; width: 0; height: 0;">{{getUserObject(comment.UserId)}}</div>
       <ion-avatar item-start class="commentAvatar">
-        <img src="{{Commenter.ImageURL}}"/>
+        <img *ngIf="!canDelete()" src="{{getUserObject(comment.UserId).ImageURL}}"/>
+        <button style="background: none" (click)="deletePost(post)">
+          <ion-icon *ngIf="canDelete()" [ngClass]="deleteClickedContains(post) ? 'rotateDelete' : ''" name="remove-circle" style="color:red; font-weight: bold; font-size:40px;"></ion-icon>
+        </button>
       </ion-avatar>
-      <h2 class="commentName">{{Commenter.First_Name}} {{Commenter.Last_Name}}</h2>
+      <h2 class="commentName">{{Commenter.First_Name}} {{Commenter.Last_Name}}</h2><h3 class="commentDate">{{this.tools.getTimeSince(comment.Epoch)}}</h3>
     </ion-item>
     <ion-card class="commentCard">
       <ion-card-content>
@@ -61,7 +63,7 @@
       <ion-grid class="grid">
         <ion-row>
           <ion-col col-9>
-            <ion-input class="inpuBody" [(ngModel)]="commentBody"></ion-input>
+            <ion-input class="inpuBody" [(ngModel)]="commentBody" (focus)="scrollToBottom()" (keyup.enter)="sendMessage()"></ion-input>
           </ion-col>
           <ion-col>
                 <ion-buttons style="margin: 0;" class="ionButtons">

@@ -198,11 +198,28 @@ export class ForumPage {
   }
 
   refresh() {
-    // this.PostList = this.forum.GetForumInternal();
-    //
-    // this.PostList.sort(function (a, b) {
-    //   return Number(b.Epoch) - Number(a.Epoch);
-    // });
+    document.getElementById("refresh").style.display = 'none';
+    document.getElementById('spinner').style.display = 'inline-block';
+    let that = this;
+    let forumPromise = new Promise(function(resolve, reject) {
+      that.forum.GetForumInternal().then(response => {
+        if(response == '200')
+          resolve();
+        else
+          reject(response);
+      });
+
+    });
+
+    forumPromise.then(result=> {
+      document.getElementById("refresh").style.display = 'inline-block';
+      document.getElementById('spinner').style.display = 'none';
+    }).catch( err => {
+      console.log("error: Retrieving users terminated with error code: " + err);
+      document.getElementById("refresh").style.display = 'inline-block';
+      document.getElementById('spinner').style.display = 'none';
+      this.tools.presentToast("Bottom", "Unexpected Internal Error: Forum List");
+    });
   }
 
 

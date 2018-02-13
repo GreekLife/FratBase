@@ -10,10 +10,10 @@
     <ion-title><div style="color: white">Forum</div></ion-title>
     <ion-buttons end>
 
-      <button ion-button end (click)="refresh()" id="refresh" *ngIf="forum.isFetching == false"> <ion-icon name="refresh" style="color: #5295ff; margin-right: 10px; font-size: 40px"></ion-icon> </button>
-      <ion-spinner name="bubbles" id="spinner" *ngIf="forum.isFetching"></ion-spinner>
+      <button ion-button end (click)="refresh()" id="refresh" > <ion-icon name="refresh" style="color: #5295ff; margin-right: 10px; font-size: 40px; display: block"></ion-icon> </button>
+      <ion-spinner name="bubbles" id="spinner" style="display: none"></ion-spinner>
 
-      <button ion-button end (click)="openPopover($event)"> <ion-icon name="more" style="color:  #5CB3E1"></ion-icon> </button>
+      <button ion-button end (click)="openPopover($event)"> <ion-icon name="more" style="color:  #5CB3E1;"></ion-icon> </button>
     </ion-buttons>
   </ion-navbar>
 

@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {Content, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, Content, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {UsersService} from "../../Services/Manage_Users.service";
 import {ForumService} from "../../Services/Forum.service";
 import {User} from "../../models/user";
@@ -30,10 +30,10 @@ export class ForumCommentsPage {
   CurrentLoggedIn: User;
   Commenter: User;
   commentBody: string;
-  deleteClicked: string[];
+  deleteClicked: string[] = [];
   deleteState = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public users: UsersService, public forum: ForumService, public tools: Tools, public db: AngularFireDatabase ) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public users: UsersService, public alertCtrl: AlertController, public forum: ForumService, public tools: Tools, public db: AngularFireDatabase ) {
     this.commentBody = "";
     this.CurrentPoster = this.navParams.get("poster");
     this.Post = this.navParams.get("selectedPost");
@@ -78,7 +78,7 @@ export class ForumCommentsPage {
         this.Commenter = user;
       }
     });
-    return this.CurrentPoster;
+    return this.Commenter;
   }
 
   cancel(){
@@ -96,12 +96,49 @@ export class ForumCommentsPage {
     }
   }
 
-  deleteClickedContains(post: Forum){
-    return (this.deleteClicked.indexOf(post.PostId) > -1);
+  deleteClickedContains(comment: Comment){
+    return (this.deleteClicked.indexOf(comment.CommentId) > -1);
   }
 
   canDelete() {
     return (this.deleteState && (this.tools.isEboard(this.users.CurrentLoggedIn.Position) || (this.CurrentPoster.UserId != this.users.CurrentLoggedIn.UserId)));
+  }
+
+  setDeleteState() {
+    this.deleteState = !this.deleteState;
+    this.deleteClicked = [];
+  }
+
+  deletePost(comment: Comment) {
+    this.deleteClicked.push(comment.CommentId);
+    let confirm = this.alertCtrl.create({
+      title: 'Delete',
+      message: 'Are you sure you would like to delete this comment? This cannot be undone.',
+      cssClass:'buttonCss',
+      buttons: [
+        {
+          text: 'Delete',
+          handler: () => {
+            this.db.database.ref(this.users.getNode() + '/Forum/'+this.Post.PostId + "/Comments/"+comment.CommentId).remove().then(response => {
+              let index = this.Post.Comments.indexOf(comment);
+              if(index > -1) {
+                this.Post.Comments.splice(index, 1);
+              }
+            }).catch(error => {
+              this.tools.presentToast("Bottom", "An unexpected error occurred while trying to handle your request");
+              console.log("Error");
+            });
+          }
+        },
+        {
+          text: 'Cancel',
+          handler: () => {
+            this.removeAllClicked();
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
 }

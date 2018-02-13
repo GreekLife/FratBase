@@ -13,6 +13,9 @@
       </button>
     </ion-buttons>
     <ion-title></ion-title>
+    <ion-buttons end>
+      <button ion-button end (click)="setDeleteState()"> <ion-icon name="remove-circle" [ngClass]="this.deleteState ? 'deleting' : 'notDeleting'"></ion-icon> </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -39,14 +42,14 @@
 
   <div class="commentBody">
     <div *ngFor="let comment of Post.Comments">
-    <ion-item no-lines class="identifier" >
+      <ion-item no-lines class="identifier" >
       <ion-avatar item-start class="commentAvatar">
         <img *ngIf="!canDelete()" src="{{getUserObject(comment.UserId).ImageURL}}"/>
-        <button style="background: none" (click)="deletePost(post)">
-          <ion-icon *ngIf="canDelete()" [ngClass]="deleteClickedContains(post) ? 'rotateDelete' : ''" name="remove-circle" style="color:red; font-weight: bold; font-size:40px;"></ion-icon>
+        <button style="background: none" (click)="deletePost(comment)">
+          <ion-icon *ngIf="canDelete()" [ngClass]="deleteClickedContains(comment) ? 'rotateDelete' : ''" name="remove-circle" style="color:red; font-weight: bold; font-size:40px;"></ion-icon>
         </button>
       </ion-avatar>
-      <h2 class="commentName">{{Commenter.First_Name}} {{Commenter.Last_Name}}</h2><h3 class="commentDate">{{this.tools.getTimeSince(comment.Epoch)}}</h3>
+      <h2 class="commentName">{{getUserObject(comment.UserId).First_Name}} {{Commenter.Last_Name}}</h2><h3 class="commentDate">{{this.tools.getTimeSince(comment.Epoch)}}</h3>
     </ion-item>
     <ion-card class="commentCard">
       <ion-card-content>

@@ -119,7 +119,7 @@ export class ForumPage {
                 this.PostList.splice(index, 1);
               }
             }).catch(error => {
-              this.tools.presentToast("Bottom", "An unexpected error occured while trying to handle your request");
+              this.tools.presentToast("Bottom", "An unexpected error occurred while trying to handle your request");
               console.log("Error");
             });
           }

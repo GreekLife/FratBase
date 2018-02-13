@@ -99,4 +99,16 @@ page-forum-comments {
     transform: rotate(90deg);
   }
 
+  .deleting {
+    color: red;
+    font-size: 16px;
+  }
+
+  .notDeleting {
+    color: #5CB3E1;
+    font-size: 15px;
+  }
+  .deleting:hover {
+    font-size: 18px;
+  }
 }

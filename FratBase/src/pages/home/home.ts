@@ -21,20 +21,67 @@ export class HomePage {
 
   constructor(public navCtrl: NavController, private users:UsersService, public storage: Storage, public poll: PollsService, public forum: ForumService, public tools: Tools) {
 
-    storage.get('User').then(user => {
-      this.loader = this.tools.presentLoading(this.loader);
+   let storageVal = storage.get('User').then(user => {
 
-        this.users.CurrentLoggedIn = user;
-        this.CurrentUserRetrieved = user;
+     this.users.CurrentLoggedIn = user;
+     this.CurrentUserRetrieved = user;
 
-        this.users.GetUsersInternal(this.loader);
-        this.forum.GetForumInternal(this.loader);
+     if(this.CurrentUserRetrieved == null) {
+       console.log("Forced to login page");
+       this.navCtrl.push(LoginPage);
+       return;
+     }
+
+      let userLoader = this.tools.presentLoading(this.loader);
+
+      let userPromise = new Promise(function(resolve, reject) {
+        users.GetUsersInternal().then(response => {
+          if(response == '200')
+            resolve();
+         else
+            reject(response);
+        });
+      });
+
+      userPromise.then(result=> {
+        userLoader.dismiss();
+      }).catch( err => {
+        console.log("error: Retrieving users terminated with error code: " + err);
+        userLoader.dismiss();
+        this.tools.presentToast("Bottom", "Unexpected Internal Error: User list");
+      });
+
+
+
+      let forumLoader = this.tools.presentLoading(this.loader);
+
+      let forumPromise = new Promise(function(resolve, reject) {
+        forum.GetForumInternal().then(response => {
+            if(response == '200')
+              resolve();
+            else
+              reject(response);
+          });
+
+      });
+
+      forumPromise.then(result=> {
+        forumLoader.dismiss();
+      }).catch( err => {
+        console.log("error: Retrieving users terminated with error code: " + err);
+        forumLoader.dismiss();
+        this.tools.presentToast("Bottom", "Unexpected Internal Error: Forum List");
+      });
+
+
+        //this.forum.GetForumInternal(this.loader);
        // this.poll.GetPollsInternal();
 
     }).catch(error => {
       console.log("Error retrieving saved user: " + error);
       this.navCtrl.push(LoginPage);
     });
+
   }
 
   ViewMembers() {
@@ -46,7 +93,9 @@ export class HomePage {
   }
 
   signOut() {
-    this.storage.remove('User').catch(error => {
+    this.storage.remove('User').then(response => {
+      console.log("Sign out succesful");
+    }).catch(error => {
       console.log("User never existed? " + error);
     });
 

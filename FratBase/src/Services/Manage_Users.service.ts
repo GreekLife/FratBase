@@ -32,37 +32,45 @@ export class UsersService {
     return this.DatabaseNode;
   }
 
-  GetUsersInternal(loader: Loading) {
-
-    let idRef = this.db.database.ref(this.DatabaseNode + "/Users");
-    idRef.on('value', snapshot => {
-      this.ListOfUsers = [];
-      snapshot. forEach(user => {
-        let userObj = new User(
-          user.child("Username").val(),
-          user.child("First Name").val(),
-          user.child("Last Name").val(),
-          user.child("Birthday").val(),
-          user.child("BrotherName").val(),
-          user.child("Contribution").val(),
-          user.child("Degree").val(),
-          user.child("Email").val(),
-          user.child("GraduationDate").val(),
-          user.child("Image").val(),
-          user.child("NotificationId").val(),
-          user.child("Position").val(),
-          user.child("School").val(),
-          user.child("UserID").val()
-        );
-        this.ListOfUsers.push(userObj);
-        return false;
-      });
-      loader.dismiss().catch(error => {
-        console.log("No user loader");
-      });
+  GetUsersInternal() {
+    let that = this;
+    let userPromise = new Promise(function(resolve, reject) {
+      try {
+        let idRef = that.db.database.ref(that.DatabaseNode + "/Users");
+        idRef.on('value', snapshot => {
+          that.ListOfUsers = [];
+          snapshot.forEach(user => {
+            let userObj = new User(
+              user.child("Username").val(),
+              user.child("First Name").val(),
+              user.child("Last Name").val(),
+              user.child("Birthday").val(),
+              user.child("BrotherName").val(),
+              user.child("Contribution").val(),
+              user.child("Degree").val(),
+              user.child("Email").val(),
+              user.child("GraduationDate").val(),
+              user.child("Image").val(),
+              user.child("NotificationId").val(),
+              user.child("Position").val(),
+              user.child("School").val(),
+              user.child("UserID").val()
+            );
+            that.ListOfUsers.push(userObj);
+            return false;
+          });
+          resolve('200');
+        });
+      }
+      catch (error) {
+        reject();
+      }
     });
-    return this.ListOfUsers;
-
+   return userPromise.then(response => {
+      return '200';
+    }).catch(error => {
+      return '400; ' + error;
+    });
   }
 
   changeUserPositionById(userId: string, newPosition: string) {

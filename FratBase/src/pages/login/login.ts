@@ -36,46 +36,26 @@ export class LoginPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public user: UsersService, public tools: Tools, public poll: PollsService,
               public forum: ForumService, public dbAuth: AngularFireAuth, private storage: Storage, public db: AngularFireDatabase) {
       this.DatabaseNode = user.getNode();
-      this.UserList = this.user.ListOfUsers;
 
-    this.loader = this.tools.presentLoading(this.loader);
+    let userLoader = this.tools.presentLoading(this.loader);
 
-    let idRef = this.db.database.ref(this.DatabaseNode + "/Users");
-    idRef.once('value', snapshot => {
-      let users = [];
-      snapshot. forEach(user => {
-        let userObj = new User(
-          user.child("Username").val(),
-          user.child("First Name").val(),
-          user.child("Last Name").val(),
-          user.child("Birthday").val(),
-          user.child("BrotherName").val(),
-          user.child("Contribution").val(),
-          user.child("Degree").val(),
-          user.child("Email").val(),
-          user.child("GraduationDate").val(),
-          user.child("Image").val(),
-          user.child("NotificationId").val(),
-          user.child("Position").val(),
-          user.child("School").val(),
-          user.child("UserID").val()
-        );
-        users.push(userObj);
-        return false;
+    let userPromise = new Promise(function(resolve, reject) {
+      user.GetUsersInternal().then(response => {
+        if(response == '200')
+          resolve();
+        else
+          reject(response);
       });
-      this.user.ListOfUsers = users;
-      this.UserList = users;
-      this.loader.dismiss().catch(error=> {
-        console.log("Error dismissing loader: " + error);
-      });
-
-    }).catch(error=> {
-      this.loader.dismiss().catch(error=> {
-        console.log("Error dismissing loader: " + error);
-      });
-      console.log("could not fetch users");
     });
 
+    userPromise.then(result=> {
+      this.UserList = user.ListOfUsers;
+      userLoader.dismiss();
+    }).catch( err => {
+      console.log("error: Retrieving users terminated with error code: " + err);
+      userLoader.dismiss();
+      this.tools.presentToast("Bottom", "Unexpected Internal Error: User list login");
+    });
   }
 
   Login() {

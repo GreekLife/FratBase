@@ -198,11 +198,11 @@ export class ForumPage {
   }
 
   refresh() {
-    this.PostList = this.forum.GetForumInternal();
-
-    this.PostList.sort(function (a, b) {
-      return Number(b.Epoch) - Number(a.Epoch);
-    });
+    // this.PostList = this.forum.GetForumInternal();
+    //
+    // this.PostList.sort(function (a, b) {
+    //   return Number(b.Epoch) - Number(a.Epoch);
+    // });
   }
 
 

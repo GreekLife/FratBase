@@ -24,13 +24,6 @@ page-forum {
     background: black;
   }
 
-  ion-spinner * {
-    width: 28px;
-    height: 28px;
-    stroke: #5CB3E1;
-    fill: #5CB3E1;
-  }
-
   .endDelete {
     display: block;
     text-align: center;
@@ -68,4 +61,13 @@ page-forum {
   .blue {
     color: #5CB3E1;
   }
+
+  ion-spinner * {
+    width: 28px;
+    height: 28px;
+    stroke: #FFDF00 !important;
+    fill: #FFDF00 !important;
+  }
+
+
 }

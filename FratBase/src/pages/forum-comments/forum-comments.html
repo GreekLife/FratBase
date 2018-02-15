@@ -62,19 +62,19 @@
     </div>
 </div>
 
-  <ion-footer class="footer">
-      <ion-grid class="grid">
-        <ion-row>
-          <ion-col col-9>
-            <ion-input class="inpuBody" [(ngModel)]="commentBody" (ionFocus)="scrollToBottom()" (keyup.enter)="sendMessage()"></ion-input>
-          </ion-col>
-          <ion-col>
-                <ion-buttons style="margin: 0;" class="ionButtons">
-                  <button ion-button end (click)="sendMessage()" [disabled]="(this.commentBody == '')" class="sendBtn"> Send </button>
-                </ion-buttons>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-  </ion-footer>
-
 </ion-content>
+
+<ion-footer class="footer">
+  <ion-grid class="grid">
+    <ion-row>
+      <ion-col col-9>
+        <ion-input class="inpuBody" [(ngModel)]="commentBody" (ionFocus)="scrollToBottom()" (keyup.enter)="sendMessage()"></ion-input>
+      </ion-col>
+      <ion-col>
+        <ion-buttons style="margin: 0;" class="ionButtons">
+          <button ion-button end (click)="sendMessage()" [disabled]="(this.commentBody == '')" class="sendBtn"> Send </button>
+        </ion-buttons>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

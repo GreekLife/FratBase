@@ -9,10 +9,6 @@
   <ion-navbar>
     <ion-title><div style="color: white">Forum</div></ion-title>
     <ion-buttons end>
-
-      <button ion-button end (click)="refresh()" id="refresh" > <ion-icon name="refresh" style="color: #5295ff; margin-right: 10px; font-size: 40px; display: block"></ion-icon> </button>
-      <ion-spinner name="bubbles" id="spinner" style="display: none"></ion-spinner>
-
       <button ion-button end (click)="openPopover($event)"> <ion-icon name="more" style="color:  #5CB3E1;"></ion-icon> </button>
     </ion-buttons>
   </ion-navbar>
@@ -21,6 +17,10 @@
 
 
 <ion-content padding style="background-color: #0F0F11;">
+  <ion-refresher (ionRefresh)="refresh($event)">
+    <ion-refresher-content refreshingSpinner="circles"></ion-refresher-content>
+  </ion-refresher>
+
   <div class="endDelete" ><button class="endDeleteBtn" ion-button (click)="deleteState = false; removeAllClicked();" *ngIf="deleteState">End Editing</button></div>
   <ion-card *ngFor="let post of PostList" class="card">
     <ion-item style="background-color: #39393B" >

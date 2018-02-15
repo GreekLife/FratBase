@@ -198,29 +198,34 @@ export class ForumPage {
   }
 
   refresh() {
-    document.getElementById("refresh").style.display = 'none';
-    document.getElementById('spinner').style.display = 'inline-block';
-    let that = this;
-    let forumPromise = new Promise(function(resolve, reject) {
-      that.forum.GetForumInternal().then(response => {
-        if(response == '200')
-          resolve();
-        else
-          reject(response);
+    if(navigator.onLine) {
+      document.getElementById("refresh").style.display = 'none';
+      document.getElementById('spinner').style.display = 'inline-block';
+      let that = this;
+      let forumPromise = new Promise(function (resolve, reject) {
+        that.forum.GetForumInternal().then(response => {
+          if (response == '200')
+            resolve();
+          else
+            reject(response);
+        });
+
       });
 
-    });
+      forumPromise.then(result => {
+        document.getElementById("refresh").style.display = 'inline-block';
+        document.getElementById('spinner').style.display = 'none';
+      }).catch(err => {
+        console.log("error: Retrieving users terminated with error code: " + err);
+        document.getElementById("refresh").style.display = 'inline-block';
+        document.getElementById('spinner').style.display = 'none';
+        this.tools.presentToast("Bottom", "Unexpected Internal Error: Forum List");
+      });
+    }
+     else
+      this.tools.presentToast("top", "You are not connected to the internet");
 
-    forumPromise.then(result=> {
-      document.getElementById("refresh").style.display = 'inline-block';
-      document.getElementById('spinner').style.display = 'none';
-    }).catch( err => {
-      console.log("error: Retrieving users terminated with error code: " + err);
-      document.getElementById("refresh").style.display = 'inline-block';
-      document.getElementById('spinner').style.display = 'none';
-      this.tools.presentToast("Bottom", "Unexpected Internal Error: Forum List");
-    });
-  }
+}
 
 
   // -------------------------///
@@ -228,7 +233,7 @@ export class ForumPage {
   //-------------------------///
 
   viewComments(post: Forum) {
-    let modal = this.modalCtrl.create(ForumCommentsPage, {selectedPost: post, poster: this.CurrentPoster});
+    let modal = this.modalCtrl.create(ForumCommentsPage, {selectedPost: post, poster: this.getUserObject(post.UserId)}, {enableBackdropDismiss: false});
     modal.present();
   }
 

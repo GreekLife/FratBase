@@ -37,50 +37,57 @@ export class LoginPage {
               public forum: ForumService, public dbAuth: AngularFireAuth, private storage: Storage, public db: AngularFireDatabase) {
       this.DatabaseNode = user.getNode();
 
-    let userLoader = this.tools.presentLoading(this.loader);
-
-    let userPromise = new Promise(function(resolve, reject) {
-      user.GetUsersInternal().then(response => {
-        if(response == '200')
-          resolve();
-        else
-          reject(response);
-      });
-    });
-
-    userPromise.then(result=> {
-      this.UserList = user.ListOfUsers;
-      userLoader.dismiss();
-    }).catch( err => {
-      console.log("error: Retrieving users terminated with error code: " + err);
-      userLoader.dismiss();
-      this.tools.presentToast("Bottom", "Unexpected Internal Error: User list login");
-    });
   }
 
   Login() {
-    this.loader = this.tools.presentLoading(this.loader);
-    if(this.username != null && this.password != null) {
-      this.password = this.password.trim();
+    let that = this;
 
-      let exists = this.getUserByUsernameOrEmail(this.username.trim());
-      if(exists != null) {
-      let pass = this.password;
-        this.authenticate(exists, pass);
+    if(navigator.onLine) {
+      let userLoader = this.tools.presentLoading(this.loader);
+      let userPromise = new Promise(function (resolve, reject) {
+        that.user.GetUsersInternal().then(response => {
+          if (response == '200')
+            resolve();
+          else
+            reject(response);
+        });
+      });
+
+      userPromise.then(result => {
+        this.UserList = this.user.ListOfUsers;
+        userLoader.dismiss();
+      }).catch(err => {
+        console.log("error: Retrieving users terminated with error code: " + err);
+        userLoader.dismiss();
+        that.tools.presentToast("Bottom", "Unexpected Internal Error: User list login");
+      });
+
+      this.loader = this.tools.presentLoading(this.loader);
+      if (this.username != null && this.password != null) {
+        this.password = this.password.trim();
+
+        let exists = this.getUserByUsernameOrEmail(this.username.trim());
+        if (exists != null) {
+          let pass = this.password;
+          this.authenticate(exists, pass);
+        }
+        else {
+          this.loader.dismiss().catch(error => {
+            console.log("Error dismissing loader: " + error);
+          });
+          this.tools.presentToast("Bottom", "No such username exists");
+        }
       }
       else {
-        this.loader.dismiss().catch(error=> {
+        this.loader.dismiss().catch(error => {
           console.log("Error dismissing loader: " + error);
         });
-        this.tools.presentToast("Bottom", "No such username exists");
+        this.tools.presentToast("Bottom", "No field can be left empty");
       }
     }
-    else {
-      this.loader.dismiss().catch(error=> {
-        console.log("Error dismissing loader: " + error);
-      });
-      this.tools.presentToast("Bottom", "No field can be left empty");
-    }
+    else
+      this.tools.presentToast("top", "You are not connected to the internet");
+
   }
 
   getUserByUsernameOrEmail(username: string) {

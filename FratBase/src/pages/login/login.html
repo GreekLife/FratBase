@@ -15,10 +15,10 @@
 
 <ion-content padding style="background-color: #39393B">
   <button ion-button large block light class="nodeSelector" (click)="showNodes()" id="SelectedNode">{{DatabaseNode}}  &#9660; </button>
-    <img class="Logo" src="../../assets/imgs/logoblack.png"/>
+    <img class="Logo" src="./assets/imgs/logoblack.png"/>
 
-  <ion-input class="Credentials" [(ngModel)]="username" placeholder="Username"></ion-input>
-  <ion-input class="Credentials" type="password" [(ngModel)]="password" placeholder="Password"></ion-input>
+  <ion-input class="Credentials" [(ngModel)]="username" placeholder="Username" (keyup.enter)="Login()"></ion-input>
+  <ion-input class="Credentials" type="password" [(ngModel)]="password" placeholder="Password" (keyup.enter)="Login()"></ion-input>
   <button class="Login" ion-button (click)="Login()">Login</button>
 
 </ion-content>

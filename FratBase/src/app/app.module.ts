@@ -25,6 +25,7 @@ import {ForumPage} from "../pages/forum/forum";
 import {FilterPopoverPage} from "../pages/filter-popover/filter-popover";
 import {ForumCreatePage} from "../pages/forum-create/forum-create";
 import {ForumCommentsPage} from "../pages/forum-comments/forum-comments";
+import {MyConnection} from "../Services/Check_Connection";
 
 @NgModule({
   declarations: [

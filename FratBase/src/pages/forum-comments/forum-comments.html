@@ -62,11 +62,11 @@
     </div>
 </div>
 
-  <ion-footer class="footer" keyboard-attach>
+  <ion-footer class="footer">
       <ion-grid class="grid">
         <ion-row>
           <ion-col col-9>
-            <ion-input class="inpuBody" [(ngModel)]="commentBody" (focus)="scrollToBottom()" (keyup.enter)="sendMessage()"></ion-input>
+            <ion-input class="inpuBody" [(ngModel)]="commentBody" (ionFocus)="scrollToBottom()" (keyup.enter)="sendMessage()"></ion-input>
           </ion-col>
           <ion-col>
                 <ion-buttons style="margin: 0;" class="ionButtons">

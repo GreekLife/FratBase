@@ -40,17 +40,22 @@ export class ForumCreatePage {
   }
 
   post() {
-    let epoch = new Date().getTime()/1000;
-    let newPost = new Forum(epoch.toString(), null, [this.currentUser.UserId], this.body.trim(), "", this.title.trim(), this.currentUser.UserId)
+    if(navigator.onLine) {
+      let epoch = new Date().getTime() / 1000;
+      let newPost = new Forum(epoch.toString(), null, [this.currentUser.UserId], this.body.trim(), "", this.title.trim(), this.currentUser.UserId)
 
-    this.db.database.ref(this.user.getNode() + '/Forum').push(
-      newPost
-    ).then(response => {
-      console.log("Post to forum: Successful");
-      this.title = "";
-      this.body = "";
-      this.navCtrl.pop();
-    });
+      this.db.database.ref(this.user.getNode() + '/Forum').push(
+        newPost
+      ).then(response => {
+        console.log("Post to forum: Successful");
+        this.title = "";
+        this.body = "";
+        this.navCtrl.pop();
+      });
+    }
+    else
+      this.tools.presentToast("top", "You are not connected to the internet");
+
   }
 
 }

@@ -32,11 +32,14 @@ export class ForumCommentsPage {
   commentBody: string;
   deleteClicked: string[] = [];
   deleteState = false;
+  refreshCommentTimeout: number;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public users: UsersService, public alertCtrl: AlertController, public forum: ForumService, public tools: Tools, public db: AngularFireDatabase ) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public users: UsersService, public alertCtrl: AlertController, public forum: ForumService, public tools: Tools,
+              public db: AngularFireDatabase) {
     this.commentBody = "";
     this.CurrentPoster = this.navParams.get("poster");
     this.Post = this.navParams.get("selectedPost");
+
     this.userList  = this.users.ListOfUsers;
     this.CurrentLoggedIn = this.users.CurrentLoggedIn;
 
@@ -44,26 +47,52 @@ export class ForumCommentsPage {
       return Number(a.Epoch) - Number(b.Epoch);
     });
 
+    this.refreshCommentTimeout = setInterval(() => {
+      this.refreshComments();
+    }, 10000);
+
   }
 
-  sendMessage() {
-    if(this.commentBody == "") {
-      return;
+  refreshComments() {
+    console.log("Refreshed comments");
+    try {
+      let index = this.forum.ForumList.map(function (e) {
+        return e.PostId;
+      }).indexOf(this.Post.PostId);
+      if (index > -1) {
+        this.Post.Comments = this.forum.ForumList[index].Comments;
+      }
     }
-    let epoch = new Date().getTime()/1000;
-    let newComment = new Comment("", epoch.toString(), this.commentBody, this.CurrentLoggedIn.UserId);
-    this.Post.Comments.push(newComment);
-    this.commentBody = "";
+    catch(error) {
+      console.log("Unexpected Internal Error: refreshing comments");
+    }
+  }
 
-    this.sendCommentInternal(newComment);
+
+  sendMessage() {
+
+    //this.connection.onlineCheck().then(() => {
+    if(navigator.onLine) {
+      if (this.commentBody == "") {
+        return;
+      }
+      let epoch = new Date().getTime() / 1000;
+      let newComment = new Comment("", epoch.toString(), this.commentBody, this.CurrentLoggedIn.UserId);
+      this.Post.Comments.push(newComment);
+      this.commentBody = "";
+
+      this.sendCommentInternal(newComment);
+    }
+      else
+        this.tools.presentToast("top", "You are not connected to the internet");
   }
 
   sendCommentInternal(comment: Comment) {
     try {
       this.db.database.ref(this.users.getNode() + '/Forum/' + this.Post.PostId + '/Comments').push(
         comment
-      ).then(response => {
-
+      ).then(() => {
+        this.scrollToBottom();
       });
     }
     catch(error) {
@@ -82,7 +111,9 @@ export class ForumCommentsPage {
   }
 
   cancel(){
+    clearInterval(this.refreshCommentTimeout);
     this.navCtrl.pop();
+
   }
 
   scrollToBottom(){
@@ -110,35 +141,39 @@ export class ForumCommentsPage {
   }
 
   deletePost(comment: Comment) {
-    this.deleteClicked.push(comment.CommentId);
-    let confirm = this.alertCtrl.create({
-      title: 'Delete',
-      message: 'Are you sure you would like to delete this comment? This cannot be undone.',
-      cssClass:'buttonCss',
-      buttons: [
-        {
-          text: 'Delete',
-          handler: () => {
-            this.db.database.ref(this.users.getNode() + '/Forum/'+this.Post.PostId + "/Comments/"+comment.CommentId).remove().then(response => {
-              let index = this.Post.Comments.indexOf(comment);
-              if(index > -1) {
-                this.Post.Comments.splice(index, 1);
-              }
-            }).catch(error => {
-              this.tools.presentToast("Bottom", "An unexpected error occurred while trying to handle your request");
-              console.log("Error");
-            });
+    if(navigator.onLine) {
+        this.deleteClicked.push(comment.CommentId);
+      let confirm = this.alertCtrl.create({
+        title: 'Delete',
+        message: 'Are you sure you would like to delete this comment? This cannot be undone.',
+        cssClass:'buttonCss',
+        buttons: [
+          {
+            text: 'Delete',
+            handler: () => {
+              this.db.database.ref(this.users.getNode() + '/Forum/'+this.Post.PostId + "/Comments/"+comment.CommentId).remove().then(response => {
+                let index = this.Post.Comments.indexOf(comment);
+                if(index > -1) {
+                  this.Post.Comments.splice(index, 1);
+                }
+              }).catch(error => {
+                this.tools.presentToast("Bottom", "An unexpected error occurred while trying to handle your request");
+                console.log("Error");
+              });
+            }
+          },
+          {
+            text: 'Cancel',
+            handler: () => {
+              this.removeAllClicked();
+            }
           }
-        },
-        {
-          text: 'Cancel',
-          handler: () => {
-            this.removeAllClicked();
-          }
-        }
-      ]
-    });
-    confirm.present();
+        ]
+      });
+      confirm.present();
+  }
+  else
+    this.tools.presentToast("top", "You are not connected to the internet");
   }
 
 }

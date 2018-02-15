@@ -45,16 +45,20 @@ export class ViewMemberPage {
   }
 
   save() {
-    this.firebase.database.ref(this.user.getNode() + '/Users/' + this.selectedUser.UserId + "/Position").set(
-      this.Position
-    ).then(response => {
-      this.user.changeUserPositionById(this.selectedUser.UserId, this.Position);
-      this.tools.presentToast("top", "The users data has been updated.");
-      this.hasChanged = false;
-    }).catch(error => {
-      console.log(error);
-      this.tools.presentToast("bottom", "There was an issue processing your request");
-    });
+    if(navigator.onLine) {
+      this.firebase.database.ref(this.user.getNode() + '/Users/' + this.selectedUser.UserId + "/Position").set(
+        this.Position
+      ).then(response => {
+        this.user.changeUserPositionById(this.selectedUser.UserId, this.Position);
+        this.tools.presentToast("top", "The users data has been updated.");
+        this.hasChanged = false;
+      }).catch(error => {
+        console.log(error);
+        this.tools.presentToast("bottom", "There was an issue processing your request");
+      });
+    }
+    else
+      this.tools.presentToast("top", "You are not connected to the internet");
 
   }
 

@@ -23,7 +23,7 @@ import {ForumCommentsPage} from "../forum-comments/forum-comments";
 })
 export class ForumPage {
 
-  PostList: Forum[];
+  PostList: Forum[] = [];
   UserList: User[];
   CurrentPoster: User;
   filter:string = "Newest";
@@ -197,6 +197,13 @@ export class ForumPage {
   }
 
   refresh(refresher) {
+    let that = this;
+    setTimeout(function() {
+      that.refreshInternal(refresher);
+    }, 500);
+  }
+
+  refreshInternal(refresher) {
     if(navigator.onLine) {
       let that = this;
       let forumPromise = new Promise(function (resolve, reject) {
@@ -213,6 +220,11 @@ export class ForumPage {
 
       forumPromise.then(result => {
         refresher.complete();
+        this.PostList = [];
+        this.PostList = this.forum.ForumList;
+        this.PostList.sort(function (a, b) {
+          return Number(b.Epoch) - Number(a.Epoch);
+        });
       }).catch(err => {
         refresher.complete();
         console.log("error: Retrieving users terminated with error code: " + err);

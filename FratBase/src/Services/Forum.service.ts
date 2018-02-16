@@ -3,6 +3,7 @@ import {AngularFireDatabase} from "angularfire2/database";
 import {UsersService} from "./Manage_Users.service";
 import {Forum} from "../models/Forum/forum";
 import {Comment} from "../models/Forum/comment";
+import {Likes} from "../models/Forum/likes";
 
 @Injectable()
 export class ForumService {
@@ -24,12 +25,21 @@ export class ForumService {
         let idRef = that.db.database.ref(that.DatabaseNode + "/Forum");
         idRef.on('value', snapshot => {
           that.ForumList = [];
-          snapshot.forEach(poll => {
-            let comments = poll.child("Comments");
+          snapshot.forEach(forum => {
             let allComments = [];
-            if (comments != null) {
-              comments.forEach(comm => {
-                let comment = new Comment(comm.key, comm.child("Epoch").val(), comm.child("Post").val(), comm.child("UserId").val());
+            if (forum.child("Comments") != null) {
+              forum.child("Comments").forEach(comm => {
+                let likes: Likes[] = [];
+
+                if(comm.child("Likes") != null)
+                {
+                  comm.child("Likes").forEach(person => {
+                    let newLike = new Likes(person.key, person.val());
+                    likes.push(newLike);
+                    return false;
+                  });
+                }
+                let comment = new Comment(comm.key, comm.child("Epoch").val(), comm.child("Post").val(), comm.child("UserId").val(), likes);
                 allComments.push(comment);
                 return false;
               });
@@ -39,13 +49,13 @@ export class ForumService {
             }
 
             let forumObj = new Forum(
-              poll.child("Epoch").val(),
+              forum.child("Epoch").val(),
               allComments,
-              poll.child("GotIt").val(),
-              poll.child("Post").val(),
-              poll.key,
-              poll.child("PostTitle").val(),
-              poll.child("UserId").val()
+              forum.child("GotIt").val(),
+              forum.child("Post").val(),
+              forum.key,
+              forum.child("PostTitle").val(),
+              forum.child("UserId").val()
             );
             that.ForumList.push(forumObj);
 

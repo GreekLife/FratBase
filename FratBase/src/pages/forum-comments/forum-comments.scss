@@ -12,7 +12,6 @@ page-forum-comments {
   .commentCard {
     background-color: #39393B;
     color: white;
-    width: 70%;
     -webkit-border-radius: 25px;
     -moz-border-radius: 25px;
     border-radius: 25px;
@@ -91,6 +90,18 @@ page-forum-comments {
 
   }
 
+  .gold {
+    color: #FFDF00;
+  }
+
+  .blue {
+    color: #5CB3E1;
+  }
+
+  .smallButtonColor {
+    color: #5CB3E1;
+  }
+
   .rotateDelete {
     -webkit-transform: rotate(90deg);
     -moz-transform: rotate(90deg);
@@ -111,4 +122,5 @@ page-forum-comments {
   .deleting:hover {
     font-size: 18px;
   }
+
 }

@@ -195,15 +195,16 @@ export class ForumPage {
     }
 
   }
-
+  timeOut = null;
   refresh(refresher) {
     let that = this;
-    setTimeout(function() {
+    this.timeOut = setTimeout(function() {
       that.refreshInternal(refresher);
     }, 500);
   }
 
   refreshInternal(refresher) {
+    clearTimeout(this.timeOut);
     if(navigator.onLine) {
       let that = this;
       let forumPromise = new Promise(function (resolve, reject) {

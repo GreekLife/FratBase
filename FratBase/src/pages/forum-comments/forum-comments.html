@@ -51,14 +51,23 @@
       </ion-avatar>
       <h2 class="commentName">{{getUserObject(comment.UserId).First_Name}} {{Commenter.Last_Name}}</h2><h3 class="commentDate">{{this.tools.getTimeSince(comment.Epoch)}}</h3>
     </ion-item>
-    <ion-card class="commentCard">
-      <ion-card-content>
-        <p class="comment">
-          {{comment.Post}}
-        </p>
-      </ion-card-content>
-
-    </ion-card>
+      <ion-row>
+        <ion-col col-10>
+            <ion-card class="commentCard">
+              <ion-card-content >
+                <p class="comment">
+                  {{comment.Post}}
+                </p>
+              </ion-card-content>
+            </ion-card>
+        </ion-col>
+        <ion-col col-1>
+              <button ion-button icon-left clear small class="smallButtonColor" (click)="likeIt(comment)">
+                <ion-icon name="thumbs-up" [ngClass]="youLikedIt(comment) ? 'gold' : 'blue'"></ion-icon>
+                <div>{{getLikedItCount(comment)}}</div>
+              </button>
+        </ion-col>
+      </ion-row>
     </div>
 </div>
 

@@ -7,6 +7,7 @@ import {Forum} from "../../models/Forum/forum";
 import {Tools} from "../../Services/Tools";
 import {Comment} from "../../models/Forum/comment";
 import {AngularFireDatabase} from "angularfire2/database";
+import {Likes} from "../../models/Forum/likes";
 
 /**
  * Generated class for the ForumCommentsPage page.
@@ -54,7 +55,6 @@ export class ForumCommentsPage {
   }
 
   refreshComments() {
-    console.log("Refreshed comments");
     try {
       let index = this.forum.ForumList.map(function (e) {
         return e.PostId;
@@ -77,7 +77,7 @@ export class ForumCommentsPage {
         return;
       }
       let epoch = new Date().getTime() / 1000;
-      let newComment = new Comment("", epoch.toString(), this.commentBody, this.CurrentLoggedIn.UserId);
+      let newComment = new Comment("", epoch.toString(), this.commentBody, this.CurrentLoggedIn.UserId, null);
       this.Post.Comments.push(newComment);
       this.commentBody = "";
 
@@ -174,6 +174,132 @@ export class ForumCommentsPage {
   }
   else
     this.tools.presentToast("top", "You are not connected to the internet");
+  }
+
+  likeIt(comment: Comment) {
+      let alert = this.alertCtrl.create();
+      alert.setTitle('Likes');
+      let username = "";
+      comment.Likes.forEach( user => {
+        this.users.ListOfUsers.forEach(userObj =>{
+          if(userObj.UserId == user.UserId) {
+            username = userObj.First_Name + " " + userObj.Last_Name;
+          }
+        });
+        let disabled = true;
+        let checked = false;
+        if(username == this.CurrentLoggedIn.First_Name+" "+this.CurrentLoggedIn.Last_Name) {
+          disabled = false;
+          checked = true;
+        }
+        alert.addInput({
+          type: 'radio',
+          label: username,
+          value: username,
+          checked : checked,
+          disabled: disabled
+        });
+      });
+    alert.present().then(() => {
+      if(comment.Likes == null || comment.Likes.map(e => {return e.UserId;}).indexOf(this.CurrentLoggedIn.UserId) < 0) {
+        alert.addButton({
+          text: 'Like',
+          cssClass: 'Like',
+          handler: () => {
+            this.LikePost(comment);
+          }
+        });
+        alert.addButton({text: 'Cancel'});
+      }
+      else {
+        alert.addButton({text: 'Cancel'});
+        alert.addButton({
+          text: 'Unlike',
+          cssClass: 'Unlike',
+          handler: () => {
+            this.UnlikePost(comment);
+          }
+        });
+      }
+    });
+  }
+
+  UnlikePost(comment: Comment) {
+    if(comment.Likes != null && comment.Likes.map(e => {return e.UserId;}).indexOf(this.CurrentLoggedIn.UserId) > -1) {
+      let index = this.Post.Comments.indexOf(comment);
+      let likeIndex = comment.Likes.map(e => {return e.UserId;}).indexOf(this.CurrentLoggedIn.UserId);
+      let like = comment.Likes[likeIndex];
+      if(index > -1) {
+        this.Post.Comments[index].Likes.splice(likeIndex, 1);
+      }
+      else {
+        console.log("Error updating local Likes array");
+        return;
+      }
+
+      this.db.database.ref(this.users.getNode() + '/Forum/' + this.Post.PostId + "/Comments/" + comment.CommentId + "/Likes/"+like.LikeId).remove()
+      .then(response => {
+        console.log("Remove Like: Successful");
+      }).catch(error => {
+        console.log("Error handling unlike request: " + error);
+        this.tools.presentToast("bottom", "Unexpected Internal Server Error");
+      });
+    }
+  }
+
+  LikePost(comment: Comment) {
+    if(comment.Likes == null || comment.Likes.map(e => {return e.UserId;}).indexOf(this.CurrentLoggedIn.UserId) < 0) {
+      if(comment.Likes == null) {
+        let newLikeArray = [];
+        newLikeArray.push(this.CurrentLoggedIn.UserId);
+        let index = this.Post.Comments.indexOf(comment);
+        if(index > -1) {
+          this.Post.Comments[index].Likes = newLikeArray;
+        }
+        else {
+          console.log("Error updating local Likes array");
+          return;
+        }
+      }
+      else {
+        let index = this.Post.Comments.indexOf(comment);
+        if(index > -1) {
+          this.Post.Comments[index].Likes.push(new Likes("temp", this.CurrentLoggedIn.UserId));
+        }
+        else {
+          console.log("Error updating local Likes array");
+          return;
+        }
+      }
+
+      this.db.database.ref(this.users.getNode() + '/Forum/' + this.Post.PostId + "/Comments/" + comment.CommentId + "/Likes").push(
+        this.CurrentLoggedIn.UserId
+      ).then(response => {
+        console.log("Like It: Successful");
+
+      });
+    }
+  }
+
+  getLikedItCount(comment: Comment){
+    if(comment.Likes.length != null) {
+      return comment.Likes.length;
+    }
+    else
+      return 0;
+  }
+
+  youLikedIt(comment: Comment) {
+    try {
+      let index = comment.Likes.map(function (e) {
+        return e.UserId;
+      }).indexOf(this.CurrentLoggedIn.UserId);
+        return (index > -1);
+    }
+    catch(error) {
+      console.log(error);
+      console.log("Unexpected Internal Error: you liked it comments");
+    }
   }
 
 }

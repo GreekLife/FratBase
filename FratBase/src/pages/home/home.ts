@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Loading, NavController} from 'ionic-angular';
+import {Loading, LoadingController, NavController} from 'ionic-angular';
 import {UsersService} from "../../Services/Manage_Users.service";
 import {MembersPage} from "../members/members";
 import {Storage} from "@ionic/storage";
@@ -19,7 +19,7 @@ export class HomePage {
   CurrentUserRetrieved: User;
   loader: Loading;
 
-  constructor(public navCtrl: NavController, private users:UsersService, public storage: Storage, public poll: PollsService, public forum: ForumService, public tools: Tools) {
+  constructor(public navCtrl: NavController, private users:UsersService, public storage: Storage, public poll: PollsService, public forum: ForumService, public tools: Tools, public loadingCtrl: LoadingController) {
 
    let storageVal = storage.get('User').then(user => {
 
@@ -32,49 +32,63 @@ export class HomePage {
        return;
      }
 
-      let userLoader = this.tools.presentLoading(this.loader);
+     let userLoader = this.loadingCtrl.create({
+       content: "Please wait..."
+     });
 
-      let userPromise = new Promise(function(resolve, reject) {
-        users.GetUsersInternal().then(response => {
-          if(response == '200')
-            resolve();
-         else
-            reject(response);
-        });
+     userLoader.present().then(() => {
+
+       let userPromise = new Promise(function (resolve, reject) {
+         users.GetUsersInternal().then(response => {
+           if (response == '200')
+             resolve();
+           else
+             reject(response);
+         });
+       });
+
+       userPromise.then(result => {
+         userLoader.dismiss();
+       }).catch(err => {
+         console.log("error: Retrieving users terminated with error code: " + err);
+         userLoader.dismiss();
+         this.tools.presentToast("Bottom", "Unexpected Internal Error: User list");
+       });
+     }).catch( error=> {
+       console.log("Error presenting loading wheel: " + error);
+     });
+
+
+
+      let forumLoader = this.loadingCtrl.create({
+        content: "Please wait..."
       });
 
-      userPromise.then(result=> {
-        userLoader.dismiss();
-      }).catch( err => {
-        console.log("error: Retrieving users terminated with error code: " + err);
-        userLoader.dismiss();
-        this.tools.presentToast("Bottom", "Unexpected Internal Error: User list");
-      });
+     forumLoader.present().then(() => {
 
 
+       let forumPromise = new Promise(function (resolve, reject) {
+         forum.GetForumInternal().then(response => {
+           if (response == '200')
+             resolve();
+           else
+             reject(response);
+         });
 
-      let forumLoader = this.tools.presentLoading(this.loader);
+       });
 
-      let forumPromise = new Promise(function(resolve, reject) {
-        forum.GetForumInternal().then(response => {
-            if(response == '200')
-              resolve();
-            else
-              reject(response);
-          });
+       forumPromise.then(result => {
+         forumLoader.dismiss();
+       }).catch(err => {
+         console.log("error: Retrieving users terminated with error code: " + err);
+         forumLoader.dismiss();
+         this.tools.presentToast("Bottom", "Unexpected Internal Error: Forum List");
+       });
 
-      });
+     }).catch( error=> {
+       console.log("Error presenting loading wheel: " + error);
+     });
 
-      forumPromise.then(result=> {
-        forumLoader.dismiss();
-      }).catch( err => {
-        console.log("error: Retrieving users terminated with error code: " + err);
-        forumLoader.dismiss();
-        this.tools.presentToast("Bottom", "Unexpected Internal Error: Forum List");
-      });
-
-
-        //this.forum.GetForumInternal(this.loader);
        // this.poll.GetPollsInternal();
 
     }).catch(error => {

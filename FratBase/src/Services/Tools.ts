@@ -48,16 +48,16 @@ export class Tools {
 }
 
 
-  presentLoading(loader: Loading) {
-     loader = this.loadingCtrl.create({
-      content: "Please wait...",
-      duration: 3000
-    });
-    loader.present().catch( error=> {
-      console.log("Error presenting loading wheel: " + error);
-    });
-    return loader;
-  }
+  // presentLoading(loader: Loading) {
+  //    loader = this.loadingCtrl.create({
+  //     content: "Please wait...",
+  //     duration: 3000
+  //   });
+  //   loader.present().catch( error=> {
+  //     console.log("Error presenting loading wheel: " + error);
+  //   });
+  //   return loader;
+  // }
 
   presentToast(position: string, message) {
     let toast = this.toastCtrl.create({

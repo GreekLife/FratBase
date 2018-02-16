@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, Loading, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, Loading, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {HomePage} from "../home/home";
 import {UsersService} from "../../Services/Manage_Users.service";
 import {Tools} from "../../Services/Tools";
@@ -34,7 +34,7 @@ export class LoginPage {
   loader: Loading;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public user: UsersService, public tools: Tools, public poll: PollsService,
-              public forum: ForumService, public dbAuth: AngularFireAuth, private storage: Storage, public db: AngularFireDatabase) {
+              public forum: ForumService, public dbAuth: AngularFireAuth, private storage: Storage, public db: AngularFireDatabase, public loadingCtrl: LoadingController) {
       this.DatabaseNode = user.getNode();
 
   }
@@ -43,47 +43,53 @@ export class LoginPage {
     let that = this;
 
     if(navigator.onLine) {
-      let userLoader = this.tools.presentLoading(this.loader);
-      let userPromise = new Promise(function (resolve, reject) {
-        that.user.GetUsersInternal().then(response => {
-          if (response == '200')
-            resolve();
-          else
-            reject(response);
+      let userLoader = this.loadingCtrl.create({
+        content: "Please wait..."
+      });
+
+      userLoader.present().then(() => {
+        let userPromise = new Promise(function (resolve, reject) {
+          that.user.GetUsersInternal().then(response => {
+            if (response == '200')
+              resolve();
+            else
+              reject(response);
+          });
+        });
+
+        userPromise.then(result => {
+          this.UserList = this.user.ListOfUsers;
+          userLoader.dismiss();
+        }).catch(err => {
+          console.log("error: Retrieving users terminated with error code: " + err);
+          userLoader.dismiss();
+          that.tools.presentToast("Bottom", "Unexpected Internal Error: User list login");
         });
       });
 
-      userPromise.then(result => {
-        this.UserList = this.user.ListOfUsers;
-        userLoader.dismiss();
-      }).catch(err => {
-        console.log("error: Retrieving users terminated with error code: " + err);
-        userLoader.dismiss();
-        that.tools.presentToast("Bottom", "Unexpected Internal Error: User list login");
-      });
+      userLoader.present().then(() => {
+        if (this.username != null && this.password != null) {
+          this.password = this.password.trim();
 
-      this.loader = this.tools.presentLoading(this.loader);
-      if (this.username != null && this.password != null) {
-        this.password = this.password.trim();
-
-        let exists = this.getUserByUsernameOrEmail(this.username.trim());
-        if (exists != null) {
-          let pass = this.password;
-          this.authenticate(exists, pass);
+          let exists = this.getUserByUsernameOrEmail(this.username.trim());
+          if (exists != null) {
+            let pass = this.password;
+            this.authenticate(exists, pass);
+          }
+          else {
+            this.loader.dismiss().catch(error => {
+              console.log("Error dismissing loader: " + error);
+            });
+            this.tools.presentToast("Bottom", "No such username exists");
+          }
         }
         else {
           this.loader.dismiss().catch(error => {
             console.log("Error dismissing loader: " + error);
           });
-          this.tools.presentToast("Bottom", "No such username exists");
+          this.tools.presentToast("Bottom", "No field can be left empty");
         }
-      }
-      else {
-        this.loader.dismiss().catch(error => {
-          console.log("Error dismissing loader: " + error);
-        });
-        this.tools.presentToast("Bottom", "No field can be left empty");
-      }
+      });
     }
     else
       this.tools.presentToast("top", "You are not connected to the internet");

@@ -209,10 +209,10 @@ export class ForumCommentsPage {
             this.LikePost(comment);
           }
         });
-        alert.addButton({text: 'Cancel'});
+        alert.addButton({text: 'Close'});
       }
       else {
-        alert.addButton({text: 'Cancel'});
+        alert.addButton({text: 'Close'});
         alert.addButton({
           text: 'Unlike',
           cssClass: 'Unlike',

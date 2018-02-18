@@ -61,8 +61,8 @@ export class ForumService {
 
             return false;
           });
-          resolve();
         });
+        resolve();
       }
       catch(error) {
         reject();

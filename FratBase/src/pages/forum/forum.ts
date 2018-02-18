@@ -8,6 +8,7 @@ import {FilterPopoverPage} from "../filter-popover/filter-popover";
 import {AngularFireDatabase} from "angularfire2/database";
 import {Tools} from "../../Services/Tools";
 import {ForumCommentsPage} from "../forum-comments/forum-comments";
+import {ViewMemberPage} from "../view-member/view-member";
 
 /**
  * Generated class for the ForumPage page.
@@ -241,6 +242,11 @@ export class ForumPage {
   // -------------------------///
   //         Segues          ///
   //-------------------------///
+
+  ViewUser(post: Forum) {
+    let modal = this.modalCtrl.create(ViewMemberPage, {selectedUser: this.getUserObject(post.UserId)});
+    modal.present();
+  }
 
   viewComments(post: Forum) {
     let modal = this.modalCtrl.create(ForumCommentsPage, {selectedPost: post, poster: this.getUserObject(post.UserId)}, {enableBackdropDismiss: false});

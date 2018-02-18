@@ -75,16 +75,19 @@ export class LoginPage {
           if (exists != null) {
             let pass = this.password;
             this.authenticate(exists, pass);
+            userLoader.dismiss().catch(error => {
+              console.log("Error dismissing loader: " + error);
+            });
           }
           else {
-            this.loader.dismiss().catch(error => {
+            userLoader.dismiss().catch(error => {
               console.log("Error dismissing loader: " + error);
             });
             this.tools.presentToast("Bottom", "No such username exists");
           }
         }
         else {
-          this.loader.dismiss().catch(error => {
+          userLoader.dismiss().catch(error => {
             console.log("Error dismissing loader: " + error);
           });
           this.tools.presentToast("Bottom", "No field can be left empty");
@@ -111,9 +114,6 @@ export class LoginPage {
   authenticate(exists, pass) {
     this.dbAuth.auth.signInWithEmailAndPassword(exists, pass).then( response => {
         this.storage.set('User', this.user.CurrentLoggedIn);
-        this.loader.dismiss().catch(error=> {
-          console.log("Error dismissing loader: " + error);
-        });
         this.navCtrl.push(HomePage);
 
       }
@@ -123,9 +123,6 @@ export class LoginPage {
 
       console.log(errorCode);
       console.log(errorMessage);
-      this.loader.dismiss().catch(error=> {
-        console.log("Error dismissing loader: " + error);
-      });
       this.tools.presentToast("Bottom", "Your password is incorrect");
 
     });

@@ -32,7 +32,7 @@
 
         </button>
       </ion-avatar>
-      <h2 style="color: white;">{{CurrentPoster.First_Name}} {{CurrentPoster.Last_Name}}</h2>
+      <h2 style="color: white;" id="posterName" (click)="ViewUser(post)">{{CurrentPoster.First_Name}} {{CurrentPoster.Last_Name}}</h2>
 
     </ion-item>
 
@@ -55,7 +55,7 @@
           <div>{{getCommentCount(post)}} Comments</div>
         </button>
       </ion-col>
-      <ion-col center text-center>
+      <ion-col text-center>
         <ion-note>
           {{getTimeSince(post.Epoch)}} ago
         </ion-note>

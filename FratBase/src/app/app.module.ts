@@ -25,6 +25,8 @@ import {ForumPage} from "../pages/forum/forum";
 import {FilterPopoverPage} from "../pages/filter-popover/filter-popover";
 import {ForumCreatePage} from "../pages/forum-create/forum-create";
 import {ForumCommentsPage} from "../pages/forum-comments/forum-comments";
+import {PollPage} from "../pages/poll/poll";
+import {PollCommentsPage} from "../pages/poll-comments/poll-comments";
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import {ForumCommentsPage} from "../pages/forum-comments/forum-comments";
     ForumPage,
     FilterPopoverPage,
     ForumCreatePage,
-    ForumCommentsPage
+    ForumCommentsPage,
+    PollPage,
+    PollCommentsPage
   ],
   imports: [
     BrowserModule,
@@ -57,7 +61,9 @@ import {ForumCommentsPage} from "../pages/forum-comments/forum-comments";
     ForumPage,
     FilterPopoverPage,
     ForumCreatePage,
-    ForumCommentsPage
+    ForumCommentsPage,
+    PollPage,
+    PollCommentsPage
   ],
   providers: [
     StatusBar,

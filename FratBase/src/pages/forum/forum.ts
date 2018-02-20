@@ -51,6 +51,9 @@ export class ForumPage {
         this.CurrentPoster = user;
       }
     });
+    if(this.CurrentPoster == null) {
+      return "User Doesn't Exist";
+    }
     return this.CurrentPoster;
   }
 
@@ -96,7 +99,12 @@ export class ForumPage {
   }
 
   youGotIt(post: Forum) {
-    return (post.GotIt.indexOf(this.user.CurrentLoggedIn.UserId) > -1);
+    if(post.GotIt == null) {
+      return false;
+    }
+    else {
+      return (post.GotIt.indexOf(this.user.CurrentLoggedIn.UserId) > -1);
+    }
   }
 
   // -------------------------///

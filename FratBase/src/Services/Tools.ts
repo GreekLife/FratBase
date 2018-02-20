@@ -10,13 +10,16 @@ export class Tools {
 
   EboardArray = ["Master", "LT Master", "Scribe", "Exchequer", "Pledge Master", "Rush Master", "Brother at Large"];
 
-  constructor(public toastCtrl: ToastController,  public loadingCtrl: LoadingController) {
+  constructor(public toastCtrl: ToastController) {
 
   }
 
   //analyzes a text a returns the test but with all URLs and Emails reformated to links
 
   urlify(postBody: string, users: User[]) {
+    if(postBody == null) {
+      return postBody;
+    }
     // http://, https://, ftp://
     let urlPattern = /\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|]/gim;
 
@@ -36,28 +39,6 @@ export class Tools {
       .replace(tagPattern, "<a href='#' >$1</a>");
   }
 
-  findUser(name, users: User[], nav: NavController) {
-   name = name.substr(1, name.length());
-  users.forEach( user => {
-  let fullname = user.First_Name+user.Last_Name;
-  if(user.BrotherName == name || fullname == name) {
-     // nav.push(ViewMemberPage, {selectedUser: user});
-}
-});
-
-}
-
-
-  // presentLoading(loader: Loading) {
-  //    loader = this.loadingCtrl.create({
-  //     content: "Please wait...",
-  //     duration: 3000
-  //   });
-  //   loader.present().catch( error=> {
-  //     console.log("Error presenting loading wheel: " + error);
-  //   });
-  //   return loader;
-  // }
 
   presentToast(position: string, message) {
     let toast = this.toastCtrl.create({

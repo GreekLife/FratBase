@@ -15,10 +15,10 @@ export class ForumService {
 
 
   constructor(private db: AngularFireDatabase, public user: UsersService) {
-    this.DatabaseNode = this.user.getNode();
   }
 
   GetForumInternal() {
+    this.DatabaseNode = this.user.getNode();
     let that = this;
     let forumPromise = new Promise(function(resolve, reject) {
       try {
@@ -68,7 +68,7 @@ export class ForumService {
         reject();
       }
     });
-    return forumPromise.then(response => {
+    return forumPromise.then(() => {
       return '200';
     }).catch(error => {
       return '400; ' + error;

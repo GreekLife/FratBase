@@ -1,12 +1,16 @@
+import {Likes} from "../Forum/likes";
+
 export class Option {
 
 
   Title: string;
-  votes: string[];
+  Votes: Likes[];
+  OpId: string;
 
-  constructor(title: string, votes: string[]) {
+  constructor(title: string, votes: Likes[], opId: string) {
     this.Title = title;
-    this.votes = votes;
+    this.Votes = votes;
+    this.OpId = opId;
   }
 
 }

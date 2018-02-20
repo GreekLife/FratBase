@@ -15,12 +15,12 @@ export class UsersService {
 
 
   constructor(private db: AngularFireDatabase, public tools: Tools, public storage: Storage) {
-    this.DatabaseNode = "Generic";
+    this.DatabaseNode = "";
   }
 
   setNode(node) {
     if(node == null) {
-      this.DatabaseNode = "Generic";
+      this.DatabaseNode = "";
     }
     else {
       node = node.replace(/\s/g, '');

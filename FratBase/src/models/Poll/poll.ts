@@ -1,4 +1,5 @@
 import {Option} from "./PollOptions";
+import {Comment} from "../Forum/comment";
 
 export class Poll {
 
@@ -8,8 +9,10 @@ export class Poll {
   Title: string;
   UserId: string;
   Voters: string[];
+  Comments: Comment[];
+  GotIt: string[];
 
-  constructor(epoch: string, options: Option[], postId: string, title: string, userId: string,  voters: string[]) {
+  constructor(epoch: string, options: Option[], postId: string, title: string, userId: string,  voters: string[], gotIt: string[], comment: Comment[]) {
 
     this.Epoch = epoch;
     this.Options = options;
@@ -17,6 +20,8 @@ export class Poll {
     this.Title = title;
     this.UserId = userId;
     this.Voters = voters;
+    this.Comments = comment;
+    this.GotIt = gotIt;
   }
 
 }

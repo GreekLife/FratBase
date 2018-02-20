@@ -31,8 +31,6 @@ export class LoginPage {
   username: string;
   password: string;
 
-  loader: Loading;
-
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public user: UsersService, public tools: Tools, public poll: PollsService,
               public forum: ForumService, public dbAuth: AngularFireAuth, private storage: Storage, public db: AngularFireDatabase, public loadingCtrl: LoadingController) {
       this.DatabaseNode = user.getNode();
@@ -60,43 +58,49 @@ export class LoginPage {
         userPromise.then(result => {
           this.UserList = this.user.ListOfUsers;
           userLoader.dismiss();
+          that.retrievedUsers();
         }).catch(err => {
           console.log("error: Retrieving users terminated with error code: " + err);
           userLoader.dismiss();
           that.tools.presentToast("Bottom", "Unexpected Internal Error: User list login");
         });
       });
+    }
+    else
+      this.tools.presentToast("top", "You are not connected to the internet");
 
-      userLoader.present().then(() => {
-        if (this.username != null && this.password != null) {
-          this.password = this.password.trim();
+  }
 
-          let exists = this.getUserByUsernameOrEmail(this.username.trim());
-          if (exists != null) {
-            let pass = this.password;
-            this.authenticate(exists, pass);
-            userLoader.dismiss().catch(error => {
-              console.log("Error dismissing loader: " + error);
-            });
-          }
-          else {
-            userLoader.dismiss().catch(error => {
-              console.log("Error dismissing loader: " + error);
-            });
-            this.tools.presentToast("Bottom", "No such username exists");
-          }
+  retrievedUsers() {
+    let userLoader = this.loadingCtrl.create({
+      content: "Please wait..."
+    });
+    userLoader.present().then(() => {
+      if (this.username != null && this.password != null) {
+        this.password = this.password.trim();
+
+        let exists = this.getUserByUsernameOrEmail(this.username.trim());
+        if (exists != null) {
+          let pass = this.password;
+          this.authenticate(exists, pass);
+          userLoader.dismiss().catch(error => {
+            console.log("Error dismissing loader: " + error);
+          });
         }
         else {
           userLoader.dismiss().catch(error => {
             console.log("Error dismissing loader: " + error);
           });
-          this.tools.presentToast("Bottom", "No field can be left empty");
+          this.tools.presentToast("Bottom", "No such username exists");
         }
-      });
-    }
-    else
-      this.tools.presentToast("top", "You are not connected to the internet");
-
+      }
+      else {
+        userLoader.dismiss().catch(error => {
+          console.log("Error dismissing loader: " + error);
+        });
+        this.tools.presentToast("Bottom", "No field can be left empty");
+      }
+    });
   }
 
   getUserByUsernameOrEmail(username: string) {
@@ -114,6 +118,7 @@ export class LoginPage {
   authenticate(exists, pass) {
     this.dbAuth.auth.signInWithEmailAndPassword(exists, pass).then( response => {
         this.storage.set('User', this.user.CurrentLoggedIn);
+        this.storage.set('Node', this.user.getNode());
         this.navCtrl.push(HomePage);
 
       }

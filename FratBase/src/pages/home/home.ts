@@ -9,6 +9,8 @@ import {LoginPage} from "../login/login";
 import {PollsService} from "../../Services/Polls.service";
 import {ForumService} from "../../Services/Forum.service";
 import {Tools} from "../../Services/Tools";
+import {nodeValue} from "@angular/core/src/view";
+import {PollPage} from "../poll/poll";
 
 @Component({
   selector: 'page-home',
@@ -21,7 +23,14 @@ export class HomePage {
 
   constructor(public navCtrl: NavController, private users:UsersService, public storage: Storage, public poll: PollsService, public forum: ForumService, public tools: Tools, public loadingCtrl: LoadingController) {
 
-   let storageVal = storage.get('User').then(user => {
+   storage.get('User').then(user => {
+
+     storage.get('Node').then(node => {
+       this.users.setNode(node);
+     }).catch(error => {
+       console.log("Error retrieving user node: " + error);
+       this.navCtrl.push(LoginPage);
+     });
 
      this.users.CurrentLoggedIn = user;
      this.CurrentUserRetrieved = user;
@@ -89,6 +98,38 @@ export class HomePage {
        console.log("Error presenting loading wheel: " + error);
      });
 
+
+     let pollLoader = this.loadingCtrl.create({
+       content: "Please wait..."
+     });
+
+     pollLoader.present().then(() => {
+
+
+       let pollPromise = new Promise(function (resolve, reject) {
+         poll.GetPollsInternal().then(response => {
+           if (response == '200')
+             resolve();
+           else
+             reject(response);
+         });
+
+       });
+
+       pollPromise.then(result => {
+         pollLoader.dismiss();
+       }).catch(err => {
+         console.log("error: Retrieving users terminated with error code: " + err);
+         pollLoader.dismiss();
+         this.tools.presentToast("Bottom", "Unexpected Internal Error: Poll List");
+       });
+
+     }).catch( error=> {
+       console.log("Error presenting loading wheel: " + error);
+     });
+
+
+
        // this.poll.GetPollsInternal();
 
     }).catch(error => {
@@ -104,6 +145,10 @@ export class HomePage {
 
   ViewForum() {
     this.navCtrl.push(ForumPage);
+  }
+
+  ViewPoll() {
+    this.navCtrl.push(PollPage);
   }
 
   signOut() {

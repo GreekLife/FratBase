@@ -1,16 +1,18 @@
 import {Component, ViewChild} from '@angular/core';
 import {AlertController, Content, IonicPage, NavController, NavParams} from 'ionic-angular';
-import {UsersService} from "../../Services/Manage_Users.service";
 import {ForumService} from "../../Services/Forum.service";
+import {AngularFireDatabase} from "angularfire2/database";
+import {UsersService} from "../../Services/Manage_Users.service";
+import {Tools} from "../../Services/Tools";
 import {User} from "../../models/user";
 import {Forum} from "../../models/Forum/forum";
-import {Tools} from "../../Services/Tools";
+import {Poll} from "../../models/Poll/poll";
 import {Comment} from "../../models/Forum/comment";
-import {AngularFireDatabase} from "angularfire2/database";
 import {Likes} from "../../models/Forum/likes";
+import {PollsService} from "../../Services/Polls.service";
 
 /**
- * Generated class for the ForumCommentsPage page.
+ * Generated class for the PollCommentsPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -18,15 +20,15 @@ import {Likes} from "../../models/Forum/likes";
 
 @IonicPage()
 @Component({
-  selector: 'page-forum-comments',
-  templateUrl: 'forum-comments.html',
+  selector: 'page-poll-comments',
+  templateUrl: 'poll-comments.html',
 })
-export class ForumCommentsPage {
+export class PollCommentsPage {
 
   @ViewChild(Content) content: Content;
 
   CurrentPoster: User;
-  Post: Forum;
+  Post: Poll;
   userList: User[];
   CurrentLoggedIn: User;
   Commenter: User;
@@ -35,8 +37,9 @@ export class ForumCommentsPage {
   deleteState = false;
   refreshCommentTimeout: number;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public users: UsersService, public alertCtrl: AlertController, public forum: ForumService, public tools: Tools,
+  constructor(public navCtrl: NavController, public navParams: NavParams, public users: UsersService, public alertCtrl: AlertController, public poll: PollsService, public tools: Tools,
               public db: AngularFireDatabase) {
+
     this.commentBody = "";
     this.CurrentPoster = this.navParams.get("poster");
     this.Post = this.navParams.get("selectedPost");
@@ -54,13 +57,14 @@ export class ForumCommentsPage {
 
   }
 
+
   refreshComments() {
     try {
-      let index = this.forum.ForumList.map(function (e) {
+      let index = this.poll.PollList.map(function (e) {
         return e.PostId;
       }).indexOf(this.Post.PostId);
       if (index > -1) {
-        this.Post.Comments = this.forum.ForumList[index].Comments;
+        this.Post.Comments = this.poll.PollList[index].Comments;
       }
     }
     catch(error) {
@@ -70,8 +74,6 @@ export class ForumCommentsPage {
 
 
   sendMessage() {
-
-    //this.connection.onlineCheck().then(() => {
     if(navigator.onLine) {
       if (this.commentBody == "") {
         return;
@@ -83,20 +85,20 @@ export class ForumCommentsPage {
 
       this.sendCommentInternal(newComment);
     }
-      else
-        this.tools.presentToast("top", "You are not connected to the internet");
+    else
+      this.tools.presentToast("top", "You are not connected to the internet");
   }
 
   sendCommentInternal(comment: Comment) {
     try {
-      this.db.database.ref(this.users.getNode() + '/Forum/' + this.Post.PostId + '/Comments').push(
+      this.db.database.ref(this.users.getNode() + '/Polls/' + this.Post.PostId + '/Comments').push(
         comment
       ).then(() => {
         this.scrollToBottom();
       });
     }
     catch(error) {
-        console.log("Error Posting comment");
+      console.log("Error Posting comment");
     }
   }
 
@@ -145,7 +147,7 @@ export class ForumCommentsPage {
 
   deletePost(comment: Comment) {
     if(navigator.onLine) {
-        this.deleteClicked.push(comment.CommentId);
+      this.deleteClicked.push(comment.CommentId);
       let confirm = this.alertCtrl.create({
         title: 'Delete',
         message: 'Are you sure you would like to delete this comment? This cannot be undone.',
@@ -154,7 +156,7 @@ export class ForumCommentsPage {
           {
             text: 'Delete',
             handler: () => {
-              this.db.database.ref(this.users.getNode() + '/Forum/'+this.Post.PostId + "/Comments/"+comment.CommentId).remove().then(response => {
+              this.db.database.ref(this.users.getNode() + '/Polls/'+this.Post.PostId + "/Comments/"+comment.CommentId).remove().then(response => {
                 let index = this.Post.Comments.indexOf(comment);
                 if(index > -1) {
                   this.Post.Comments.splice(index, 1);
@@ -174,35 +176,35 @@ export class ForumCommentsPage {
         ]
       });
       confirm.present();
-  }
-  else
-    this.tools.presentToast("top", "You are not connected to the internet");
+    }
+    else
+      this.tools.presentToast("top", "You are not connected to the internet");
   }
 
   likeIt(comment: Comment) {
-      let alert = this.alertCtrl.create();
-      alert.setTitle('Likes');
-      let username = "";
-      comment.Likes.forEach( user => {
-        this.users.ListOfUsers.forEach(userObj =>{
-          if(userObj.UserId == user.UserId) {
-            username = userObj.First_Name + " " + userObj.Last_Name;
-          }
-        });
-        let disabled = true;
-        let checked = false;
-        if(username == this.CurrentLoggedIn.First_Name+" "+this.CurrentLoggedIn.Last_Name) {
-          disabled = false;
-          checked = true;
+    let alert = this.alertCtrl.create();
+    alert.setTitle('Likes');
+    let username = "";
+    comment.Likes.forEach( user => {
+      this.users.ListOfUsers.forEach(userObj =>{
+        if(userObj.UserId == user.UserId) {
+          username = userObj.First_Name + " " + userObj.Last_Name;
         }
-        alert.addInput({
-          type: 'radio',
-          label: username,
-          value: username,
-          checked : checked,
-          disabled: disabled
-        });
       });
+      let disabled = true;
+      let checked = false;
+      if(username == this.CurrentLoggedIn.First_Name+" "+this.CurrentLoggedIn.Last_Name) {
+        disabled = false;
+        checked = true;
+      }
+      alert.addInput({
+        type: 'radio',
+        label: username,
+        value: username,
+        checked : checked,
+        disabled: disabled
+      });
+    });
     alert.present().then(() => {
       if(comment.Likes == null || comment.Likes.map(e => {return e.UserId;}).indexOf(this.CurrentLoggedIn.UserId) < 0) {
         alert.addButton({
@@ -240,10 +242,10 @@ export class ForumCommentsPage {
         return;
       }
 
-      this.db.database.ref(this.users.getNode() + '/Forum/' + this.Post.PostId + "/Comments/" + comment.CommentId + "/Likes/"+like.LikeId).remove()
-      .then(response => {
-        console.log("Remove Like: Successful");
-      }).catch(error => {
+      this.db.database.ref(this.users.getNode() + '/Polls/' + this.Post.PostId + "/Comments/" + comment.CommentId + "/Likes/"+like.LikeId).remove()
+        .then(response => {
+          console.log("Remove Like: Successful");
+        }).catch(error => {
         console.log("Error handling unlike request: " + error);
         this.tools.presentToast("bottom", "Unexpected Internal Server Error");
       });
@@ -275,7 +277,7 @@ export class ForumCommentsPage {
         }
       }
 
-      this.db.database.ref(this.users.getNode() + '/Forum/' + this.Post.PostId + "/Comments/" + comment.CommentId + "/Likes").push(
+      this.db.database.ref(this.users.getNode() + '/Polls/' + this.Post.PostId + "/Comments/" + comment.CommentId + "/Likes").push(
         this.CurrentLoggedIn.UserId
       ).then(response => {
         console.log("Like It: Successful");
@@ -297,12 +299,16 @@ export class ForumCommentsPage {
       let index = comment.Likes.map(function (e) {
         return e.UserId;
       }).indexOf(this.CurrentLoggedIn.UserId);
-        return (index > -1);
+      return (index > -1);
     }
     catch(error) {
       console.log(error);
       console.log("Unexpected Internal Error: you liked it comments");
     }
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad PollCommentsPage');
   }
 
 }

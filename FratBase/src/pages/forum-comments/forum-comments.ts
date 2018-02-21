@@ -302,6 +302,7 @@ export class ForumCommentsPage {
     catch(error) {
       console.log(error);
       console.log("Unexpected Internal Error: you liked it comments");
+      return false;
     }
   }
 

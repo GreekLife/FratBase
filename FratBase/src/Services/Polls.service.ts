@@ -5,6 +5,7 @@ import {Poll} from "../models/Poll/poll";
 import {Comment} from "../models/Forum/comment";
 import {Likes} from "../models/Forum/likes";
 import {Option} from "../models/Poll/PollOptions"
+import {Tools} from "./Tools";
 
 @Injectable()
 export class PollsService {
@@ -13,7 +14,7 @@ export class PollsService {
 
   PollList: Poll[];
 
-  constructor(private db: AngularFireDatabase, public user: UsersService) {
+  constructor(private db: AngularFireDatabase, public user: UsersService, public tools: Tools) {
   }
 
   GetPollsInternal() {
@@ -41,8 +42,7 @@ export class PollsService {
                   });
 
                 }
-                let votes = opt.child("Votes").val();
-                let option = new Option(title, votes, opt.key);
+                let option = new Option(title, likes, opt.key);
                 options.push(option);
                 return false;
               });
@@ -97,5 +97,35 @@ export class PollsService {
       return '400; ' + error;
     });
   }
+
+
+  CreatePoll(newPoll: Poll) {
+    this.DatabaseNode = this.user.getNode();
+    let that = this;
+    let pollPromise = new Promise(function(resolve, reject) {
+    if (navigator.onLine) {
+
+      that.db.database.ref(that.user.getNode() + '/Polls').push(
+        newPoll
+      ).then(() => {
+        console.log("Post to Polls: Successful");
+        resolve();
+      });
+
+    }
+    else {
+      that.tools.presentToast("top", "You are not connected to the internet");
+      reject();
+    }
+
+    });
+
+    return pollPromise.then(() => {
+      return '200';
+    }).catch(error => {
+      return '400; ' + error;
+    });
+  }
+
 
 }

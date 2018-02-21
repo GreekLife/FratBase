@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, ModalController, NavController, NavParams, PopoverController} from 'ionic-angular';
 import {Poll} from "../../models/Poll/poll";
 import {PollsService} from "../../Services/Polls.service";
 import {UsersService} from "../../Services/Manage_Users.service";
@@ -11,6 +11,9 @@ import {ViewMemberPage} from "../view-member/view-member";
 import {ForumCommentsPage} from "../forum-comments/forum-comments";
 import {PollCommentsPage} from "../poll-comments/poll-comments";
 import {Option} from "../../models/Poll/PollOptions";
+import {PollVotePage} from "../poll-vote/poll-vote";
+import {FilterPopoverPage} from "../filter-popover/filter-popover";
+import {PollFilterPopoverPage} from "../poll-filter-popover/poll-filter-popover";
 
 /**
  * Generated class for the PollPage page.
@@ -34,7 +37,7 @@ export class PollPage {
   deleteState = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public polls: PollsService, public user: UsersService, public tools: Tools, public db: AngularFireDatabase,
-              public alertCtrl: AlertController, public modalCtrl: ModalController) {
+              public alertCtrl: AlertController, public modalCtrl: ModalController, public popoverCtrl: PopoverController) {
     this.PollList = polls.PollList;
     this.UserList = user.ListOfUsers;
 
@@ -111,7 +114,7 @@ export class PollPage {
     }
   }
 
-  ViewUser(post: Forum) {
+  ViewUser(post: Poll) {
     let modal = this.modalCtrl.create(ViewMemberPage, {selectedUser: this.getUserObject(post.UserId)});
     modal.present();
   }
@@ -121,31 +124,38 @@ export class PollPage {
     modal.present();
   }
 
+  goVote(post: Poll) {
+    let modal = this.modalCtrl.create(PollVotePage, {selectedPost: post, poster: this.getUserObject(post.UserId)}, {enableBackdropDismiss: false});
+    modal.present();
+  }
+
+
+
   getMostVoted(post: Poll) {
     let options = post.Options;
-    let mostVotedPost = options[0];
+    let mostVotedOption = options[0];
     let votesForOption = 0;
     options.forEach(option => {
       if(option.Votes != null) {
         if(option.Votes.length > votesForOption) {
-          mostVotedPost = option;
+          mostVotedOption = option;
           votesForOption = option.Votes.length;
         }
       }
     });
 
-    return mostVotedPost;
+    return mostVotedOption;
   }
 
   getMostVotedPercent(post: Poll) {
     if(post.Voters == null) {
       return "0%";
     }
-    let poll = this.getMostVoted(post);
-    if(poll.Votes == null) {
+    let option = this.getMostVoted(post);
+    if(option.Votes == null) {
       return "0%";
     }
-    let mostVotedVotes = poll.Votes.length;
+    let mostVotedVotes = option.Votes.length;
     let totalVotes = 0;
 
     post.Options.forEach(op => {
@@ -276,6 +286,98 @@ export class PollPage {
     else
       this.tools.presentToast("top", "You are not connected to the internet");
 
+  }
+
+  deletePost(post: Poll) {
+    this.deleteClicked.push(post.PostId);
+    let confirm = this.alertCtrl.create({
+      title: 'Delete',
+      message: 'Are you sure you would like to delete this post? This cannot be undone.',
+      cssClass:'buttonCss',
+      buttons: [
+        {
+          text: 'Delete',
+          handler: () => {
+            this.db.database.ref(this.user.getNode() + '/Polls/'+post.PostId).remove().then(() => {
+              let index = this.PollList.indexOf(post);
+              if(index > -1) {
+                this.PollList.splice(index, 1);
+              }
+            }).catch(error => {
+              this.tools.presentToast("Bottom", "An unexpected error occurred while trying to handle your request");
+              console.log("Error");
+            });
+          }
+        },
+        {
+          text: 'Cancel',
+          handler: () => {
+            this.removeAllClicked();
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+
+  openPopover(myEvent) {
+    let popover = this.popoverCtrl.create(PollFilterPopoverPage, {filterVal: this.filter});
+    popover.present({
+      ev: myEvent
+    });
+
+    popover.onDidDismiss(data => {
+      if(data!=null){
+        if(data != null) {
+
+          this.PollList = this.polls.PollList;
+
+          if (data == "Delete") {
+            this.deleteState = true;
+          }
+          else {
+            this.filter = data;
+          }
+          if(this.filter == "Newest") {
+            this.PollList.sort(function (a, b) {
+              return Number(b.Epoch) - Number(a.Epoch);
+            });
+          }
+          else if(this.filter == "Oldest") {
+            this.PollList.sort(function (a, b) {
+              return Number(a.Epoch) - Number(b.Epoch);
+            });
+          }
+          else if(this.filter == "Week") {
+            this.PollList.sort(function (a, b) {
+              return Number(b.Epoch) - Number(a.Epoch);
+            });
+            let weekFilteredList = [];
+            this.PollList.forEach(post => {
+              if(this.getDaysSince(post.Epoch) <= 7 ) {
+                weekFilteredList.push(post);
+              }
+            });
+            this.PollList = weekFilteredList;
+
+          }
+          else if(this.filter == "Month") {
+            this.PollList.sort(function (a, b) {
+              return Number(b.Epoch) - Number(a.Epoch);
+            });
+            let monthFilteredList = [];
+            this.PollList.forEach(post => {
+              if(this.getDaysSince(post.Epoch) <= 31 ) {
+                monthFilteredList.push(post);
+              }
+            });
+            this.PollList = monthFilteredList;
+
+          }
+        }
+      }
+    })
   }
 
 

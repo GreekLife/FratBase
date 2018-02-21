@@ -295,7 +295,7 @@ export class ForumPage {
             });
               let weekFilteredList = [];
             this.PostList.forEach(post => {
-              if(this.getDaysSince(post.Epoch) <= 8 ) {
+              if(this.getDaysSince(post.Epoch) <= 7 ) {
                 weekFilteredList.push(post);
               }
             });

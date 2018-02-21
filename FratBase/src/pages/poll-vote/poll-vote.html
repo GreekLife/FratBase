@@ -7,12 +7,66 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>poll-vote</ion-title>
+    <ion-buttons>
+      <button ion-button="arrow-back" style="color:  #488AFF" (click)="cancel()">
+        Cancel
+      </button>
+    </ion-buttons>
+    <ion-title></ion-title>
+    <ion-item end style="background-color: #0F0F11">
+      <ion-label style="color: white"> Order by top voted</ion-label>
+      <ion-toggle checked="false" color="dark" (ionChange)="updateToggle($event)" [(ngModel)]="toggleValue"></ion-toggle>
+    </ion-item>
+    <ion-scroll scrollX="true" style="width:100%; height: 50px;">
+      <ion-row nowrap no-lines>
+        <div *ngFor="let voter of Post.Voters">
+          <ion-item style="background-color: #0F0F11;">
+            <button style="background: none;" (click)="ViewUser(getUserObject(voter))">
+            <ion-avatar>
+              <img src="{{getUserObject(voter).ImageURL}}"/>
+            </ion-avatar>
+            </button>
+          </ion-item>
+        </div>
+      </ion-row>
+    </ion-scroll>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding style="background-color: #0F0F11;">
+  <ion-card class="card">
+    <ion-item style="background-color: #39393B" >
+      <ion-avatar item-start>
+        <img src="{{CurrentPoster.ImageURL}}"/>
+      </ion-avatar>
+      <h2 style="color: white;">{{CurrentPoster.First_Name}} {{CurrentPoster.Last_Name}}</h2><h3 class="commentDate">{{this.tools.getTimeSince(Post.Epoch)}}</h3>
 
+    </ion-item>
+
+    <ion-card-content>
+      <p style="color: white;" [innerHTML]="Post.Title"></p>
+    </ion-card-content>
+
+  </ion-card>
+
+  <div class="commentBody">
+    <div *ngFor="let option of Post.Options">
+      <ion-row>
+        <ion-col>
+          <button style="background:none;" (click)="ViewVoters(option)" end>
+            <div [innerHTML]="getPercent(option)" [ngClass]="youVotedForIt(option) ? 'percentDisplayGold' : 'percentDisplayWhite'"></div>
+          </button>
+        </ion-col>
+      </ion-row>
+        <ion-card class="card" style="border-radius: 15px;">
+          <button style="background:none; width: 100%; text-align: left" (click)="voteForOption(option)">
+          <ion-card-content>
+            <p style="color: white;" [innerHTML]="option.Title"></p>
+          </ion-card-content>
+          </button>
+        </ion-card>
+    </div>
+  </div>
 </ion-content>

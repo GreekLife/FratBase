@@ -295,6 +295,9 @@ export class PollCommentsPage {
   }
 
   youLikedIt(comment: Comment) {
+    if(comment.Likes == null) {
+      return false;
+    }
     try {
       let index = comment.Likes.map(function (e) {
         return e.UserId;

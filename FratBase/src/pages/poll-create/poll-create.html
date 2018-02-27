@@ -18,6 +18,10 @@
       </button>
     </ion-buttons>
   </ion-navbar>
+  <ion-item end style="background-color: #0F0F11">
+    <ion-label style="color: white"> Only allow one vote per member?</ion-label>
+    <ion-toggle checked="false" color="dark" (ionChange)="updateToggle($event)" [(ngModel)]="toggleValue"></ion-toggle>
+  </ion-item>
 </ion-header>
 
 

@@ -52,6 +52,10 @@ export class PollCreatePage {
     }
   }
 
+  updateToggle($event) {
+
+  }
+
   post() {
     let isValid = true;
     if(this.Options.length < 2) {

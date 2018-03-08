@@ -1,0 +1,75 @@
+page-forum {
+
+  .smallButtonColor {
+    color: color($colors, primary);
+  }
+
+  .light {
+    color: color($colors, light);
+  }
+
+  .card {
+    background-color: color($colors, secondary);
+    border-radius: 10px;
+  }
+
+  .gridStyle {
+    width: 100%;
+  }
+
+  .filterButton {
+    font-size: 10px;
+    width: 60px;
+  }
+
+  .endDelete {
+    display: block;
+    text-align: center;
+  }
+
+  .endDeleteBtn {
+    background: none;
+    color: red;
+
+  }
+
+  .rotateDelete {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+  }
+
+  .buttonCss {
+
+    button.alert-button:nth-child(1){
+      color: white;
+      background: red;
+    }
+
+    button.alert-button:nth-child(2){
+    }
+  }
+
+  .gold {
+    color: color($colors, golden);;
+  }
+
+  .blue {
+    color: color($colors, primary);;
+  }
+
+  ion-spinner * {
+    width: 28px;
+    height: 28px;
+    stroke: color($colors, golden) !important;
+    fill: color($colors, golden) !important;
+  }
+
+  #posterName:hover {
+    cursor: pointer;
+  }
+
+
+}

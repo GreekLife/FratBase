@@ -1,0 +1,62 @@
+<!--
+  Generated template for the ViewMemberPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons>
+      <button ion-button="arrow-back" (click)="cancel()">
+        Cancel
+      </button>
+    </ion-buttons>
+    <ion-buttons end>
+      <button *ngIf="CurrentUser.Position == 'Master'" ion-button="save" end (click)="save()" [ngClass]="hasChanged ? 'Save' : 'Hidden'">
+        Save
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <div id="MemberSelected">
+    <table>
+      <tr>
+        <th> <img id="myImg" class = "tableImage" src="{{selectedUser.ImageURL}}" imageViewer></th>
+        <th style="padding: 50px"><div class="ProfileCell">{{selectedUser.First_Name}} {{selectedUser.Last_Name}}</div></th>
+      </tr>
+      <tr>
+        <th class="ProfileCell">Brother Name</th><th class="ProfileCellA">{{selectedUser.BrotherName}}</th>
+      </tr>
+
+      <tr *ngIf="CurrentUser.Position == 'Master' && Position != 'Master'">
+        <th class="ProfileCell">Position</th><th class="ProfileCellA">
+        <button ion-button large block light class="PositionSelector" (click)="selectPosition()" id="PositionSelector">{{Position}}  &#9660; </button>
+      </th>
+      </tr>
+      <tr *ngIf="CurrentUser.Position != 'Master' || Position == 'Master'">
+        <th class="ProfileCell">Position</th><th class="ProfileCellA">{{selectedUser.Position}}</th>
+      </tr>
+
+      <tr>
+        <th class="ProfileCell">Email</th><th class="ProfileCellA"><a class="mailto" href="mailto:{{selectedUser.Email}}">{{selectedUser.Email}}</a></th>
+      </tr>
+      <tr>
+        <th class="ProfileCell">Degree</th><th class="ProfileCellA">{{selectedUser.Degree}}</th>
+      </tr>
+      <tr>
+        <th class="ProfileCell">Graduation</th><th class="ProfileCellA">{{selectedUser.Grad}}</th>
+      </tr>
+      <tr>
+        <th class="ProfileCell">School</th><th class="ProfileCellA">{{selectedUser.School}}</th>
+      </tr>
+      <tr>
+        <th class="ProfileCell">Birthday</th><th class="ProfileCellA">{{selectedUser.Birthday}}</th>
+      </tr>
+    </table>
+  </div>
+</ion-content>

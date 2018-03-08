@@ -1,8 +1,6 @@
 import {Injectable} from "@angular/core";
-import {Loading, LoadingController, NavController, ToastController} from "ionic-angular";
-import {UsersService} from "./Manage_Users.service";
+import {ToastController} from "ionic-angular";
 import {User} from "../models/user";
-import {ViewMemberPage} from "../pages/view-member/view-member";
 
 
 @Injectable()

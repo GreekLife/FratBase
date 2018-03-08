@@ -1,0 +1,31 @@
+<!--
+  Generated template for the PollFilterPopoverPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-content>
+
+  <ion-list no-lines>
+    <ion-item style="padding: 0;">
+      <button class="ButtonCreate" (click)="CreatePost()" [ngClass]="selectedFilter == 'Oldest' ? 'isSelected' : 'isNotSelected'">Create</button>
+    </ion-item>
+    <!--<ion-item style="background: black; color: #FFDF00">Edit</ion-item>-->
+    <ion-item style="padding: 0;">
+      <button class="Button" (click)="selectFilter('Newest')" [ngClass]="selectedFilter == 'Newest' ? 'isSelected' : 'isNotSelected'">Newest</button>
+    </ion-item>
+    <ion-item style="padding: 0; ">
+      <button class="Button" (click)="selectFilter('Oldest')" [ngClass]="selectedFilter == 'Oldest' ? 'isSelected' : 'isNotSelected'">Oldest</button>
+    </ion-item>
+    <ion-item style="padding: 0;">
+      <button class="Button" (click)="selectFilter('Week')" [ngClass]="selectedFilter == 'Week' ? 'isSelected' : 'isNotSelected'">This Week</button>
+    </ion-item>
+    <ion-item style="padding: 0;">
+      <button class="Button" (click)="selectFilter('Month')" [ngClass]="selectedFilter == 'Month' ? 'isSelected' : 'isNotSelected'">This Month</button>
+    </ion-item>
+    <ion-item style="padding: 0;">
+      <button class="Button" style="background-color: red" (click)="selectFilter('Delete')" >Delete</button>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

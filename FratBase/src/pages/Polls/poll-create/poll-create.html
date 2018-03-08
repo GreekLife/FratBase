@@ -1,0 +1,59 @@
+<!--
+  Generated template for the PollCreatePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-buttons>
+      <button ion-button="arrow-back" color="primary" (click)="cancel()">
+        Cancel
+      </button>
+    </ion-buttons>
+    <ion-title></ion-title>
+    <ion-buttons end>
+      <button ion-button="save" color="primary" end (click)="post()">
+        Post
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-item end style="background-color: #0F0F11">
+    <ion-label> Only allow one vote per member?</ion-label>
+    <ion-toggle checked="false" color="secondary" (ionChange)="updateToggle($event)" [(ngModel)]="toggleValue"></ion-toggle>
+  </ion-item>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-card class="card">
+    <ion-item color="secondary">
+      <ion-avatar item-start>
+        <img src="{{currentUser.ImageURL}}"/>
+      </ion-avatar>
+      <h2 class="light"> {{currentUser.First_Name}} {{currentUser.Last_Name}}</h2>
+
+    </ion-item>
+
+    <ion-card-content>
+      <textarea class="postTitle" [(ngModel)]="title" ></textarea>
+    </ion-card-content>
+  </ion-card>
+
+<ion-row>
+  <ion-col>
+      <button class="editButton" (click)="AddOption()"> Add option </button>
+  </ion-col>
+  <ion-col>
+    <button class="editButton" float-end (click) = "RemoveOption()"> Remove option </button>
+  </ion-col>
+</ion-row>
+
+  <div class="commentBody">
+    <div *ngFor="let option of Options; let i = index">
+       <ion-input class="Credentials" [(ngModel)]="Options[i].value" placeholder="Option {{i+1}}"></ion-input>
+    </div>
+  </div>
+
+
+</ion-content>

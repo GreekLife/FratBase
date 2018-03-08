@@ -1,0 +1,53 @@
+page-members {
+
+  .ImageDisplay {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .ImageName {
+    text-align: center;
+  }
+  .ImageDetails {
+    text-align: center;
+    font-size: 12px;
+  }
+
+  .tableImage {
+    width: 200px;
+    height: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .ProfileCell {
+    padding: 15px;
+  }
+
+  .ProfileCellA {
+    padding: 15px;
+    font-style: italic;
+  }
+
+  .column {
+   // background-color: color($colors, secondary);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .Eboard {
+    display: block;
+    color:  color($colors, primary);
+  }
+
+  .Hidden {
+    display: none;
+  }
+
+}

@@ -1,0 +1,38 @@
+page-poll-vote {
+
+  .card {
+    background-color: color($colors, secondary);
+    border-radius: 10px;
+  }
+
+  .commentDate {
+    float: right;
+    color: color($colors, light);
+  }
+
+
+  .commentBody {
+    margin-bottom: 100px;
+  }
+
+  .percentDisplayGold {
+    font-size: 10px;
+    font-style: italic;
+    float:right;
+    margin-right: 20px;
+    color: #FFDF00;
+  }
+
+  .percentDisplayWhite {
+    font-size: 10px;
+    font-style: italic;
+    float:right;
+    margin-right: 20px;
+    color: color($colors, light);
+  }
+
+  .light {
+    color: color($colors, light);
+  }
+
+}

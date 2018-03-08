@@ -3,7 +3,6 @@ import {AngularFireDatabase} from "angularfire2/database";
 import {User} from "../models/user";
 import {Tools} from "./Tools";
 import {Storage} from "@ionic/storage";
-import {Loading} from "ionic-angular";
 
 @Injectable()
 export class UsersService {

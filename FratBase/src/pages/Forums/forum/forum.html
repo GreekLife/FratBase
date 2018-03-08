@@ -1,0 +1,67 @@
+<!--
+  Generated template for the ForumPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Forum</ion-title>
+    <ion-buttons end>
+      <button ion-button end (click)="openPopover($event)"> <ion-icon name="more" color="primary"></ion-icon> </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-refresher (ionRefresh)="refresh($event)">
+    <ion-refresher-content refreshingSpinner="circles"></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="endDelete" ><button class="endDeleteBtn" ion-button (click)="deleteState = false; removeAllClicked();" *ngIf="deleteState">End Editing</button></div>
+  <ion-card *ngFor="let post of PostList" class="card">
+    <ion-item color="secondary">
+      <ion-avatar item-start>
+        <div style="font-size: 0; width: 0; height: 0;">{{getUserObject(post.UserId)}}</div>
+        <img *ngIf="!canDelete()" src="{{getUserObject(post.UserId).ImageURL}}"/>
+        <button style="background: none" (click)="deletePost(post)">
+        <ion-icon *ngIf="canDelete()" [ngClass]="deleteClickedContains(post) ? 'rotateDelete' : ''" name="remove-circle" style="color:red; font-weight: bold; font-size:40px;"></ion-icon>
+
+        </button>
+      </ion-avatar>
+      <h2 class="light" id="posterName" (click)="ViewUser(post)">{{CurrentPoster.First_Name}} {{CurrentPoster.Last_Name}}</h2>
+
+    </ion-item>
+
+    <ion-card-content>
+      <p class="light" [innerHTML]="this.tools.urlify(post.PostTitle, this.userList)"></p>
+      <br>
+      <p class="light" [innerHTML]="this.tools.urlify(post.Post, this.userList)"></p>
+    </ion-card-content>
+
+    <ion-row>
+      <ion-col>
+        <button ion-button icon-left clear small class="smallButtonColor" (click)="gotIt(post)">
+          <ion-icon name="thumbs-up" [ngClass]="youGotIt(post) ? 'gold' : 'blue'"></ion-icon>
+          {{getGotItCount(post)}} Got It
+        </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button icon-left clear small class="smallButtonColor" (click)="viewComments(post)">
+          <ion-icon name="text"></ion-icon>
+          {{getCommentCount(post)}} Comments
+        </button>
+      </ion-col>
+      <ion-col text-center>
+        <ion-note class="light">
+          {{getTimeSince(post.Epoch)}} ago
+        </ion-note>
+      </ion-col>
+    </ion-row>
+
+  </ion-card>
+
+</ion-content>

@@ -14,17 +14,6 @@ $app-direction: ltr;
 
 @import "ionic.globals";
 
-
-// Shared Variables
-// --------------------------------------------------
-// To customize the look and feel of this app, you can override
-// the Sass variables found in Ionic's source scss files.
-// To view all the possible Ionic variables, see:
-// http://ionicframework.com/docs/theming/overriding-ionic-variables/
-
-
-
-
 // Named Color Variables
 // --------------------------------------------------
 // Named colors makes it easy to reuse colors on various components.
@@ -34,37 +23,48 @@ $app-direction: ltr;
 // The "primary" color is the only required color in the map.
 
 // Changes the background color of all alerts to dark themed
-$alert-md-background-color: #39393B;
-$alert-ios-background: #39393B;
-$alert-wp-background-color: #39393B;
-
-$alert-ios-radio-label-text-color-checked: #FFDF00;
-$alert-ios-radio-label-text-color: #488aff;
-
-$loading-ios-background-color: #39393B;
-$loading-md-background-color: #39393B;
-$loading-wp-background-color: #39393B;
 
 $colors: (
-  primary:    #488aff,
-  secondary:  #32db64,
+  primary:    #5CB3E1,
+  secondary:  #39393B,
+  background: #161b1f,
   danger:     #f53d3d,
   light:      #f4f4f4,
-  dark:       #222
+  dark:       #222,
+  golden:     #FFDF00,
+  toolbar:    black,
 );
 
 
+// Shared Variables
+// --------------------------------------------------
+// To customize the look and feel of this app, you can override
+// the Sass variables found in Ionic's source scss files.
+// To view all the possible Ionic variables, see:
+// http://ionicframework.com/docs/theming/overriding-ionic-variables/
+
+
+$background-color: color($colors, background);
+$text-color: color($colors, light);
+$toolbar-background:  color($colors, toolbar);
+$text-decoration: none;
+$button-ios-text-color: white;
 
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
 
-
+$alert-ios-background: color($colors, secondary);
+$alert-ios-radio-label-text-color-checked: color($colors, golden);
+$alert-ios-radio-label-text-color: color($colors, primary);
+$loading-ios-background-color: color($colors, secondary);
 
 
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
+$alert-md-background-color: color($colors, secondary);
+$loading-md-background-color: color($colors, secondary);
 
 
 
@@ -72,9 +72,12 @@ $colors: (
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
+$alert-wp-background-color: color($colors, secondary);
+$loading-wp-background-color: color($colors, secondary);
+$alert-wp-radio-label-text-color: color($colors, light);
 
 
-
+$text-input-wp-border-width: 0;
 
 // App Theme
 // --------------------------------------------------

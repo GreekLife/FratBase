@@ -1,0 +1,126 @@
+page-poll-comments {
+
+  .card {
+    background-color: color($colors, secondary);
+    border-radius: 10px;
+  }
+
+  .commentCard {
+    background-color: #39393B;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    border-radius: 25px;
+    margin-top: 0;
+  }
+
+  .commentName {
+    font-size: 14px;
+  }
+
+  .comment {
+    font-size: 12px;
+    color: color($colors, light);
+  }
+
+  .identifier {
+    padding: 0;
+    margin-bottom: 0;
+  }
+
+  .footer {
+    background: #39393B;
+    position: fixed;
+  }
+
+  .commentBody {
+    margin-bottom: 100px;
+  }
+
+  .sendBtn {
+    height: 25px;
+    vertical-align: center;
+    horiz-align: center;
+    text-align: center;
+    align-content: center;
+  }
+
+  .ionButtons {
+    vertical-align: center;
+    horiz-align: center;
+    text-align: center;
+    align-content: center;
+  }
+
+  .inputBody {
+    line-height: 0;
+    background: #0F0F11;
+    border-radius: 25px;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: color($colors, light);
+  }
+
+  .grid {
+    margin: 0;
+    padding: 0;
+  }
+
+  .commentDate {
+    float: right;
+  }
+
+  .endDelete {
+    display: block;
+    text-align: center;
+  }
+
+  .endDeleteBtn {
+    background: none;
+    color: red;
+
+  }
+
+  .gold {
+    color: #FFDF00;
+  }
+
+  .blue {
+    color: color($colors, primary);
+  }
+
+  .smallButtonColor {
+    color: color($colors, primary);
+  }
+
+  .rotateDelete {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+  }
+
+  .deleting {
+    color: red;
+    font-size: 16px;
+  }
+
+  .notDeleting {
+    color: color($colors, primary);
+    font-size: 15px;
+  }
+  .deleting:hover {
+    font-size: 18px;
+  }
+
+  .cancelBtn {
+    color: color($colors, primary);
+  }
+
+  .light {
+    color: color($colors, light);
+  }
+
+
+
+}

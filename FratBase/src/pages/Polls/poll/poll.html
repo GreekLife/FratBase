@@ -1,0 +1,84 @@
+<!--
+  Generated template for the PollPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Polls</ion-title>
+    <ion-buttons end>
+      <button ion-button end (click)="openPopover($event)"> <ion-icon name="more" color="primary"></ion-icon> </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-refresher (ionRefresh)="refresh($event)">
+    <ion-refresher-content refreshingSpinner="circles"></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="endDelete" ><button class="endDeleteBtn" ion-button (click)="deleteState = false; removeAllClicked();" *ngIf="deleteState">End Editing</button></div>
+
+  <ion-card *ngFor="let post of PollList" class="card">
+    <ion-item color="secondary">
+      <ion-avatar item-start>
+        <div style=" font-size: 0; width: 0; height: 0;">{{getUserObject(post.UserId)}}</div>
+        <img *ngIf="!canDelete()" src="{{getUserObject(post.UserId).ImageURL}}"/>
+        <button style="background: none" (click)="deletePost(post)">
+          <ion-icon *ngIf="canDelete()" [ngClass]="deleteClickedContains(post) ? 'rotateDelete' : ''" name="remove-circle" style="color:red; font-weight: bold; font-size:40px;"></ion-icon>
+
+        </button>
+      </ion-avatar>
+      <h2 class="light" id="posterName" (click)="ViewUser(post)">{{CurrentPoster.First_Name}} {{CurrentPoster.Last_Name}}</h2>
+      <ion-note class="light">
+        {{getTimeSince(post.Epoch)}} ago
+      </ion-note>
+    </ion-item>
+
+    <ion-card-content>
+      <p class="light" [innerHTML]="this.tools.urlify(post.Title, this.userList)"></p>
+    </ion-card-content>
+
+    <ion-row>
+      <ion-col>
+    <div class="percentDisplay" [innerHTML]="getMostVotedPercent(post)"></div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-card-content>
+            <p [innerHTML]="getMostVoted(post).Title"></p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col col-4>
+        <button ion-button icon-left clear small class="smallButtonColor" (click)="gotIt(post)">
+          <ion-icon name="thumbs-up" [ngClass]="youGotIt(post) ? 'gold' : 'blue'"></ion-icon>
+          <div>{{getGotItCount(post)}} Got It</div>
+        </button>
+      </ion-col>
+      <ion-col col-5>
+        <button ion-button icon-left clear small class="smallButtonColor" (click)="viewComments(post)">
+          <ion-icon name="text"></ion-icon>
+          <div>{{getCommentCount(post)}} Comments</div>
+        </button>
+      </ion-col>
+      <ion-col col-1>
+        <button ion-button icon-right clear small class="smallButtonColor" (click)="goVote(post)">
+          <ion-icon name="stats"> </ion-icon>
+          <div> Vote!</div>
+        </button>
+      </ion-col>
+    </ion-row>
+
+  </ion-card>
+
+</ion-content>

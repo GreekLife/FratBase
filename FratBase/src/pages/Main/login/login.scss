@@ -46,4 +46,19 @@ page-login {
     margin-bottom: 30px;
   }
 
+  .mediaGrid {
+    margin-top: 30px;
+    text-align: center;
+  }
+
+  .mediaCell {
+    text-align: center;
+    margin-left: 40px;
+  }
+
+  .homeFab {
+    background: none;
+    border: 1px solid color($colors, primary);
+  }
+
 }

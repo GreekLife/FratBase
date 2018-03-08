@@ -21,4 +21,17 @@
   <ion-input class="Credentials" type="password" [(ngModel)]="password" placeholder="Password" (keyup.enter)="Login()"></ion-input>
   <button class="Login" ion-button (click)="Login()">Login</button>
 
+  <ion-row class="mediaGrid">
+    <ion-col class="mediaCell">
+      <ion-buttons>
+        <button ion-fab class="homeFab"><ion-icon name="logo-googleplus"></ion-icon></button>
+     </ion-buttons>
+    </ion-col>
+    <ion-col class="mediaCell">
+      <ion-buttons>
+        <button ion-fab class="homeFab"><ion-icon name="logo-facebook"></ion-icon></button>
+      </ion-buttons>
+    </ion-col>
+  </ion-row>
+
 </ion-content>

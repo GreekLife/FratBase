@@ -11,8 +11,9 @@ export class Poll {
   Voters: string[];
   Comments: Comment[];
   GotIt: string[];
+  OneVote: boolean;
 
-  constructor(epoch: string, options: Option[], postId: string, title: string, userId: string,  voters: string[], gotIt: string[], comment: Comment[]) {
+  constructor(epoch: string, options: Option[], postId: string, title: string, userId: string,  voters: string[], gotIt: string[], comment: Comment[], oneVote: boolean) {
 
     this.Epoch = epoch;
     this.Options = options;
@@ -22,6 +23,7 @@ export class Poll {
     this.Voters = voters;
     this.Comments = comment;
     this.GotIt = gotIt;
+    this.OneVote = oneVote;
   }
 
 }

@@ -30,6 +30,9 @@ import {PollCommentsPage} from "../pages/Polls/poll-comments/poll-comments";
 import {PollVotePage} from "../pages/Polls/poll-vote/poll-vote";
 import {PollFilterPopoverPage} from "../pages/Polls/poll-filter-popover/poll-filter-popover";
 import {PollCreatePage} from "../pages/Polls/poll-create/poll-create";
+import {ForumEditPage} from "../pages/Forums/forum-edit/forum-edit";
+import {TabsPage} from "../pages/Main/tabs/tabs";
+import {PollEditPage} from "../pages/Polls/poll-edit/poll-edit";
 
 @NgModule({
   declarations: [
@@ -46,7 +49,10 @@ import {PollCreatePage} from "../pages/Polls/poll-create/poll-create";
     PollCommentsPage,
     PollVotePage,
     PollFilterPopoverPage,
-    PollCreatePage
+    PollCreatePage,
+    ForumEditPage,
+    TabsPage,
+    PollEditPage
   ],
   imports: [
     BrowserModule,
@@ -72,7 +78,10 @@ import {PollCreatePage} from "../pages/Polls/poll-create/poll-create";
     PollCommentsPage,
     PollVotePage,
     PollFilterPopoverPage,
-    PollCreatePage
+    PollCreatePage,
+    ForumEditPage,
+    TabsPage,
+    PollEditPage
   ],
   providers: [
     StatusBar,

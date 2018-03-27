@@ -1,49 +1,51 @@
 page-login {
 
   .Logo {
-    width: 150px;
-    height: 150px;
+    margin-top: 15px;
+    width: 75px;
+    height: 75px;
     align-content: center;
     display: block;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 30px;
   }
 
   .Credentials {
-    width: 300px;
-    border-radius: 25px;
-    outline: none;
-    padding-left: 20px;
-    padding-right: 20px;
-    margin-bottom: 10px;
-    background-color: slategray;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+    width: 100%;
+    max-width: 300px;
+    font-size: 12px;
+  }
+
+  .floating {
 
   }
 
   .Login {
-    width: 150px;
-    border-radius: 25px;
-    display: block;
+    opacity: 0.7;
+    height: 30px;
+    width: 100%;
+    max-width: 300px;
+    background-color: color($colors, primary);
+    color: color($colors, secondary);
     margin-left: auto;
     margin-right: auto;
-    background-color: color($colors, primary);
-    text-transform: none;
+    display: block;
+    margin-top: 20px;
   }
 
   .nodeSelector {
+    opacity: 0.7;
+    text-decoration: none;
     height: 30px;
-    width: 300px;
-    text-transform: none;
+    width: 100%;
+    max-width: 300px;
     background: color($colors, primary);
-    border-radius: 25px;
+    color: color($colors, secondary);
     display: block;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 30px;
+    margin-top: 10px;
+    font-size: 14px;
   }
 
   .mediaGrid {

@@ -40,30 +40,32 @@
 
   <div class="commentBody">
     <div *ngFor="let comment of Post.Comments">
-      <ion-item no-lines class="identifier" >
-        <ion-avatar item-start class="commentAvatar">
-          <img *ngIf="!canDelete()" src="{{getUserObject(comment.UserId).ImageURL}}"/>
-          <button style="background: none" (click)="deletePost(comment)">
-            <ion-icon *ngIf="canDelete()" [ngClass]="deleteClickedContains(comment) ? 'rotateDelete' : ''" name="remove-circle" style="color:red; font-weight: bold; font-size:40px;"></ion-icon>
-          </button>
-        </ion-avatar>
-        <h2 class="commentName">{{getUserObject(comment.UserId).First_Name}} {{Commenter.Last_Name}}</h2><h3 class="commentDate">{{this.tools.getTimeSince(comment.Epoch)}}</h3>
-      </ion-item>
       <ion-row>
+        <ion-col col-2>
+          <ion-item no-lines class="identifier" >
+            <ion-avatar item-start class="commentAvatar">
+              <img *ngIf="!canDelete()" src="{{getUserObject(comment.UserId).ImageURL}}"/>
+              <button style="background: none" (click)="deletePost(comment)">
+                <ion-icon *ngIf="canDelete()" [ngClass]="deleteClickedContains(comment) ? 'rotateDelete' : ''" name="remove-circle" style="color:red; font-weight: bold; font-size:40px;"></ion-icon>
+              </button>
+            </ion-avatar>
+          </ion-item>
+        </ion-col>
         <ion-col col-10>
           <ion-card class="commentCard">
             <ion-card-content >
               <p class="comment">
                 {{comment.Post}}
               </p>
+              <ion-note>
+                {{this.tools.getTimeSince(comment.Epoch)}}
+                <button ion-button icon-left clear small class="smallButtonColor" (click)="likeIt(comment)">
+                  <ion-icon name="thumbs-up" [ngClass]="youLikedIt(comment) ? 'gold' : 'blue'"></ion-icon>
+                  <div>{{getLikedItCount(comment)}}</div>
+                </button>
+              </ion-note>
             </ion-card-content>
           </ion-card>
-        </ion-col>
-        <ion-col col-1>
-          <button ion-button icon-left clear small class="smallButtonColor" (click)="likeIt(comment)">
-            <ion-icon name="thumbs-up" [ngClass]="youLikedIt(comment) ? 'gold' : 'blue'"></ion-icon>
-            <div>{{getLikedItCount(comment)}}</div>
-          </button>
         </ion-col>
       </ion-row>
     </div>

@@ -11,6 +11,7 @@ page-poll-comments {
     -moz-border-radius: 25px;
     border-radius: 25px;
     margin-top: 0;
+    width: 100%;
   }
 
   .commentName {
@@ -90,6 +91,7 @@ page-poll-comments {
 
   .smallButtonColor {
     color: color($colors, primary);
+    height: 13px;
   }
 
   .rotateDelete {

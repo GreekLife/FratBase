@@ -5,4 +5,4 @@ export const FIREBASE_CONFIG = {
   projectId: "greek-life-ios",
   storageBucket: "greek-life-ios.appspot.com",
   messagingSenderId: "673492833051"
-}
+};

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Loading, LoadingController, NavController} from 'ionic-angular';
+import {App, IonicApp, Loading, LoadingController, NavController} from 'ionic-angular';
 import {UsersService} from "../../../Services/Manage_Users.service";
 import {MembersPage} from "../../Member/members/members";
 import {Storage} from "@ionic/storage";
@@ -20,7 +20,7 @@ export class HomePage {
   CurrentUserRetrieved: User;
   loader: Loading;
 
-  constructor(public navCtrl: NavController, private users:UsersService, public storage: Storage, public poll: PollsService, public forum: ForumService, public tools: Tools, public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, private users:UsersService, public appCtrl: App, public storage: Storage, public poll: PollsService, public forum: ForumService, public tools: Tools, public loadingCtrl: LoadingController) {
 
    storage.get('User').then(user => {
 
@@ -28,7 +28,7 @@ export class HomePage {
        this.users.setNode(node);
      }).catch(error => {
        console.log("Error retrieving user node: " + error);
-       this.navCtrl.push(LoginPage);
+       this.appCtrl.getRootNav().push(LoginPage);
      });
 
      this.users.CurrentLoggedIn = user;
@@ -36,7 +36,7 @@ export class HomePage {
 
      if(this.CurrentUserRetrieved == null) {
        console.log("Forced to login page");
-       this.navCtrl.push(LoginPage);
+       this.appCtrl.getRootNav().push(LoginPage);
        return;
      }
 
@@ -133,7 +133,7 @@ export class HomePage {
 
     }).catch(error => {
       console.log("Error retrieving saved user: " + error);
-      this.navCtrl.push(LoginPage);
+     this.appCtrl.getRootNav().push(LoginPage);
     });
 
   }
@@ -151,13 +151,12 @@ export class HomePage {
   }
 
   signOut() {
-    this.storage.remove('User').then(response => {
+    this.storage.remove('User').then(() => {
       console.log("Sign out succesful");
     }).catch(error => {
       console.log("User never existed? " + error);
     });
-
-    this.navCtrl.push(LoginPage);
+    this.appCtrl.getRootNav().push(LoginPage);
   }
 
 }

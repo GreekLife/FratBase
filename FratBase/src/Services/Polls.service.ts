@@ -76,7 +76,8 @@ export class PollsService {
               poll.child("UserId").val(),
               poll.child("Voters").val(),
               poll.child("GotIt").val(),
-              allComments
+              allComments,
+              poll.child("OneVote").val()
 
             );
             that.PollList.push(polObj);

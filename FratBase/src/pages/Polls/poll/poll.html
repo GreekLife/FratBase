@@ -21,11 +21,11 @@
     <ion-refresher-content refreshingSpinner="circles"></ion-refresher-content>
   </ion-refresher>
 
-  <div class="endDelete" ><button class="endDeleteBtn" ion-button (click)="deleteState = false; removeAllClicked();" *ngIf="deleteState">End Editing</button></div>
+  <div class="endDelete"><button class="endDeleteBtn" ion-button (click)="deleteState = false; removeAllClicked();" *ngIf="deleteState">End Editing</button></div>
 
   <ion-card *ngFor="let post of PollList" class="card">
     <ion-item color="secondary">
-      <ion-avatar item-start>
+      <ion-avatar item-start (click)="ViewUser(post)" id="posterPic">
         <div style=" font-size: 0; width: 0; height: 0;">{{getUserObject(post.UserId)}}</div>
         <img *ngIf="!canDelete()" src="{{getUserObject(post.UserId).ImageURL}}"/>
         <button style="background: none" (click)="deletePost(post)">
@@ -33,7 +33,7 @@
 
         </button>
       </ion-avatar>
-      <h2 class="light" id="posterName" (click)="ViewUser(post)">{{CurrentPoster.First_Name}} {{CurrentPoster.Last_Name}}</h2>
+      <h2 class="light" id="posterName">{{CurrentPoster.First_Name}} {{CurrentPoster.Last_Name}} <button *ngIf="post.UserId == this.user.CurrentLoggedIn.UserId" style="background: none;width: 100%" (click)="editPost(post)"><ion-icon name="md-create"></ion-icon></button> </h2>
       <ion-note class="light">
         {{getTimeSince(post.Epoch)}} ago
       </ion-note>

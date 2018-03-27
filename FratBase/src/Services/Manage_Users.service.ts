@@ -14,7 +14,7 @@ export class UsersService {
 
 
   constructor(private db: AngularFireDatabase, public tools: Tools, public storage: Storage) {
-    this.DatabaseNode = "";
+    this.DatabaseNode = "Generic";
   }
 
   setNode(node) {

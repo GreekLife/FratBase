@@ -16,6 +16,7 @@ page-forum-comments {
     -moz-border-radius: 25px;
     border-radius: 25px;
     margin-top: 0;
+    width: 100%;
   }
 
   .commentName {
@@ -71,10 +72,6 @@ page-forum-comments {
     padding: 0;
   }
 
-  .commentDate {
-    color:  color($colors, light);
-    float: right;
-  }
 
   .endDelete {
     display: block;
@@ -97,6 +94,7 @@ page-forum-comments {
 
   .smallButtonColor {
     color: color($colors, primary);
+    height: 13px;
   }
 
   .rotateDelete {

@@ -9,6 +9,7 @@ page-filter-popover {
     width: 100%;
     height: 100%;
     padding: 10px;
+    margin-bottom: 10px;
   }
 
   .Button:hover {
@@ -50,6 +51,14 @@ page-filter-popover {
     width: 100%;
     height: 100%;
     padding: 10px;
+  }
+
+  .edit {
+    background-color: color($colors, secondary);
+  }
+
+  .delete {
+    background-color: red;
   }
 
 }

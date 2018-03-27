@@ -49,6 +49,11 @@ $text-color: color($colors, light);
 $toolbar-background:  color($colors, toolbar);
 $text-decoration: none;
 $button-ios-text-color: white;
+$font-family: Helvetica, Arial, sans-serif;
+
+$tabs-background: color($colors, toolbar);;
+
+
 
 // App iOS Variables
 // --------------------------------------------------
@@ -67,6 +72,9 @@ $alert-md-background-color: color($colors, secondary);
 $loading-md-background-color: color($colors, secondary);
 
 
+$text-input-md-show-focus-highlight: false;
+$text-input-md-show-valid-highlight: false;
+$text-input-md-show-invalid-highlight: false;
 
 
 // App Windows Variables

@@ -12,7 +12,7 @@ export class Tools {
 
   }
 
-  //analyzes a text a returns the test but with all URLs and Emails reformated to links
+  //analyzes a text a returns the test but with all URLs and Emails reformatted to links
 
   urlify(postBody: string, users: User[]) {
     if(postBody == null) {

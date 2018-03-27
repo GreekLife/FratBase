@@ -26,6 +26,7 @@ export class PollCreatePage {
   title: string;
   body: string;
   Options = [{value: ''}, {value: ''}];
+  oneVote: boolean = false;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public user: UsersService, public tools: Tools, public polls: PollsService, public db: AngularFireDatabase, public loadingCtrl: LoadingController) {
@@ -52,7 +53,7 @@ export class PollCreatePage {
   }
 
   updateToggle($event) {
-
+    this.oneVote = !this.oneVote;
   }
 
   post() {
@@ -83,7 +84,7 @@ export class PollCreatePage {
       pollUpload.present().then(() => {
         let pollPromise = new Promise(function (resolve, reject) {
           let epoch = new Date().getTime() / 1000;
-          let newPoll = new Poll(epoch.toString(), optionList, "", that.title, that.user.CurrentLoggedIn.UserId, [], [that.user.CurrentLoggedIn.UserId], [] );
+          let newPoll = new Poll(epoch.toString(), optionList, "", that.title, that.user.CurrentLoggedIn.UserId, [], [that.user.CurrentLoggedIn.UserId], [], this.oneVote);
       //push to array
           that.polls.CreatePoll(newPoll).then(response => {
             if (response == '200')

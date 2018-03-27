@@ -9,6 +9,8 @@ import {AngularFireDatabase} from "angularfire2/database";
 import {Tools} from "../../../Services/Tools";
 import {ForumCommentsPage} from "../forum-comments/forum-comments";
 import {ViewMemberPage} from "../../Member/view-member/view-member";
+import {ForumCreatePage} from "../forum-create/forum-create";
+import {ForumEditPage} from "../forum-edit/forum-edit";
 
 /**
  * Generated class for the ForumPage page.
@@ -30,6 +32,7 @@ export class ForumPage {
   filter:string = "Newest";
   deleteState = false;
   deleteClicked: string[] = [];
+  displayingMine = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, private cdr: ChangeDetectorRef, public alertCtrl: AlertController, public forum: ForumService, public user: UsersService, public popoverCtrl: PopoverController, private db: AngularFireDatabase, public tools: Tools) {
     this.PostList = forum.ForumList;
@@ -214,42 +217,27 @@ export class ForumPage {
 
   refreshInternal(refresher) {
     clearTimeout(this.timeOut);
-    if(navigator.onLine) {
-      let that = this;
-      let forumPromise = new Promise(function (resolve, reject) {
-        that.forum.GetForumInternal().then(response => {
-          if (response == '200') {
-            resolve();
-          }
-          else {
-            reject(response);
-          }
-        });
-
-      });
-
-      forumPromise.then(result => {
-        refresher.complete();
-        this.PostList = [];
-        this.PostList = this.forum.ForumList;
-        this.PostList.sort(function (a, b) {
-          return Number(b.Epoch) - Number(a.Epoch);
-        });
-      }).catch(err => {
-        refresher.complete();
-        console.log("error: Retrieving users terminated with error code: " + err);
-        this.tools.presentToast("Bottom", "Unexpected Internal Error: Forum List");
-      });
-    }
+     if(navigator.onLine) {
+       this.PostList = this.forum.ForumList;
+       this.PostList.sort(function (a, b) {
+         return Number(b.Epoch) - Number(a.Epoch);
+       });
+     }
      else
-      this.tools.presentToast("top", "You are not connected to the internet");
+          this.tools.presentToast("top", "You are not connected to the internet");
 
+       refresher.complete();
 }
 
 
   // -------------------------///
   //         Segues          ///
   //-------------------------///
+
+  editPost(post: Forum) {
+    let modal = this.modalCtrl.create(ForumEditPage, {post: post});
+    modal.present();
+  }
 
   ViewUser(post: Forum) {
     let modal = this.modalCtrl.create(ViewMemberPage, {selectedUser: this.getUserObject(post.UserId)});
@@ -262,16 +250,32 @@ export class ForumPage {
   }
 
   openPopover(myEvent) {
-    let popover = this.popoverCtrl.create(FilterPopoverPage, {filterVal: this.filter});
+    let popover = this.popoverCtrl.create(FilterPopoverPage, {filterVal: this.filter, mineIsActive: this.displayingMine});
     popover.present({
       ev: myEvent
     });
 
     popover.onDidDismiss(data => {
-      if(data!=null){
         if(data != null) {
 
-          this.PostList = this.forum.ForumList;
+          if(data == 'Mine') {
+            this.filter = "Newest";
+            this.displayingMine = !this.displayingMine;
+          }
+
+          if(this.displayingMine) {
+            this.PostList = this.forum.ForumList;
+            let filterPosts = [];
+            this.PostList.forEach(post => {
+              if (post.UserId == this.user.CurrentLoggedIn.UserId) {
+                filterPosts.push(post);
+              }
+            });
+            this.PostList = filterPosts;
+          }
+          else {
+            this.PostList = this.forum.ForumList;
+          }
 
           if (data == "Delete") {
             this.deleteState = true;
@@ -316,8 +320,7 @@ export class ForumPage {
 
           }
         }
-      }
-    })
+    });
   }
 
 }

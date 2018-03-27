@@ -41,12 +41,14 @@
       <ion-avatar item-start>
         <img src="{{CurrentPoster.ImageURL}}"/>
       </ion-avatar>
-      <h2 class="light">{{CurrentPoster.First_Name}} {{CurrentPoster.Last_Name}}</h2><h3 class="commentDate">{{this.tools.getTimeSince(Post.Epoch)}}</h3>
-
+      <h2 class="light">{{CurrentPoster.First_Name}} {{CurrentPoster.Last_Name}}</h2>
     </ion-item>
 
     <ion-card-content>
       <p class="light" [innerHTML]="Post.Title"></p>
+      <ion-note>
+        {{this.tools.getTimeSince(Post.Epoch)}}
+      </ion-note>
     </ion-card-content>
 
   </ion-card>

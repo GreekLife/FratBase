@@ -17,9 +17,12 @@ import {ForumCreatePage} from "../forum-create/forum-create";
 export class FilterPopoverPage {
 
   selectedFilter = "Newest";
+  mineIsActive = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController,  public viewCtrl: ViewController) {
       this.selectedFilter = this.navParams.get("filterVal");
+      this.mineIsActive = this.navParams.get('mineIsActive');
+      console.log(this.mineIsActive);
   }
 
   selectFilter(filter: string) {
@@ -28,11 +31,34 @@ export class FilterPopoverPage {
   }
 
 
-  CreatePost() {
-    let modal = this.modalCtrl.create(ForumCreatePage);
-    this.viewCtrl.dismiss();
-    modal.present();
 
+  itemClicked(item: string) {
+    switch(item) {
+      case 'Newest':
+        this.selectFilter(item);
+        break;
+      case 'Oldest':
+        this.selectFilter(item);
+        break;
+      case 'Week':
+        this.selectFilter(item);
+        break;
+      case 'Month':
+        this.selectFilter(item);
+        break;
+      case 'Delete':
+        this.selectFilter(item);
+        break;
+      case 'Create':
+        let modal = this.modalCtrl.create(ForumCreatePage);
+        this.viewCtrl.dismiss();
+        modal.present();
+        break;
+      case 'Mine':
+        this.mineIsActive = !this.mineIsActive;
+        this.viewCtrl.dismiss(item);
+        break;
+    }
   }
 
 }

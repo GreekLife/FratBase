@@ -13,13 +13,22 @@
 </ion-header>
 
 
-<ion-content padding>
-  <button ion-button large block light class="nodeSelector" (click)="showNodes()" id="SelectedNode">{{DatabaseNode}}  &#9660; </button>
+<ion-content>
     <img class="Logo" src="./assets/imgs/logoblack.png"/>
+<ion-list style="margin-top: 7px">
+  <ion-item>
+    <ion-label color="secondary" floating class="floating">Username</ion-label>
+    <ion-input class="Credentials" [(ngModel)]="username" (keyup.enter)="Login()"></ion-input>
+  </ion-item>
 
-  <ion-input class="Credentials" [(ngModel)]="username" placeholder="Username" (keyup.enter)="Login()"></ion-input>
-  <ion-input class="Credentials" type="password" [(ngModel)]="password" placeholder="Password" (keyup.enter)="Login()"></ion-input>
+  <ion-item>
+    <ion-label color="secondary" floating class="floating">Password</ion-label>
+    <ion-input class="Credentials" type="password" [(ngModel)]="password" (keyup.enter)="Login()"></ion-input>
+  </ion-item>
+</ion-list>
+
   <button class="Login" ion-button (click)="Login()">Login</button>
+  <button ion-button large block light class="nodeSelector" (click)="showNodes()" id="SelectedNode">{{DatabaseNode}}  &#9660; </button>
 
   <ion-row class="mediaGrid">
     <ion-col class="mediaCell">

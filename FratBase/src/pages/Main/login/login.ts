@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
-import {HomePage} from "../home/home";
 import {UsersService} from "../../../Services/Manage_Users.service";
 import {Tools} from "../../../Services/Tools";
 import {User} from "../../../models/user";
@@ -9,6 +8,7 @@ import {ForumService} from "../../../Services/Forum.service";
 import {AngularFireAuth} from "angularfire2/auth";
 import {Storage} from "@ionic/storage";
 import {AngularFireDatabase} from "angularfire2/database";
+import {TabsPage} from "../tabs/tabs";
 
 /**
  * Generated class for the LoginPage page.
@@ -119,7 +119,7 @@ export class LoginPage {
     this.dbAuth.auth.signInWithEmailAndPassword(exists, pass).then( response => {
         this.storage.set('User', this.user.CurrentLoggedIn);
         this.storage.set('Node', this.user.getNode());
-        this.navCtrl.push(HomePage);
+        this.navCtrl.push(TabsPage);
 
       }
     ).catch(error => {

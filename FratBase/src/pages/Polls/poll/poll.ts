@@ -10,6 +10,8 @@ import {ViewMemberPage} from "../../Member/view-member/view-member";
 import {PollCommentsPage} from "../poll-comments/poll-comments";
 import {PollVotePage} from "../poll-vote/poll-vote";
 import {PollFilterPopoverPage} from "../poll-filter-popover/poll-filter-popover";
+import {ForumEditPage} from "../../Forums/forum-edit/forum-edit";
+import {PollEditPage} from "../poll-edit/poll-edit";
 
 /**
  * Generated class for the PollPage page.
@@ -31,6 +33,7 @@ export class PollPage {
   deleteClicked: string[] = [];
   filter:string = "Newest";
   deleteState = false;
+  displayingMine = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public polls: PollsService, public user: UsersService, public tools: Tools, public db: AngularFireDatabase,
               public alertCtrl: AlertController, public modalCtrl: ModalController, public popoverCtrl: PopoverController) {
@@ -170,8 +173,9 @@ export class PollPage {
     return percentString + "%";
   }
 
-  ionViewDidLoad() {
-
+  editPost(post: Poll) {
+    let modal = this.modalCtrl.create(PollEditPage, {post: post});
+    modal.present();
   }
 
   // -------------------------///
@@ -318,62 +322,77 @@ export class PollPage {
 
 
   openPopover(myEvent) {
-    let popover = this.popoverCtrl.create(PollFilterPopoverPage, {filterVal: this.filter});
+    let popover = this.popoverCtrl.create(PollFilterPopoverPage, {filterVal: this.filter, mineIsActive: this.displayingMine});
     popover.present({
       ev: myEvent
     });
 
     popover.onDidDismiss(data => {
-      if(data!=null){
-        if(data != null) {
+      if(data != null) {
 
+        if(data == 'Mine') {
+          this.filter = "Newest";
+          this.displayingMine = !this.displayingMine;
+        }
+
+        if(this.displayingMine) {
           this.PollList = this.polls.PollList;
+          let filterPosts = [];
+          this.PollList.forEach(post => {
+            if (post.UserId == this.user.CurrentLoggedIn.UserId) {
+              filterPosts.push(post);
+            }
+          });
+          this.PollList = filterPosts;
+        }
+        else {
+          this.PollList = this.polls.PollList;
+        }
 
-          if (data == "Delete") {
-            this.deleteState = true;
-          }
-          else {
-            this.filter = data;
-          }
-          if(this.filter == "Newest") {
-            this.PollList.sort(function (a, b) {
-              return Number(b.Epoch) - Number(a.Epoch);
-            });
-          }
-          else if(this.filter == "Oldest") {
-            this.PollList.sort(function (a, b) {
-              return Number(a.Epoch) - Number(b.Epoch);
-            });
-          }
-          else if(this.filter == "Week") {
-            this.PollList.sort(function (a, b) {
-              return Number(b.Epoch) - Number(a.Epoch);
-            });
-            let weekFilteredList = [];
-            this.PollList.forEach(post => {
-              if(this.getDaysSince(post.Epoch) <= 7 ) {
-                weekFilteredList.push(post);
-              }
-            });
-            this.PollList = weekFilteredList;
+        if (data == "Delete") {
+          this.deleteState = true;
+        }
+        else {
+          this.filter = data;
+        }
+        if(this.filter == "Newest") {
+          this.PollList.sort(function (a, b) {
+            return Number(b.Epoch) - Number(a.Epoch);
+          });
+        }
+        else if(this.filter == "Oldest") {
+          this.PollList.sort(function (a, b) {
+            return Number(a.Epoch) - Number(b.Epoch);
+          });
+        }
+        else if(this.filter == "Week") {
+          this.PollList.sort(function (a, b) {
+            return Number(b.Epoch) - Number(a.Epoch);
+          });
+          let weekFilteredList = [];
+          this.PollList.forEach(post => {
+            if(this.getDaysSince(post.Epoch) <= 7 ) {
+              weekFilteredList.push(post);
+            }
+          });
+          this.PollList = weekFilteredList;
 
-          }
-          else if(this.filter == "Month") {
-            this.PollList.sort(function (a, b) {
-              return Number(b.Epoch) - Number(a.Epoch);
-            });
-            let monthFilteredList = [];
-            this.PollList.forEach(post => {
-              if(this.getDaysSince(post.Epoch) <= 31 ) {
-                monthFilteredList.push(post);
-              }
-            });
-            this.PollList = monthFilteredList;
+        }
+        else if(this.filter == "Month") {
+          this.PollList.sort(function (a, b) {
+            return Number(b.Epoch) - Number(a.Epoch);
+          });
+          let monthFilteredList = [];
+          this.PollList.forEach(post => {
+            if(this.getDaysSince(post.Epoch) <= 31 ) {
+              monthFilteredList.push(post);
+            }
+          });
+          this.PollList = monthFilteredList;
 
-          }
         }
       }
-    })
+    });
   }
 
 
